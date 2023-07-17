@@ -1,0 +1,9 @@
+div.logo {
+   overflow: hidden;
+   user-select: none;
+   width: 296px;
+   padding: 10px;
+   font-size: 40px;
+   font-weight: 550;
+   background-color: #c0dde5;
+}

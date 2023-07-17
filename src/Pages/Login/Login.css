@@ -1,0 +1,63 @@
+.login {
+   width: 100%;
+   height: 100%;
+   background-color: white;
+   user-select: none;
+}
+
+.login img.bg {
+   width: 100%;
+   height: 100%;
+   left: 0;
+   top: 0;
+   position: fixed;
+}
+
+.login .middle {
+   width: 30%;
+   height: 100%;
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   display: flex;
+   flex-flow: column nowrap;
+   align-items: center;
+}
+
+.login .logo {
+   margin: 10px 0;
+}
+
+.login form {
+   width: 75%;
+   background-color: #061E45DD;
+   margin-top: 30px;
+   padding: 0 0 100px 0;
+   display: flex;
+   flex-flow: column nowrap;
+   align-items: center;
+}
+
+.login .hello {
+   color: white;
+   font-size: 30px;
+   margin: 50px;
+   margin-bottom: 20px;
+   overflow: hidden;
+}
+
+.login .text,
+.login .pass {
+   margin: 20px;
+}
+
+.login .sbmt {
+   background-color: #c3E3EB;
+   cursor: pointer;
+   margin-top: 20px;
+   padding: 10px 15px;
+   font-size: 17px;
+   border: 0 transparent none;
+   border-radius: 10px;
+}
