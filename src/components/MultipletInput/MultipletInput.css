@@ -1,0 +1,29 @@
+.multiple>ul.selectlist {
+   list-style: none;
+   height: 0;
+   overflow: hidden;
+   transition: height 1s;
+}
+
+.multiple>ul.selectlist.open {
+   height: 250px;
+}
+
+.multiple>button {
+   padding: 5px 10px 5px 15px;
+   font-size: 15px;
+}
+
+.multiple>ul>li {
+   display: flex;
+   flex-flow: nowrap row;
+}
+
+.multiple>ul>li>input {
+   float: inline-start;
+}
+
+.multiple>ul>li>span {
+   font-size: 20px;
+   padding-right: 10px;
+}

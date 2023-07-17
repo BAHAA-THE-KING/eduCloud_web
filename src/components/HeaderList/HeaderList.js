@@ -2,7 +2,7 @@ import "./HeaderList.css";
 
 function HeaderList(props) {
    return (
-      <li className="headerlist">
+      <li className={(props.active) ? "headerlist active" : "headerlist"}>
          <span>
             <b>
                {props.title}

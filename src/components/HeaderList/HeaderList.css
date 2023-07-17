@@ -13,3 +13,8 @@ li.headerlist:hover {
    background-color: grey;
    color: white;
 }
+
+li.headerlist.active {
+   color: #d4AF37;
+   border-bottom: 10px #d4AF37 solid;
+}

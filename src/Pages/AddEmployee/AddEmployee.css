@@ -1,0 +1,59 @@
+div.addemployee {
+   width: 100%;
+   height: CALC(100% - 73px);
+   background-color: white;
+   position: fixed;
+   user-select: none;
+}
+
+div.addemployee>img.bg {
+   width: 40%;
+   position: absolute;
+   bottom: 0;
+   left: 0;
+}
+
+div.addemployee>div.content {
+   width: 50%;
+   height: 100%;
+   background-color: white;
+   position: absolute;
+   top: 0;
+   right: 0;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+div.addemployee>div.content>span {
+   position: absolute;
+   top: 20px;
+   left: 0;
+   transform: translateX(-50%);
+   font-size: 50px;
+   color: #061E45;
+}
+
+div.addemployee>div.content>form>label {
+   font-size: 25px;
+   float: right;
+   color: #061E45;
+}
+
+div.addemployee>div.content>form input {
+   font-size: 30px;
+   color: #061E45;
+   border-bottom-color: #061E45;
+}
+
+div.addemployee>div.content>form>div.multiple {
+   position: relative;
+   margin-top: 10px;
+   right: -75px;
+}
+
+div.addemployee>div.content>form>input {
+   font-size: 25px;
+   width: 200px;
+   color: white;
+}

@@ -1,6 +1,6 @@
 import './App.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { Login, Header, Home } from './Pages';
+import { Login, Header, Home, AddEmployee } from './Pages';
 
 const router = createBrowserRouter([
   {
@@ -10,6 +10,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <><Header /><Home /></>,
+  },
+  {
+    path: "/employee/add",
+    element: <><Header active="employees" /><AddEmployee /></>
   }
 ]);
 
