@@ -9,7 +9,7 @@ function DataChunck(props) {
    return (
       <>
          <span className='datachunck fdatachunck'>
-            <img src="../logo512.png" alt="" onClick={() => props.removeDataHook(props.index)} />
+            <img src="../Icons/deleteRed.svg" alt="" onClick={() => props.removeDataHook(props.index)} />
             <span>
                الصف : {props.mainText}
             </span>

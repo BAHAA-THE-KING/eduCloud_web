@@ -12,7 +12,9 @@ function ViewEmployees() {
                setCurrent(res.current_page);
                setNext(res.next_page_url);
                setPrevious(res.prev_page_url);
-               setData(res.data);
+               const data = res.data;
+               while (data.length < res.per_page) data.push({ id: "", first_name: "", last_name: "" });
+               setData(data);
             },
             "%"
          );
@@ -108,7 +110,9 @@ function ViewEmployees() {
                            setCurrent(res.current_page);
                            setNext(res.next_page_url);
                            setPrevious(res.prev_page_url);
-                           setData(res.data);
+                           const data = res.data;
+                           while (data.length < res.per_page) data.push({ id: "", first_name: "", last_name: "" });
+                           setData(data);
                         },
                         previous.slice(52)
                      )
@@ -128,7 +132,9 @@ function ViewEmployees() {
                            setCurrent(res.current_page);
                            setNext(res.next_page_url);
                            setPrevious(res.prev_page_url);
-                           setData(res.data);
+                           const data = res.data;
+                           while (data.length < res.per_page) data.push({ id: "", first_name: "", last_name: "" });
+                           setData(data);
                         },
                         next.slice(52)
                      )
