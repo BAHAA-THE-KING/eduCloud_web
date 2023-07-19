@@ -188,8 +188,8 @@ function addEmployee(name, surname, roles) {
       );
 }
 
-function addTeacher(teacherId, arrayOfData) {
-   const path = "/principal/assign_Class_Subject_ToTeacher/" + teacherId;
+function addTeacher(employeeId, arrayOfData) {
+   const path = "/principal/assign_Class_Subject_ToTeacher/" + employeeId;
 
    const url = host + path;
 
@@ -237,4 +237,53 @@ function addTeacher(teacherId, arrayOfData) {
       );
 }
 
-export { HOME, LOGIN, ADDEMPLOYEE, ADDSTUDENT, goTo, getRoles, getSubjects, logIn, addEmployee, addTeacher };
+function addSupervisor(employeeId, arrayOfData) {
+   const path = "/principal/assignClassesToSupervisor/" + employeeId;
+
+   const url = host + path;
+
+   const method = "POST";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   const body = JSON.stringify(arrayOfData);
+
+   fetch(url, { method, headers, body })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e.message === "Success!") {
+               alert(e.message);
+               goTo(HOME);
+            } else if (e.message.indexOf("(") >= 0) {
+               alert(
+                  ((e.errors.first_name) ? e.errors.first_name[0] : "\b") + "\n" +
+                  ((e.errors.last_name) ? e.errors.last_name[0] : "\b") + "\n" +
+                  ((e.errors.roles) ? e.errors.roles[0] : "")
+               );
+            } else {
+               alert(e.message);
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
+export { HOME, LOGIN, ADDEMPLOYEE, ADDSTUDENT, goTo, getRoles, getSubjects, logIn, addEmployee, addTeacher, addSupervisor };

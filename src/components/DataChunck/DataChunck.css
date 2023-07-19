@@ -6,6 +6,26 @@ span.datachunck {
    align-items: flex-start;
 }
 
+span.fdatachunck {
+   flex-direction: row;
+}
+
+span.fdatachunck>img {
+   cursor: pointer;
+   height: 40px;
+   border-radius: 10px;
+   background-color: white;
+   transition: filter 0.5s;
+}
+
+span.fdatachunck>span {
+   margin-right: 20px;
+}
+
+span.fdatachunck>img:hover {
+   filter: invert();
+}
+
 span.datachunck>label {
    margin-right: 100px;
 }

@@ -1,31 +1,39 @@
 import './DataChunck.css';
+
 import { MultipletButton, MultipletInput } from '..';
 import { useState } from 'react';
 
 function DataChunck(props) {
-   const [subject, setSubject] = useState("");
-   const [classes, setClasses] = useState([]);
+   const [buttonSelectionText, setButtonSelectionText] = useState("");
+   const [checkboxSelectionText, setCheckboxSelectionText] = useState([]);
    return (
       <>
-         <span className='datachunck'>
-            الصف : {props.grade}
+         <span className='datachunck fdatachunck'>
+            <img src="../logo512.png" alt="" onClick={() => props.removeDataHook(props.index)} />
+            <span>
+               الصف : {props.mainText}
+            </span>
          </span>
+         {
+            (props.hasButtonSelection) ?
+               <span className='datachunck'>
+                  <label>المادة :{buttonSelectionText}</label>
+                  <MultipletButton
+                     options={props.buttonSelectionOptions}
+                     text="اختر المادة"
+                     dataHook={data_id => props.buttonSelectionHook(props.index, data_id)}
+                     textHook={setButtonSelectionText}
+                  />
+               </span>
+               : null
+         }
          <span className='datachunck'>
-            <label>المادة :{subject}</label>
-            <MultipletButton
-               options={props.subjects}
-               text="اختر المادة"
-               dataHook={subject_id => props.subjectHook(props.index, subject_id)}
-               textHook={setSubject}
-            />
-         </span>
-         <span className='datachunck'>
-            <label>الشعب :{classes.length ? classes.join(", ") + "." : ""}</label>
+            <label>الشعب :{checkboxSelectionText.length ? checkboxSelectionText.join(", ") + "." : ""}</label>
             <MultipletInput
-               options={props.classes}
+               options={props.checkboxSelectionOptions}
                text="اختر الشعب"
-               dataHook={classes_id => props.classHook(props.index, classes_id)}
-               textHook={setClasses}
+               dataHook={selectedData => props.checkboxSelectionHook(props.index, selectedData)}
+               textHook={setCheckboxSelectionText}
             />
          </span>
       </>

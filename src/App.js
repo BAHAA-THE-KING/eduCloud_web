@@ -1,6 +1,6 @@
 import './App.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { Login, Header, Home, AddEmployee, AddTeacherData } from './Pages';
+import { Login, Header, Home, AddEmployee, AddTeacherData, AddSupervisorData } from './Pages';
 
 const router = createBrowserRouter([
   {
@@ -18,6 +18,10 @@ const router = createBrowserRouter([
   {
     path: "/teacher/add",
     element: <><Header active="employees" /><AddTeacherData /></>
+  },
+  {
+    path: "/supervisor/add",
+    element: <><Header active="employees" /><AddSupervisorData /></>
   }
 ]);
 

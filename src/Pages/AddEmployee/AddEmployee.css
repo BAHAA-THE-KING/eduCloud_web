@@ -36,7 +36,7 @@ div.addemployee>div.content>form {
    border: 6px #061E45 solid;
    border-radius: 10px;
    padding: 10px;
-   margin-left:100px ;
+   margin-left: 100px;
 }
 
 div.addemployee>div.content>form>label {
@@ -52,9 +52,8 @@ div.addemployee>div.content>form input[type=text] {
 }
 
 div.addemployee>div.content>form>div.multiple {
-   position: relative;
-   margin-top: 10px;
-   right: -75px;
+   margin-right: 100px;
+   margin-top: 3px;
 }
 
 div.addemployee>div.content>form>input[type=button] {

@@ -6,7 +6,7 @@
 
 .multiple>ul.selectlist {
    height: 0;
-   transition: height 1s;
+   transition: height 0.5s;
    list-style: none;
    overflow: hidden;
    margin-top: 10px;
@@ -15,6 +15,7 @@
 }
 
 .multiple>button {
+   cursor: pointer;
    padding: 5px 10px 5px 15px;
    font-size: 15px;
 }
@@ -25,10 +26,11 @@
 }
 
 .multiple>ul>li>input {
-   float: inline-start;
+   cursor: pointer;
 }
 
 .multiple>ul>li>span {
+   cursor: pointer;
    font-size: 20px;
    padding-right: 10px;
 }

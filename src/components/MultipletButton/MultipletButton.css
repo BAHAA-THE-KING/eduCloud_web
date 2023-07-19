@@ -10,18 +10,20 @@
    display: inline-block;
    list-style: none;
    overflow: hidden;
-   transition: height 1s;
+   transition: height 0.5s;
    margin-top: 10px;
    padding-top: 0;
    padding-right: 40px;
 }
 
 .multiplebtn>button {
+   cursor: pointer;
    padding: 5px 10px 5px 10px;
    font-size: 15px;
 }
 
 .multiplebtn>ul>li>input {
+   cursor: pointer;
    float: inline-start;
    font-size: 20px;
    margin: 5px 0;

@@ -1,0 +1,80 @@
+div.addsupervisor {
+   width: 100%;
+   height: CALC(100% - 73px);
+   background-color: white;
+   position: fixed;
+   user-select: none;
+}
+
+div.addsupervisor>img.bg {
+   width: 40%;
+   position: absolute;
+   bottom: 0;
+   left: 0;
+}
+
+div.addsupervisor>div.content {
+   width: 50%;
+   height: 100%;
+   background-color: white;
+   position: absolute;
+   top: 0;
+   right: 0;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+div.addsupervisor>div.content>span {
+   position: absolute;
+   top: 20px;
+   left: 0;
+   transform: translateX(-50%);
+   font-size: 50px;
+   color: #061E45;
+}
+
+div.addsupervisor>div.content>form {
+   width: 75%;
+   height: 80%;
+   position: absolute;
+   bottom: 10px;
+   border: 6px #061E45 solid;
+   border-radius: 10px;
+   overflow: scroll;
+   scrollbar-width: none;
+   padding: 10px;
+}
+
+div.addsupervisor>div.content>form::-webkit-scrollbar {
+   display: none;
+}
+
+div.addsupervisor>div.content>form>div.add {
+   margin-top: 20px;
+   display: flex;
+   flex-flow: nowrap row;
+   align-items: flex-start;
+   justify-content: flex-start;
+}
+
+div.addsupervisor>div.content>form>div.add>label {
+   font-size: 25px;
+   float: right;
+   color: #061E45;
+}
+
+div.addsupervisor>div.content>form>div.add>div.multiplebtn ul {
+   margin-right: 0;
+   padding-right: 0;
+}
+
+div.addsupervisor>div.content>form>div.add>div.multiplebtn {
+   margin-right: 10px;
+   margin-top: 4px;
+}
+
+div.addsupervisor>div.content>form>.btn {
+   font-size: 25px;
+   width: 200px;
+}

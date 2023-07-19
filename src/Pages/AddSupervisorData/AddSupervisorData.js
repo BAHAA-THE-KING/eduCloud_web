@@ -1,4 +1,4 @@
-import "./AddTeacherData.css";
+import "./AddSupervisorData.css";
 
 import { Button, MultipletButton, DataHandler, Title } from "../../components";
 import { useEffect, useState } from "react";
@@ -7,7 +7,7 @@ import * as handler from './../../handlers';
 //[{ grade_id, subject_id, classes_id: [] }]
 let datahandler = [];
 
-function AddTeacherData() {
+function AddSupervisorData() {
    useEffect(
       function () {
          handler.getSubjects(
@@ -23,15 +23,13 @@ function AddTeacherData() {
       datahandler.push({ grade_id, classes_id: [] });
       setRefresh(refresh + 1);
    }
+
    function removeGrade(index) {
       datahandler[index] = undefined;
       datahandler = datahandler.filter(e => e);
       setRefresh(refresh + 1);
    }
-   function addSubjectToGrade(index, subject_id) {
-      datahandler[index].subject_id = subject_id;
-      setRefresh(refresh + 1);
-   }
+
    function addClassToGrade(index, classes_id) {
       datahandler[index].classes_id = classes_id;
       setRefresh(refresh + 1);
@@ -44,10 +42,10 @@ function AddTeacherData() {
    let selectedGrades = datahandler.map(e => e.grade_id);
 
    return (
-      <div className="addteacher">
+      <div className="addsupervisor">
          <img src="../Images/addemployee.jpg" alt="" className="bg" />
          <div className="content">
-            <Title text="إنشاء حساب لمعلم" />
+            <Title text="إنشاء حساب لموجه" />
             <form>
                <DataHandler
                   fullData={allGrades}
@@ -56,9 +54,7 @@ function AddTeacherData() {
 
                   removeDataHook={removeGrade}
 
-                  hasButtonSelection={true}
-                  buttonSelectionData={"subjects"}
-                  buttonSelectionHook={addSubjectToGrade}
+                  hasButtonSelection={false}
 
                   checkboxSelectionData={"g_classes"}
                   checkboxSelectionHook={addClassToGrade}
@@ -78,16 +74,13 @@ function AddTeacherData() {
                   hook={
                      e => {
                         e.preventDefault();
-                        handler.addTeacher(
-                           9,
-                           datahandler.map(
-                              e => {
-                                 return {
-                                    "subject_id": e.subject_id,
-                                    "classes": e.classes_id
-                                 };
-                              }
-                           )
+                        handler.addSupervisor(
+                           10,
+                           {
+                              "classes": datahandler.map(
+                                 e => e.classes_id
+                              ).flat(Infinity)
+                           }
                         )
                      }
                   }
@@ -98,4 +91,4 @@ function AddTeacherData() {
    );
 }
 
-export default AddTeacherData;
+export default AddSupervisorData;

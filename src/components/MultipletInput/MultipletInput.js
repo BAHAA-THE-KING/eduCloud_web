@@ -12,17 +12,15 @@ function MultipletInput(props) {
                props.options.map((e, i) =>
                   <li key={i}>
                      <input type="checkbox" data-id={e.id} onClick={
-                        () => {
+                        e => {
                            const selectedData = [];
                            const selectedText = [];
-                           const elms = document.querySelectorAll("ul.selectlist>li>input[type=checkbox]");
+                           const elms = e.target.parentElement.parentElement.querySelectorAll("ul.selectlist>li>input[type=checkbox]");
                            for (const k of elms)
                               if (k.checked) {
                                  selectedData.push(k.dataset.id);
                                  selectedText.push(k.nextSibling.innerHTML);
                               }
-                           console.log(selectedText);
-                           console.log(selectedData);
                            props.dataHook(selectedData);
                            props.textHook(selectedText);
                         }
