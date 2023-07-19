@@ -1,6 +1,6 @@
 input.btn {
        background-color: rgb(54, 69, 79);
-       color: white;
+       color: white !important;
        font-size: 17px;
        border: 0px transparent none;
        border-radius: 5px;

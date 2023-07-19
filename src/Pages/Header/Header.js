@@ -8,7 +8,7 @@ function Header(props) {
    return (
       <header>
          <ul>
-            {titles.map((e, i) => <HeaderList title={e} active={props.active === names[i]} />)}
+            {titles.map((e, i) => <HeaderList title={e} active={props.active === names[i]} key={i} />)}
          </ul>
          <Logo />
       </header>

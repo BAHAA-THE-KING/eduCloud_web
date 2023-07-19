@@ -4,26 +4,31 @@ import { useState } from "react";
 
 function MultipletInput(props) {
    const [open, setOpen] = useState(false);
-
    return (
       <div className='multiple'>
-         <button onClick={e => { e.preventDefault(); setOpen(!open); }}>اختر الأدوار</button>
-         <ul className={(open) ? 'selectlist open' : 'selectlist'}>
+         <button onClick={e => { e.preventDefault(); setOpen(!open); }}>{props.text}</button>
+         <ul className={'selectlist'} style={(open) ? { height: props.options.length * 30 + "px" } : null}>
             {
-               props.options.map(e =>
-                  <li>
-                     <input type="checkbox" data-name={e} onClick={
+               props.options.map((e, i) =>
+                  <li key={i}>
+                     <input type="checkbox" data-id={e.id} onClick={
                         () => {
-                           const selected = [];
-                           const elms = document.querySelectorAll("ul.selectlist.open>li>input[type=checkbox]");
+                           const selectedData = [];
+                           const selectedText = [];
+                           const elms = document.querySelectorAll("ul.selectlist>li>input[type=checkbox]");
                            for (const k of elms)
-                              if (k.checked)
-                                 selected.push(k.dataset.name);
-                           props.hook(selected);
+                              if (k.checked) {
+                                 selectedData.push(k.dataset.id);
+                                 selectedText.push(k.nextSibling.innerHTML);
+                              }
+                           console.log(selectedText);
+                           console.log(selectedData);
+                           props.dataHook(selectedData);
+                           props.textHook(selectedText);
                         }
                      } />
                      <span onClick={e => e.target.previousSibling.click()}>
-                        {e}
+                        {e.name}
                      </span>
                   </li>
                )

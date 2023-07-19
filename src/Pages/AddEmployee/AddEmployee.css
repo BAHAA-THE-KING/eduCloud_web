@@ -30,8 +30,13 @@ div.addemployee>div.content>span {
    top: 20px;
    left: 0;
    transform: translateX(-50%);
-   font-size: 50px;
-   color: #061E45;
+}
+
+div.addemployee>div.content>form {
+   border: 6px #061E45 solid;
+   border-radius: 10px;
+   padding: 10px;
+   margin-left:100px ;
 }
 
 div.addemployee>div.content>form>label {
@@ -40,7 +45,7 @@ div.addemployee>div.content>form>label {
    color: #061E45;
 }
 
-div.addemployee>div.content>form input {
+div.addemployee>div.content>form input[type=text] {
    font-size: 30px;
    color: #061E45;
    border-bottom-color: #061E45;
@@ -52,8 +57,7 @@ div.addemployee>div.content>form>div.multiple {
    right: -75px;
 }
 
-div.addemployee>div.content>form>input {
+div.addemployee>div.content>form>input[type=button] {
    font-size: 25px;
    width: 200px;
-   color: white;
 }

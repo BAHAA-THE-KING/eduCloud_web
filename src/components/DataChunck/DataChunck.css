@@ -1,0 +1,19 @@
+span.datachunck {
+   font-size: 25px;
+   color: #061E45;
+   display: flex;
+   flex-flow: nowrap column;
+   align-items: flex-start;
+}
+
+span.datachunck>label {
+   margin-right: 100px;
+}
+
+span.datachunck div.multiple {
+   margin-right: 100px;
+}
+
+span.datachunck div.multiplebtn {
+   margin-right: 100px;
+}

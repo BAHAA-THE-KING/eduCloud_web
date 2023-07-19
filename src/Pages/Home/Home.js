@@ -1,7 +1,21 @@
 import "./Home.css";
 import { ButtonList } from "../../components";
+import { ADDEMPLOYEE, ADDSTUDENT, goTo } from "../../handlers";
 
-const shorts = ["إضافة طالب", "إضافة نموذج اختبار قدرات", "إضافة اختبار", "إضافة ملاحظة لاستاذ", "إضافة تقدم دراسي", "إضافة ملاحظة لطالب", "إضافة دور", "إضافة خطة دراسية", "إضافة علامة", "إضافة عنوان", "إضافة موظف", "التأكد من الرسائل"];
+const shorts = [
+   { name: "إضافة طالب", action: () => { goTo(ADDSTUDENT); } },
+   { name: "إضافة نموذج اختبار قدرات", action: () => { } },
+   { name: "إضافة اختبار", action: () => { } },
+   { name: "إضافة ملاحظة لاستاذ", action: () => { } },
+   { name: "إضافة تقدم دراسي", action: () => { } },
+   { name: "إضافة ملاحظة لطالب", action: () => { } },
+   { name: "إضافة دور", action: () => { } },
+   { name: "إضافة خطة دراسية", action: () => { } },
+   { name: "إضافة علامة", action: () => { } },
+   { name: "إضافة عنوان", action: () => { } },
+   { name: "إضافة موظف", action: () => { goTo(ADDEMPLOYEE); } },
+   { name: "التأكد من الرسائل", action: () => { } }
+];
 
 function Home() {
    return (
@@ -9,7 +23,7 @@ function Home() {
          <img src="Images/home.jpg" alt="" className="bg" />
          <div className="leftcenter">
             <ul>
-               {shorts.map(e => <ButtonList text={e} />)}
+               {shorts.map(e => <ButtonList text={e.name} action={e.action} />)}
             </ul>
          </div>
       </div>

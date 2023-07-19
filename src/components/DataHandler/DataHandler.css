@@ -1,0 +1,7 @@
+div.datahandler {
+   width: 100%;
+   height: auto;
+   display: flex;
+   flex-flow: nowrap column;
+   align-items: flex-start;
+}

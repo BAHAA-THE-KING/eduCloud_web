@@ -14,9 +14,9 @@ function Login() {
         <Logo />
         <form>
           <div className='hello'>مرحبا بك</div>
-          <TextInput hook={setName} type="user name" />
+          <TextInput hook={setName} type="user name" hint="اسم المستخدم"/>
           <PasswordInput hook={setPassword} />
-          <input className='sbmt' type='button' onClick={e => { e.preventDefault(); handler.login(name, password); }} value={"تسجيل الدخول"} />
+          <input className='sbmt' type='button' onClick={e => { e.preventDefault(); handler.logIn(name, password); }} value={"تسجيل الدخول"} />
         </form>
       </div>
     </div>

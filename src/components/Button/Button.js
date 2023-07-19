@@ -2,7 +2,7 @@ import "./Button.css";
 
 function Button(props) {
   return (
-    <input type="button" value={props.text} className="btn" onClick={props.hook}/>
+    <input type="button" value={props.text} data-id={props.id??""} className="btn" onClick={props.hook}/>
   );
 }
 

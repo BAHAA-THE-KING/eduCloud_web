@@ -1,34 +1,28 @@
-.multiple {
+.multiplebtn {
    display: flex;
    flex-flow: nowrap column;
    align-items: flex-start;
 }
 
-.multiple>ul.selectlist {
+.multiplebtn>ul.selectlist {
    height: 0;
-   transition: height 1s;
+   padding: 0;
+   display: inline-block;
    list-style: none;
    overflow: hidden;
+   transition: height 1s;
    margin-top: 10px;
    padding-top: 0;
    padding-right: 40px;
 }
 
-.multiple>button {
-   padding: 5px 10px 5px 15px;
+.multiplebtn>button {
+   padding: 5px 10px 5px 10px;
    font-size: 15px;
 }
 
-.multiple>ul>li {
-   display: flex;
-   flex-flow: nowrap row;
-}
-
-.multiple>ul>li>input {
+.multiplebtn>ul>li>input {
    float: inline-start;
-}
-
-.multiple>ul>li>span {
    font-size: 20px;
-   padding-right: 10px;
+   margin: 5px 0;
 }

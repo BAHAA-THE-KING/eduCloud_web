@@ -1,20 +1,21 @@
 import "./AddEmployee.css";
 
-import { TextInput, MultipletInput, Button } from "../../components";
+import { TextInput, MultipletInput, Button, Title } from "../../components";
 import { useEffect, useState } from "react";
-import { addemployee, roles } from "../../handlers";
+import * as handler from './../../handlers';
 
 function AddEmployee() {
    useEffect(
       function () {
-         roles(
+         handler.getRoles(
             roles => {
-               console.log(roles);
+               roles = roles.map(e => Object.create({ id: e, name: e }));
                setRoles(roles);
             }
          );
       },
-      false);
+      []
+   );
 
    let [allRoles, setRoles] = useState([]);
    let [name, setName] = useState("");
@@ -25,22 +26,20 @@ function AddEmployee() {
       <div className="addemployee">
          <img src="../Images/addemployee.jpg" alt="" className="bg" />
          <div className="content">
-            <span>
-               <b>إنشاء حساب لموظف</b>
-            </span>
+            <Title text="إنشاء حساب لموظف" />
             <form>
                <label>اسم الموظف :</label>
                <br />
-               <TextInput hook={setName} />
+               <TextInput hook={setName} hint="الاسم" />
                <br />
                <label>كنية الموظف :</label>
                <br />
-               <TextInput hook={setSurName} />
+               <TextInput hook={setSurName} hint="الكنية" />
                <br />
                <label>الأدوار :</label>
-               <MultipletInput options={allRoles} hook={setSelectedRoles} />
+               <MultipletInput text="اختر الأدوار" options={allRoles} dataHook={setSelectedRoles} textHook={() => { }} />
                <br />
-               <Button text="متابعة" hook={e => { e.preventDefault(); addemployee(name, surName, selectedRoles); }} />
+               <Button text="متابعة" hook={e => { e.preventDefault(); handler.addEmployee(name, surName, selectedRoles); }} />
             </form>
          </div>
       </div>
