@@ -1,12 +1,11 @@
 import "./ButtonList.css";
 
-import { Button } from "..";
+import { ButtonWithIcon } from "..";
 
 function ButtonList(props) {
    return (
       <li className="buttonlist">
-         <Button text={props.text} hook={props.action} />
-         <img src="Icons/add.svg" alt="" />
+         <ButtonWithIcon text={props.text} hook={props.action} />
       </li>
    );
 }

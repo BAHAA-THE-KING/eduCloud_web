@@ -1,15 +1,22 @@
 input.btn {
-       background-color: rgb(54, 69, 79);
-       color: white !important;
+       background-color: #36454f;
+       color: white;
        font-size: 17px;
        border: 0px transparent none;
        border-radius: 5px;
        padding: 10px 10px;
        cursor: pointer;
        user-select: none;
-       transition: background-color 0.5s;
+       transition-duration: 0.5s;
 }
 
 .btn:hover {
+       background-color: #B6D8FF;
+       color: black;
+}
+
+.btn.disabled {
+       transition-duration: 0;
        background-color: grey;
+       color: white;
 }

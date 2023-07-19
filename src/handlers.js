@@ -3,6 +3,7 @@ const HOME = "/";
 const LOGIN = "/login";
 const ADDEMPLOYEE = "/employee/add";
 const ADDSTUDENT = "/student/add";
+const VIEWEMPLOYEE = "/employee";
 
 const host = "http://127.0.0.1:8000/V1.0";
 
@@ -58,6 +59,46 @@ function getSubjects(func) {
    const path = "/general/getAllGradesWithClassesAndSubjects";
 
    const url = host + path;
+
+   const method = "GET";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   fetch(url, { method, headers })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e["message"] === "Unauthenticated.") {
+               goTo(LOGIN);
+               return;
+            }
+            func(e);
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
+function getEmployees(func, params) {
+   const path = "/principal/employeeSearch/";
+
+   const url = host + path + params;
 
    const method = "GET";
 
@@ -286,4 +327,4 @@ function addSupervisor(employeeId, arrayOfData) {
       );
 }
 
-export { HOME, LOGIN, ADDEMPLOYEE, ADDSTUDENT, goTo, getRoles, getSubjects, logIn, addEmployee, addTeacher, addSupervisor };
+export { HOME, LOGIN, ADDEMPLOYEE, VIEWEMPLOYEE, ADDSTUDENT, goTo, getRoles, getSubjects, getEmployees, logIn, addEmployee, addTeacher, addSupervisor };

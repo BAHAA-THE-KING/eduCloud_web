@@ -1,0 +1,125 @@
+div.viewemployees {
+   width: 100%;
+   height: CALC(100% - 73px);
+   display: flex;
+   flex-flow: nowrap column;
+   justify-content: flex-start;
+   align-items: center;
+   background-color: white;
+}
+
+div.viewemployees>div.content {
+   width: 100%;
+   flex: 5;
+   display: flex;
+   flex-flow: nowrap row;
+   justify-content: flex-start;
+   align-items: center;
+   background-color: white;
+}
+
+div.viewemployees>div.navigation {
+   width: 100%;
+   flex: 1;
+   display: flex;
+   flex-flow: nowrap row;
+   justify-content: center;
+   align-items: flex-start;
+}
+
+div.viewemployees>div.content>div.control {
+   height: 100%;
+   flex: 1;
+   display: flex;
+   flex-flow: nowrap column;
+   justify-content: flex-start;
+   align-items: center;
+}
+
+div.viewemployees>div.content>div.control>.iconbutton {
+   width: 265px;
+   margin-top: 30px;
+   margin-right: 10px;
+}
+
+div.viewemployees>div.content>div.control>.iconbutton>.btn {
+   font-size: 20px;
+}
+
+div.viewemployees>div.content>div.control>.iconbutton>img {
+   width: 35px;
+   height: 35px;
+   margin-right: -40px;
+}
+
+div.viewemployees>div.content>.show {
+   width: 100%;
+   height: 100%;
+   flex: 9;
+}
+
+div.viewemployees>div.navigation>.btn {
+   width: 120px;
+   margin-top: 30px;
+   font-size: 20px;
+}
+
+div.viewemployees>div.navigation>.btn:nth-child(1) {
+   margin-inline-end: 10px;
+   text-align: start;
+}
+
+div.viewemployees>div.navigation>.btn:nth-child(2) {
+   width: 75px;
+   margin: 30px 10px 0 10px;
+   text-align: center;
+}
+
+div.viewemployees>div.navigation>.btn:nth-child(3) {
+   margin-inline-start: 10px;
+   text-align: end;
+}
+
+div.viewemployees>div.content>.show>.view {
+   width: 80%;
+   height: 95%;
+   margin-top: 20px;
+   margin-right: 50px;
+   background-color: #AAAAAA;
+   border: 3px #AAAAAA solid;
+   display: grid;
+   grid-template-columns: repeat(4, auto);
+   grid-template-rows: repeat(11, auto);
+   gap: 3px;
+}
+
+div.viewemployees>div.content>.show>.view>div {
+   width: 100%;
+   height: 100%;
+   background-color: #DDDDDD;
+   display: flex;
+   flex-flow: row nowrap;
+   justify-content: flex-start;
+   align-items: center;
+   font-size: 20px;
+   text-align: start;
+   overflow: scroll;
+   scrollbar-width: none;
+}
+
+div.viewemployees>div.content>.show>.view>div::-webkit-scrollbar {
+   display: none;
+}
+
+div.viewemployees>div.content>.show>.view>div.headings {
+   background-color: #999999;
+   color: white;
+}
+
+div.viewemployees>div.content>.show>.view>div.row:hover {
+   background-color: white;
+}
+
+div.viewemployees>div.content>.show>.view>div>span {
+   margin-right: 3px;
+}
