@@ -9,6 +9,10 @@ div.text>input.inptext {
    display: inline;
 }
 
+div.text>input.inptext::placeholder {
+   user-select: none;
+}
+
 div.text>img.imgtext {
    display: inline;
    height: 30px;

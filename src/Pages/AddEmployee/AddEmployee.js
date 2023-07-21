@@ -30,11 +30,11 @@ function AddEmployee() {
             <form>
                <label>اسم الموظف :</label>
                <br />
-               <TextInput hook={setName} hint="الاسم" />
+               <TextInput inputHook={setName} enterHook={() => { }} hint="الاسم" />
                <br />
                <label>كنية الموظف :</label>
                <br />
-               <TextInput hook={setSurName} hint="الكنية" />
+               <TextInput inputHook={setSurName} enterHook={() => { }} hint="الكنية" />
                <br />
                <label>الأدوار :</label>
                <MultipletInput text="اختر الأدوار" options={allRoles} dataHook={setSelectedRoles} textHook={() => { }} />

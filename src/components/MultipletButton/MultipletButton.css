@@ -4,16 +4,17 @@
    align-items: flex-start;
 }
 
-.multiplebtn>ul.selectlist {
+.multiplebtn>.selectlist {
    height: 0;
    padding: 0;
-   display: inline-block;
-   list-style: none;
    overflow: hidden;
    transition: height 0.5s;
    margin-top: 10px;
    padding-top: 0;
    padding-right: 40px;
+   display: grid;
+   grid-template-columns: 150px 150px;
+   gap: 0px;
 }
 
 .multiplebtn>button {
@@ -22,9 +23,12 @@
    font-size: 15px;
 }
 
-.multiplebtn>ul>li>input {
+.multiplebtn>.selectlist>div {
+   height: 50px;
+}
+
+.multiplebtn>.selectlist>div>input {
    cursor: pointer;
-   float: inline-start;
+   width: 90%;
    font-size: 20px;
-   margin: 5px 0;
 }

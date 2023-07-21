@@ -7,7 +7,7 @@ input.btn {
        padding: 10px 10px;
        cursor: pointer;
        user-select: none;
-       transition-duration: 0.5s;
+       transition: background-color 0.5s, color 0.5s;
 }
 
 .btn:hover {
@@ -16,7 +16,11 @@ input.btn {
 }
 
 .btn.disabled {
-       transition-duration: 0;
+       transition: background-color 0s, color 0s;
        background-color: grey;
        color: white;
+}
+
+.btn.selected {
+       border: 2px red solid;
 }

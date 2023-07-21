@@ -120,11 +120,18 @@ function getEmployees(func, params) {
       )
       .then(
          e => {
-            if (e["message"] === "Unauthenticated.") {
+            if (e["message"] === "results found successfully.") {
+               func(e.data);
+            } else if (e["message"] === "Unauthenticated.") {
                goTo(LOGIN);
-               return;
+            } else if (e["message"] === "no results found") {
+               func({
+                  current_page: 1,
+                  next_page_url: null,
+                  prev_page_url: null,
+                  data: []
+               });
             }
-            func(e);
          }
       )
       .catch(
@@ -327,4 +334,52 @@ function addSupervisor(employeeId, arrayOfData) {
       );
 }
 
-export { HOME, LOGIN, ADDEMPLOYEE, VIEWEMPLOYEE, ADDSTUDENT, goTo, getRoles, getSubjects, getEmployees, logIn, addEmployee, addTeacher, addSupervisor };
+async function editEmployee(id, name, surname, func) {
+   const path = "/principal/editEmployee/" + id;
+
+   const url = host + path;
+
+   const method = "POST";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   const body = JSON.stringify({ "first_name": name, "last_name": surname });
+
+   return fetch(url, { method, headers, body })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e.message === "Success!!") {
+               func();
+            } else if (e.message.indexOf("(") >= 0) {
+               alert(
+                  ((e.errors.first_name) ? e.errors.first_name[0] : "\b") + "\n" +
+                  ((e.errors.last_name) ? e.errors.last_name[0] : "\b") + "\n" +
+                  ((e.errors.roles) ? e.errors.roles[0] : "")
+               );
+            } else {
+               alert(e.message);
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
+export { HOME, LOGIN, ADDEMPLOYEE, VIEWEMPLOYEE, ADDSTUDENT, goTo, getRoles, getSubjects, getEmployees, logIn, addEmployee, addTeacher, addSupervisor, editEmployee };

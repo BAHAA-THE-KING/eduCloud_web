@@ -7,15 +7,15 @@ function MultipletInput(props) {
    return (
       <div className='multiple'>
          <button onClick={e => { e.preventDefault(); setOpen(!open); }}>{props.text}</button>
-         <ul className={'selectlist'} style={(open) ? { height: props.options.length * 30 + "px" } : null}>
+         <div className='selectlist' style={(open) ? { height: Math.ceil(props.options.length / 2) * 30 + "px" } : null}>
             {
                props.options.map((e, i) =>
-                  <li key={i}>
+                  <div key={i}>
                      <input type="checkbox" data-id={e.id} onClick={
                         e => {
                            const selectedData = [];
                            const selectedText = [];
-                           const elms = e.target.parentElement.parentElement.querySelectorAll("ul.selectlist>li>input[type=checkbox]");
+                           const elms = e.target.parentElement.parentElement.querySelectorAll(".selectlist>div>input[type=checkbox]");
                            for (const k of elms)
                               if (k.checked) {
                                  selectedData.push(k.dataset.id);
@@ -28,10 +28,10 @@ function MultipletInput(props) {
                      <span onClick={e => e.target.previousSibling.click()}>
                         {e.name}
                      </span>
-                  </li>
+                  </div>
                )
             }
-         </ul>
+         </div>
       </div>
    );
 }
