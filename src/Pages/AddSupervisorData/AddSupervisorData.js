@@ -74,12 +74,27 @@ function AddSupervisorData() {
                   hook={
                      e => {
                         e.preventDefault();
+                        let { empData, next } = JSON.parse(localStorage.getItem("next"));
+                        if (empData.roles.indexOf("supervisor") === -1) {
+                           next = [];
+                           localStorage.removeItem("next");
+                        }
                         handler.addSupervisor(
-                           10,
+                           empData.id,
                            {
                               "classes": datahandler.map(
                                  e => e.classes_id
                               ).flat(Infinity)
+                           },
+                           () => {
+                              next.shift();
+                              if (next.length !== 0) {
+                                 localStorage.setItem("next", JSON.stringify({ empData, next }))
+                                 handler.goTo(next[0]);
+                              } else {
+                                 localStorage.removeItem("next");
+                                 handler.goTo(handler.HOME);
+                              }
                            }
                         )
                      }

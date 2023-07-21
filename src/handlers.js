@@ -2,6 +2,8 @@
 const HOME = "/";
 const LOGIN = "/login";
 const ADDEMPLOYEE = "/employee/add";
+const ADDTEACHER = "/teacher/add";
+const ADDSUPERVISOR = "/supervisor/add";
 const ADDSTUDENT = "/student/add";
 const VIEWEMPLOYEE = "/employee";
 
@@ -186,7 +188,7 @@ function logIn(name, password) {
       );
 }
 
-function addEmployee(name, surname, roles) {
+function addEmployee(name, surname, roles, func) {
    const path = "/principal/addEmployee";
 
    const url = host + path;
@@ -216,7 +218,7 @@ function addEmployee(name, surname, roles) {
             if (e.message === "Employee was added successfully") {
                alert(e.data["account info"].user_name);
                alert(e.data["account info"].password);
-               goTo(HOME);
+               func(e.data.employee);
             } else if (e.message.indexOf("(") >= 0) {
                alert(
                   ((e.errors.first_name) ? e.errors.first_name[0] : "\b") + "\n" +
@@ -236,7 +238,7 @@ function addEmployee(name, surname, roles) {
       );
 }
 
-function addTeacher(employeeId, arrayOfData) {
+function addTeacher(employeeId, arrayOfData, func) {
    const path = "/principal/assign_Class_Subject_ToTeacher/" + employeeId;
 
    const url = host + path;
@@ -265,13 +267,9 @@ function addTeacher(employeeId, arrayOfData) {
          e => {
             if (e.message === "Success!") {
                alert(e.message);
-               goTo(HOME);
+               func();
             } else if (e.message.indexOf("(") >= 0) {
-               alert(
-                  ((e.errors.first_name) ? e.errors.first_name[0] : "\b") + "\n" +
-                  ((e.errors.last_name) ? e.errors.last_name[0] : "\b") + "\n" +
-                  ((e.errors.roles) ? e.errors.roles[0] : "")
-               );
+               alert(e.message);
             } else {
                alert(e.message);
             }
@@ -285,7 +283,7 @@ function addTeacher(employeeId, arrayOfData) {
       );
 }
 
-function addSupervisor(employeeId, arrayOfData) {
+function addSupervisor(employeeId, arrayOfData, func) {
    const path = "/principal/assignClassesToSupervisor/" + employeeId;
 
    const url = host + path;
@@ -314,7 +312,7 @@ function addSupervisor(employeeId, arrayOfData) {
          e => {
             if (e.message === "Success!") {
                alert(e.message);
-               goTo(HOME);
+               func();
             } else if (e.message.indexOf("(") >= 0) {
                alert(
                   ((e.errors.first_name) ? e.errors.first_name[0] : "\b") + "\n" +
@@ -334,7 +332,7 @@ function addSupervisor(employeeId, arrayOfData) {
       );
 }
 
-async function editEmployee(id, name, surname, func) {
+function editEmployee(id, name, surname, func) {
    const path = "/principal/editEmployee/" + id;
 
    const url = host + path;
@@ -349,7 +347,7 @@ async function editEmployee(id, name, surname, func) {
 
    const body = JSON.stringify({ "first_name": name, "last_name": surname });
 
-   return fetch(url, { method, headers, body })
+   fetch(url, { method, headers, body })
       .then(
          e => {
             if (e.status >= 500) {
@@ -382,4 +380,4 @@ async function editEmployee(id, name, surname, func) {
       );
 }
 
-export { HOME, LOGIN, ADDEMPLOYEE, VIEWEMPLOYEE, ADDSTUDENT, goTo, getRoles, getSubjects, getEmployees, logIn, addEmployee, addTeacher, addSupervisor, editEmployee };
+export { HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEE, ADDSTUDENT, goTo, getRoles, getSubjects, getEmployees, logIn, addEmployee, addTeacher, addSupervisor, editEmployee };

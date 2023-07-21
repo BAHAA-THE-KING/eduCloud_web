@@ -21,6 +21,7 @@ function AddEmployee() {
    let [name, setName] = useState("");
    let [surName, setSurName] = useState("");
    let [selectedRoles, setSelectedRoles] = useState([]);
+   let [selectedRolesNames, setSelectedRolesNames] = useState([]);
 
    return (
       <div className="addemployee">
@@ -37,9 +38,33 @@ function AddEmployee() {
                <TextInput inputHook={setSurName} enterHook={() => { }} hint="الكنية" />
                <br />
                <label>الأدوار :</label>
-               <MultipletInput text="اختر الأدوار" options={allRoles} dataHook={setSelectedRoles} textHook={() => { }} />
+               <MultipletInput text="اختر الأدوار" options={allRoles} dataHook={setSelectedRoles} textHook={setSelectedRolesNames} />
                <br />
-               <Button text="متابعة" hook={e => { e.preventDefault(); handler.addEmployee(name, surName, selectedRoles); }} />
+               <Button
+                  text="متابعة"
+                  hook={
+                     e => {
+                        e.preventDefault();
+                        handler.addEmployee(
+                           name,
+                           surName,
+                           selectedRoles,
+                           empData => {
+                              const next = [];
+                              if (selectedRolesNames.indexOf("teacher") !== -1) next.push(handler.ADDTEACHER);
+                              if (selectedRolesNames.indexOf("supervisor") !== -1) next.push(handler.ADDSUPERVISOR);
+                              if (next.length !== 0) {
+                                 localStorage.setItem("next", JSON.stringify({ empData: { ...empData, roles: selectedRolesNames }, next }))
+                                 handler.goTo(next[0]);
+                              } else {
+                                 localStorage.removeItem("next");
+                                 handler.goTo(handler.HOME);
+                              }
+                           }
+                        );
+                     }
+                  }
+               />
             </form>
          </div>
       </div>

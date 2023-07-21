@@ -78,8 +78,13 @@ function AddTeacherData() {
                   hook={
                      e => {
                         e.preventDefault();
+                        let { empData, next } = JSON.parse(localStorage.getItem("next"));
+                        if (empData.roles.indexOf("teacher") === -1) {
+                           next = [];
+                           localStorage.removeItem("next");
+                        }
                         handler.addTeacher(
-                           9,
+                           empData.id,
                            datahandler.map(
                               e => {
                                  return {
@@ -87,7 +92,17 @@ function AddTeacherData() {
                                     "classes": e.classes_id
                                  };
                               }
-                           )
+                           ),
+                           () => {
+                              next.shift();
+                              if (next.length !== 0) {
+                                 localStorage.setItem("next", JSON.stringify({ empData, next }))
+                                 handler.goTo(next[0]);
+                              } else {
+                                 localStorage.removeItem("next");
+                                 handler.goTo(handler.HOME);
+                              }
+                           }
                         )
                      }
                   }
