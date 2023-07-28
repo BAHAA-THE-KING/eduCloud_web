@@ -1,18 +1,15 @@
 import "./AddTeacherData.css";
 
-import { Button, MultipletButton, DataHandler, Title } from "../../components";
+import { Button, MultipletButton, DataHandler, Title, DataChunck } from "../../components";
 import { useEffect, useState } from "react";
 import * as handler from './../../handlers';
-
-//[{ grade_id, subject_id, classes_id: [] }]
-let datahandler = [];
 
 function AddTeacherData() {
    useEffect(
       function () {
          handler.getSubjects(
             grades => {
-               setGrades(grades);
+               setAllGrades(grades);
             }
          );
       },
@@ -20,36 +17,38 @@ function AddTeacherData() {
    );
 
    function addGrade(grade_id) {
-      datahandler.push({ grade_id, classes_id: [] });
-      setRefresh(refresh + 1);
+      setSelectedData([...selectedData, { grade_id, classes_id: [] }]);
    }
    function removeGrade(index) {
-      datahandler[index] = undefined;
-      datahandler = datahandler.filter(e => e);
-      setRefresh(refresh + 1);
+      const temp = [...selectedData];
+      temp[index] = undefined;
+      setSelectedData(temp.filter(e => e));
    }
    function addSubjectToGrade(index, subject_id) {
-      datahandler[index].subject_id = subject_id;
-      setRefresh(refresh + 1);
+      const temp = [...selectedData];
+      temp[index].subject_id = subject_id;
+      setSelectedData([...temp]);
    }
-   function addClassToGrade(index, classes_id) {
-      datahandler[index].classes_id = classes_id;
-      setRefresh(refresh + 1);
+   function addClassesToGrade(index, classes) {
+      const temp = [...selectedData];
+      temp[index].classes_id = classes;
+      setSelectedData(temp);
    }
 
-   const [allGrades, setGrades] = useState([]);
+   const [allGrades, setAllGrades] = useState([]);
+   console.log("allGrades", allGrades);
 
-   const [refresh, setRefresh] = useState(0);
-
-   let selectedGrades = datahandler.map(e => e.grade_id);
+   //[{ grade_id, subject_id, classes_id: [] }]
+   const [selectedData, setSelectedData] = useState([]);
+   console.log("selectedData", selectedData);
 
    return (
       <div className="addteacher">
-         <img src="../Images/addemployee.jpg" alt="" className="bg" />
+         <img src="Images/addemployee.png" alt="" className="bg" />
+         <Title text="إنشاء حساب لمعلم" />
          <div className="content">
-            <Title text="إنشاء حساب لمعلم" />
             <form>
-               <DataHandler
+               {/*<DataHandler
                   fullData={allGrades}
 
                   selectedData={selectedGrades}
@@ -62,6 +61,14 @@ function AddTeacherData() {
 
                   checkboxSelectionData={"g_classes"}
                   checkboxSelectionHook={addClassToGrade}
+               />*/}
+               <DataHandler
+                  allGrades={allGrades}
+                  selectedData={selectedData}
+                  hasButtonSelection={true}
+                  addSubjectToGrade={addSubjectToGrade}
+                  addClassesToGrade={addClassesToGrade}
+                  removeGrade={removeGrade}
                />
                <div className="add">
                   <label>إضافة صف :</label>
@@ -85,7 +92,7 @@ function AddTeacherData() {
                         }
                         handler.addTeacher(
                            empData.id,
-                           datahandler.map(
+                           selectedData.map(
                               e => {
                                  return {
                                     "subject_id": e.subject_id,

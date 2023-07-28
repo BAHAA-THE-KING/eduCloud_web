@@ -1,32 +1,38 @@
 import './DataHandler.css';
+
 import { DataChunck } from '..';
 
 function DataHandler(props) {
+   const gradesWithNames = {};
+   props.allGrades.map(e => gradesWithNames[e.id] = e.name);
+   
    return (
       <div className='datahandler'>
          {
             props.selectedData.map(
-               (e, index) => {
-                  if (e === undefined) return null;
-                  let i;
-                  for (i = 0; i < props.fullData.length; i++)
-                     if (props.fullData[i].id === e)
-                        break;
+               (e, i) => {
+                  const grade = props.allGrades.filter(elm => elm.id === e.grade_id)[0];
+                  const subject = grade.subjects.filter(elm => elm.id === e.subject_id)[0]?.name;
+                  const classes = grade.g_classes.map(elm => (e.classes_id.indexOf(elm.id + "") > -1) ? elm.name : undefined).filter(e => e);
+
                   return <DataChunck
-                     mainText={props.fullData[i].name}
-
-                     removeDataHook={props.removeDataHook}
-
+                     editable={props.editable}
                      hasButtonSelection={props.hasButtonSelection}
-                     buttonSelectionOptions={props.fullData[i][props.buttonSelectionData]}
-                     buttonSelectionHook={props.buttonSelectionHook}
 
-                     checkboxSelectionOptions={props.fullData[i][props.checkboxSelectionData]}
-                     checkboxSelectionHook={props.checkboxSelectionHook}
+                     mainText={gradesWithNames[e.grade_id]}
 
-                     index={index}
-                     key={index}
-                  />;
+                     buttonSelectionOptions={grade.subjects}
+                     buttonSelectedText={subject}
+                     buttonSelectedData={e.subject_id}
+                     buttonSelectHook={id => props.addSubjectToGrade(i, id)}
+
+                     checkboxSelectionOptions={grade.g_classes}
+                     checkboxSelectedText={classes}
+                     checkboxSelectedData={e.classes_id.map(e => Number(e))}
+                     checkboxSelectHook={classes => props.addClassesToGrade(i, classes)}
+
+                     removeDataHook={() => props.removeGrade(i)}
+                  />
                }
             )
          }

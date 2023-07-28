@@ -1,5 +1,6 @@
 div.text>input.inptext {
    cursor: text;
+   width: 350px;
    background-color: transparent;
    border: 0 transparent none;
    border-bottom: 1px white solid;

@@ -7,7 +7,10 @@ function TextInput(props) {
             className='inptext'
             type='text'
             dir='rtl'
+            disabled={!(props.editable ?? true)}
             placeholder={props.hint}
+            value={props.defaultValue ?? ""}
+            onChange={() => { }}
             onInput={e => { props.inputHook(e.target.value) }}
             onKeyDown={
                e =>

@@ -25,20 +25,26 @@ function AddEmployee() {
 
    return (
       <div className="addemployee">
-         <img src="../Images/addemployee.jpg" alt="" className="bg" />
+         <img src="../Images/addemployee.png" alt="" className="bg" />
+         <Title text="إنشاء حساب لموظف" />
          <div className="content">
-            <Title text="إنشاء حساب لموظف" />
             <form>
                <label>اسم الموظف :</label>
                <br />
-               <TextInput inputHook={setName} enterHook={() => { }} hint="الاسم" />
+               <TextInput defaultValue={name} inputHook={setName} editable={true} enterHook={() => { }} hint="الاسم" />
                <br />
                <label>كنية الموظف :</label>
                <br />
-               <TextInput inputHook={setSurName} enterHook={() => { }} hint="الكنية" />
+               <TextInput defaultValue={surName} inputHook={setSurName} editable={true} enterHook={() => { }} hint="الكنية" />
                <br />
                <label>الأدوار :</label>
-               <MultipletInput text="اختر الأدوار" options={allRoles} dataHook={setSelectedRoles} textHook={setSelectedRolesNames} />
+               <MultipletInput
+                  text="اختر الأدوار"
+                  currentData={selectedRoles}
+                  options={allRoles}
+                  dataHook={setSelectedRoles}
+                  textHook={setSelectedRolesNames}
+               />
                <br />
                <Button
                   text="متابعة"

@@ -1,4 +1,7 @@
 span.title {
+   width: 100%;
+   position: relative;
+   display: block;
    font-size: 50px;
    color: #061E45;
    background-color: white;

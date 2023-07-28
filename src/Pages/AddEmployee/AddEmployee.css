@@ -2,7 +2,6 @@ div.addemployee {
    width: 100%;
    height: CALC(100% - 73px);
    background-color: white;
-   position: fixed;
    user-select: none;
 }
 
@@ -14,29 +13,20 @@ div.addemployee>img.bg {
 }
 
 div.addemployee>div.content {
-   width: 50%;
-   height: 100%;
+   width: 100%;
+   height: calc(100% - 73px);
    background-color: white;
-   position: absolute;
-   top: 0;
-   right: 0;
    display: flex;
-   align-items: center;
-   justify-content: center;
-}
-
-div.addemployee>div.content>span {
-   position: absolute;
-   top: 20px;
-   left: 0;
-   transform: translateX(-50%);
+   flex-flow: nowrap column;
+   justify-content: flex-start;
+   align-items: flex-start;
 }
 
 div.addemployee>div.content>form {
    border: 6px #061E45 solid;
    border-radius: 10px;
    padding: 10px;
-   margin-left: 100px;
+   margin: 50px 70px 0 0;
 }
 
 div.addemployee>div.content>form>label {

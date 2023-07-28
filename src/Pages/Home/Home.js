@@ -23,7 +23,7 @@ function Home() {
          <img src="Images/home.jpg" alt="" className="bg" />
          <div className="leftcenter">
             <ul>
-               {shorts.map(e => <ButtonList text={e.name} action={e.action} />)}
+               {shorts.map(e => <ButtonList text={e.name} action={e.action} src="Icons/add.svg" />)}
             </ul>
          </div>
       </div>

@@ -2,7 +2,6 @@ div.addsupervisor {
    width: 100%;
    height: CALC(100% - 73px);
    background-color: white;
-   position: fixed;
    user-select: none;
 }
 
@@ -14,36 +13,22 @@ div.addsupervisor>img.bg {
 }
 
 div.addsupervisor>div.content {
-   width: 50%;
-   height: 100%;
+   width: 100%;
+   height: CALC(100% - 73px);
    background-color: white;
-   position: absolute;
-   top: 0;
-   right: 0;
    display: flex;
-   align-items: center;
-   justify-content: center;
-}
-
-div.addsupervisor>div.content>span {
-   position: absolute;
-   top: 20px;
-   left: 0;
-   transform: translateX(-50%);
-   font-size: 50px;
-   color: #061E45;
+   flex-flow: nowrap column;
+   justify-content: flex-start;
+   align-items: flex-start;
 }
 
 div.addsupervisor>div.content>form {
-   width: 75%;
-   height: 80%;
-   position: absolute;
-   bottom: 10px;
    border: 6px #061E45 solid;
    border-radius: 10px;
    overflow: scroll;
    scrollbar-width: none;
-   padding: 10px;
+   margin: 50px 70px 0 0;
+   padding: 10px 25px;
 }
 
 div.addsupervisor>div.content>form::-webkit-scrollbar {

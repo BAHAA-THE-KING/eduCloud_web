@@ -1,18 +1,15 @@
 import "./AddSupervisorData.css";
 
-import { Button, MultipletButton, DataHandler, Title } from "../../components";
+import { Button, MultipletButton, DataHandler, Title, DataChunck } from "../../components";
 import { useEffect, useState } from "react";
 import * as handler from './../../handlers';
 
-//[{ grade_id, subject_id, classes_id: [] }]
-let datahandler = [];
-
-function AddSupervisorData() {
+function AddTeacherData() {
    useEffect(
       function () {
          handler.getSubjects(
             grades => {
-               setGrades(grades);
+               setAllGrades(grades);
             }
          );
       },
@@ -20,45 +17,42 @@ function AddSupervisorData() {
    );
 
    function addGrade(grade_id) {
-      datahandler.push({ grade_id, classes_id: [] });
-      setRefresh(refresh + 1);
+      setSelectedData([...selectedData, { grade_id, classes_id: [] }]);
    }
-
    function removeGrade(index) {
-      datahandler[index] = undefined;
-      datahandler = datahandler.filter(e => e);
-      setRefresh(refresh + 1);
+      const temp = [...selectedData];
+      temp[index] = undefined;
+      setSelectedData(temp.filter(e => e));
+   }
+   function addClassesToGrade(index, classes) {
+      const temp = [...selectedData];
+      temp[index].classes_id = classes;
+      setSelectedData(temp);
    }
 
-   function addClassToGrade(index, classes_id) {
-      datahandler[index].classes_id = classes_id;
-      setRefresh(refresh + 1);
-   }
+   const [allGrades, setAllGrades] = useState([]);
+   console.log("allGrades", allGrades);
 
-   const [allGrades, setGrades] = useState([]);
-
-   const [refresh, setRefresh] = useState(0);
-
-   let selectedGrades = datahandler.map(e => e.grade_id);
+   //[{ grade_id, classes_id: [] }]
+   const [selectedData, setSelectedData] = useState([]);
+   console.log("selectedData", selectedData);
 
    return (
       <div className="addsupervisor">
-         <img src="../Images/addemployee.jpg" alt="" className="bg" />
+         <img src="Images/addemployee.png" alt="" className="bg" />
+         <Title text="إنشاء حساب لموجه" />
          <div className="content">
-            <Title text="إنشاء حساب لموجه" />
             <form>
-               <DataHandler
-                  fullData={allGrades}
-
-                  selectedData={selectedGrades}
-
-                  removeDataHook={removeGrade}
-
-                  hasButtonSelection={false}
-
-                  checkboxSelectionData={"g_classes"}
-                  checkboxSelectionHook={addClassToGrade}
-               />
+               {
+                  <DataHandler
+                     allGrades={allGrades}
+                     selectedData={selectedData}
+                     hasButtonSelection={false}
+                     addSubjectToGrade={() => { }}
+                     addClassesToGrade={addClassesToGrade}
+                     removeGrade={removeGrade}
+                  />
+               }
                <div className="add">
                   <label>إضافة صف :</label>
                   <MultipletButton
@@ -81,11 +75,9 @@ function AddSupervisorData() {
                         }
                         handler.addSupervisor(
                            empData.id,
-                           {
-                              "classes": datahandler.map(
-                                 e => e.classes_id
-                              ).flat(Infinity)
-                           },
+                           selectedData.map(
+                              e => e.classes_id
+                           ).flat(Infinity),
                            () => {
                               next.shift();
                               if (next.length !== 0) {
@@ -106,4 +98,4 @@ function AddSupervisorData() {
    );
 }
 
-export default AddSupervisorData;
+export default AddTeacherData;

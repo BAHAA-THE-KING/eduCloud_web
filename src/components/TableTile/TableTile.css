@@ -1,0 +1,56 @@
+div.tabletile {
+   width: CALC(CALC(CALC(100% - 106px) / 3) - 6px);
+   height: 45px;
+   background-color: #EDEDED;
+   margin: 3px;
+   display: flex;
+   flex-flow: row nowrap;
+   justify-content: flex-start;
+   align-items: center;
+   font-size: 20px;
+   text-align: start;
+   overflow: scroll;
+   scrollbar-width: none;
+}
+
+div.tabletile:nth-child(4n+1) {
+   width: 100px;
+}
+
+div.tabletile:nth-last-child(4) {
+   border-bottom-right-radius: 5px;
+}
+
+div.tabletile:last-child {
+   border-bottom-left-radius: 5px;
+}
+
+div.tabletile::-webkit-scrollbar {
+   display: none;
+}
+
+div.headings {
+   background-color: #555555;
+   color: white;
+}
+
+div.selected {
+   background-color: white;
+}
+
+div.tabletile>div.inner {
+   padding: 2px 5px;
+   margin-right: 3px;
+   overflow: scroll;
+   scrollbar-width: none;
+}
+
+div.tabletile>div.inner::-webkit-scrollbar {
+   display: none;
+}
+
+div.tabletile>div.inner[contentEditable=true] {
+   background-color: white;
+   border: 1px solid #555555;
+   border-radius: 3px;
+}

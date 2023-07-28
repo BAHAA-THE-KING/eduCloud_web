@@ -76,6 +76,10 @@ div.viewemployees>div.content>div.control>.multiplebtn {
    max-height: 290px;
 }
 
+div.viewemployees>div.content>div.control>.multiplebtn .btn {
+   width: 145px;
+}
+
 div.viewemployees>div.content>.show {
    width: 100%;
    height: 100%;
@@ -123,62 +127,4 @@ div.viewemployees>div.content>.show>.view {
    flex-flow: wrap row;
    justify-content: flex-start;
    padding-bottom: 3px;
-}
-
-div.viewemployees>div.content>.show>.view>div {
-   width: CALC(CALC(CALC(100% - 106px) / 3) - 6px);
-   height: 45px;
-   background-color: #EDEDED;
-   margin: 3px;
-   display: flex;
-   flex-flow: row nowrap;
-   justify-content: flex-start;
-   align-items: center;
-   font-size: 20px;
-   text-align: start;
-   overflow: scroll;
-   scrollbar-width: none;
-}
-
-div.viewemployees>div.content>.show>.view>div:nth-child(4n+1) {
-   width: 100px;
-}
-
-div.viewemployees>div.content>.show>.view>div:nth-last-child(4) {
-   border-bottom-right-radius: 5px;
-}
-
-div.viewemployees>div.content>.show>.view>div:last-child {
-   border-bottom-left-radius: 5px;
-}
-
-div.viewemployees>div.content>.show>.view>div::-webkit-scrollbar {
-   display: none;
-}
-
-div.viewemployees>div.content>.show>.view>div.headings {
-   background-color: #555555;
-   color: white;
-}
-
-div.viewemployees>div.content>.show>.view>div.selected {
-   background-color: white;
-}
-
-div.viewemployees>div.content>.show>.view>div>div.inner {
-   padding: 2px 5px;
-   margin-right: 3px;
-   overflow: scroll;
-   scrollbar-width: none;
-}
-
-
-div.viewemployees>div.content>.show>.view>div>div.inner::-webkit-scrollbar {
-   display: none;
-}
-
-div.viewemployees>div.content>.show>.view>div>div.inner[contentEditable=true] {
-   background-color: white;
-   border: 1px solid #555555;
-   border-radius: 3px;
 }

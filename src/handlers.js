@@ -6,6 +6,7 @@ const ADDTEACHER = "/teacher/add";
 const ADDSUPERVISOR = "/supervisor/add";
 const ADDSTUDENT = "/student/add";
 const VIEWEMPLOYEE = "/employee";
+const VIEWEMPLOYEEDATA = "/employee/view/";
 
 const host = "http://127.0.0.1:8000/V1.0";
 
@@ -134,6 +135,45 @@ function getEmployees(func, params) {
                   data: []
                });
             }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
+function getEmployeeData(id, func) {
+   const path = "/principal/viewEmployee/";
+
+   const url = host + path + id;
+
+   const method = "GET";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   fetch(url, { method, headers })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e["message"] === "Unauthenticated.") {
+               goTo(LOGIN);
+            }
+            func(e);
          }
       )
       .catch(
@@ -296,7 +336,7 @@ function addSupervisor(employeeId, arrayOfData, func) {
       "Authorization": "Bearer " + getToken()
    };
 
-   const body = JSON.stringify(arrayOfData);
+   const body = JSON.stringify({ "classes": arrayOfData });
 
    fetch(url, { method, headers, body })
       .then(
@@ -380,4 +420,101 @@ function editEmployee(id, name, surname, func) {
       );
 }
 
-export { HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEE, ADDSTUDENT, goTo, getRoles, getSubjects, getEmployees, logIn, addEmployee, addTeacher, addSupervisor, editEmployee };
+function addEmployeeRole(id, role, func) {
+   const path = "/principal/assignRolesToEmployee/";
+
+   const url = host + path + id;
+
+   const method = "POST";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   const body = JSON.stringify({ "roles": [role] });
+
+   fetch(url, { method, headers, body })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e.message === "Success!") {
+               func();
+            } else if (e.message.indexOf("(") >= 0) {
+               alert(
+                  ((e.errors.first_name) ? e.errors.first_name[0] : "\b") + "\n" +
+                  ((e.errors.last_name) ? e.errors.last_name[0] : "\b") + "\n" +
+                  ((e.errors.roles) ? e.errors.roles[0] : "")
+               );
+            } else {
+               alert(e.message);
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
+function removeEmployeeRole(id, role, func) {
+   const path = "/principal/removeRolesFromEmployee/";
+
+   const url = host + path + id;
+
+   const method = "POST";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   const body = JSON.stringify({ "roles": [role] });
+
+   fetch(url, { method, headers, body })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e.message === "Success!") {
+               func();
+            } else if (e.message.indexOf("(") >= 0) {
+               alert(
+                  ((e.errors.first_name) ? e.errors.first_name[0] : "\b") + "\n" +
+                  ((e.errors.last_name) ? e.errors.last_name[0] : "\b") + "\n" +
+                  ((e.errors.roles) ? e.errors.roles[0] : "")
+               );
+            } else {
+               alert(e.message);
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
+
+export { HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEE, ADDSTUDENT, VIEWEMPLOYEEDATA, goTo, getRoles, getSubjects, getEmployees, getEmployeeData, logIn, addEmployee, addTeacher, addSupervisor, editEmployee, addEmployeeRole, removeEmployeeRole };

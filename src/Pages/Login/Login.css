@@ -52,6 +52,11 @@
    margin: 20px;
 }
 
+.login .inptext,
+.login .inppass {
+   width: 300px !important;
+}
+
 .login .sbmt {
    background-color: #c3E3EB;
    cursor: pointer;

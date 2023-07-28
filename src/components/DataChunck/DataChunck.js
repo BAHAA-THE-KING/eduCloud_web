@@ -1,15 +1,33 @@
 import './DataChunck.css';
 
 import { MultipletButton, MultipletInput } from '..';
-import { useState } from 'react';
 
+/*
+hasButtonSelection
+
+mainText
+
+buttonSelectionOptions
+buttonSelectedText
+buttonSelectedData
+buttonSelectHook
+
+checkboxSelectionOptions
+checkboxSelectedText
+checkboxSelectedData
+checkboxSelectHook
+
+removeDataHook
+ */
 function DataChunck(props) {
-   const [buttonSelectionText, setButtonSelectionText] = useState("");
-   const [checkboxSelectionText, setCheckboxSelectionText] = useState([]);
    return (
       <>
          <span className='datachunck fdatachunck'>
-            <img src="../Icons/deleteRed.svg" alt="" onClick={() => props.removeDataHook(props.index)} />
+            {
+               (props.editable ?? true) ?
+                  <img src="../Icons/deleteRed.svg" alt="" onClick={props.removeDataHook} />
+                  : ""
+            }
             <span>
                الصف : {props.mainText}
             </span>
@@ -17,23 +35,26 @@ function DataChunck(props) {
          {
             (props.hasButtonSelection) ?
                <span className='datachunck'>
-                  <label>المادة :{buttonSelectionText}</label>
+                  <label>المادة :{props.buttonSelectedText}</label>
                   <MultipletButton
+                     editable={props.editable}
                      options={props.buttonSelectionOptions}
                      text="اختر المادة"
-                     dataHook={data_id => props.buttonSelectionHook(props.index, data_id)}
-                     textHook={setButtonSelectionText}
+                     dataHook={props.buttonSelectHook}
+                     textHook={() => { }}
                   />
                </span>
                : null
          }
          <span className='datachunck'>
-            <label>الشعب :{checkboxSelectionText.length ? checkboxSelectionText.join(", ") + "." : ""}</label>
+            <label>الشعب :{props.checkboxSelectedText.length ? props.checkboxSelectedText.join(", ") + "." : ""}</label>
             <MultipletInput
+               editable={props.editable}
                options={props.checkboxSelectionOptions}
+               currentData={props.checkboxSelectedData}
                text="اختر الشعب"
-               dataHook={selectedData => props.checkboxSelectionHook(props.index, selectedData)}
-               textHook={setCheckboxSelectionText}
+               dataHook={props.checkboxSelectHook}
+               textHook={() => { }}
             />
          </span>
       </>
