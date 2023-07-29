@@ -6,5 +6,6 @@ import Home from "./Home/Home";
 import Login from "./Login/Login";
 import ViewEmployees from "./ViewEmployees/ViewEmployees";
 import ViewEmployeeData from "./ViewEmployeeData/ViewEmployeeData";
+import AddTestForm from "./AddTestForm/AddTestForm";
 
-export { AddEmployee, AddSupervisorData, AddTeacherData, Header, Home, Login, ViewEmployees, ViewEmployeeData };
+export { AddEmployee, AddSupervisorData, AddTeacherData, Header, Home, Login, ViewEmployees, ViewEmployeeData, AddTestForm };

@@ -1,6 +1,6 @@
 import './App.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { Login, Header, Home, AddEmployee, AddTeacherData, AddSupervisorData, ViewEmployees, ViewEmployeeData } from './Pages';
+import { Login, Header, Home, AddEmployee, AddTeacherData, AddSupervisorData, ViewEmployees, ViewEmployeeData, AddTestForm } from './Pages';
 
 const router = createBrowserRouter([
   {
@@ -30,6 +30,10 @@ const router = createBrowserRouter([
   {
     path: "/supervisor/add",
     element: <><Header active="employees" /><AddSupervisorData /></>
+  },
+  {
+    path: "/test-form/add",
+    element: <><Header active="tests" /><AddTestForm /></>
   },
 ]);
 

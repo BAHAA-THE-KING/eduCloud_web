@@ -12,7 +12,7 @@ function ViewEmployees() {
    const [next, setNext] = useState(null);
    const [previous, setPrevious] = useState(null);
    const [data, setData] = useState([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]);
-   const [selected, setSelected] = useState("");
+   const [selected, setSelected] = useState(-1);
    const [roles, setRoles] = useState([]);
 
    useEffect(

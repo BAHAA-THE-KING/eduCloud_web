@@ -1,10 +1,10 @@
 import "./Home.css";
 import { ButtonList } from "../../components";
-import { ADDEMPLOYEE, ADDSTUDENT, goTo } from "../../handlers";
+import { ADDEMPLOYEE, ADDSTUDENT, ADDTESTFORM, goTo } from "../../handlers";
 
 const shorts = [
    { name: "إضافة طالب", action: () => { goTo(ADDSTUDENT); } },
-   { name: "إضافة نموذج اختبار قدرات", action: () => { } },
+   { name: "إضافة نموذج اختبار قدرات", action: () => { goTo(ADDTESTFORM); } },
    { name: "إضافة اختبار", action: () => { } },
    { name: "إضافة ملاحظة لاستاذ", action: () => { } },
    { name: "إضافة تقدم دراسي", action: () => { } },

@@ -7,6 +7,7 @@ const ADDSUPERVISOR = "/supervisor/add";
 const ADDSTUDENT = "/student/add";
 const VIEWEMPLOYEE = "/employee";
 const VIEWEMPLOYEEDATA = "/employee/view/";
+const ADDTESTFORM = "/test-form/add";
 
 const host = "http://127.0.0.1:8000/V1.0";
 
@@ -516,5 +517,51 @@ function removeEmployeeRole(id, role, func) {
       );
 }
 
+function addTestForm(name, func) {
+   const path = "/supervisor/addTestType";
 
-export { HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEE, ADDSTUDENT, VIEWEMPLOYEEDATA, goTo, getRoles, getSubjects, getEmployees, getEmployeeData, logIn, addEmployee, addTeacher, addSupervisor, editEmployee, addEmployeeRole, removeEmployeeRole };
+   const url = host + path;
+
+   const method = "POST";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   const body = JSON.stringify({ "name": name });
+
+   fetch(url, { method, headers, body })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e.message === "type added successfully") {
+               alert("Success!");
+               func(e.data);
+            } else if (e.message === "The name has already been taken.") {
+               alert(e.errors.name);
+            } else if (e.message === "The name field is required.") {
+               alert(e.errors.name);
+            } else {
+               alert(e.message);
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
+export { HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEE, ADDSTUDENT, VIEWEMPLOYEEDATA, ADDTESTFORM, goTo, getRoles, getSubjects, getEmployees, getEmployeeData, logIn, addEmployee, addTeacher, addSupervisor, editEmployee, addEmployeeRole, removeEmployeeRole, addTestForm };
