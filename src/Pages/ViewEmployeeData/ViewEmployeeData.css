@@ -27,7 +27,7 @@ div.viewemployeedata>div.content>div.frm {
    flex-flow: nowrap row;
    justify-content: flex-start;
    align-items: flex-start;
-   margin: 50px 200px 0 0;
+   margin: 125px 200px 0 0;
 }
 
 div.viewemployeedata>div.content>div.frm>div:nth-child(1) {
@@ -95,9 +95,11 @@ div.viewemployeedata>div.content>div.frm>div>input[type=button] {
 }
 
 div.viewemployeedata>div.content>div.btns {
+   position: absolute;
    width: 250px;
-   margin-top: 50px;
-   margin-left: 250px;
+   right: 0;
+   margin-top: 30px;
+   margin-right: 20px;
 }
 
 div.viewemployeedata>div.content>div.btns>.iconbutton>.btn {

@@ -135,27 +135,31 @@ function ViewEmployeeData() {
                                  e =>
                                     <Tab>
                                        {e}
-                                       <img
-                                          className='tabicon'
-                                          src="Icons/deleteRed.svg"
-                                          onClick={
-                                             () => {
-                                                handler.removeEmployeeRole(
-                                                   id,
-                                                   e,
+                                       {
+                                          isEdit ?
+                                             <img
+                                                className='tabicon'
+                                                src="Icons/deleteRed.svg"
+                                                onClick={
                                                    () => {
-                                                      if (e === "teacher") {
-                                                         setTeacherData(false);
-                                                      } else if (e === "supervisor") {
-                                                         setSupervisorData(false);
-                                                      }
-                                                      const temp = Object.fromEntries(Object.entries(selectedRoles).filter(elm => elm[0] !== e));
-                                                      setSelectedRoles(temp);
+                                                      handler.removeEmployeeRole(
+                                                         id,
+                                                         e,
+                                                         () => {
+                                                            if (e === "teacher") {
+                                                               setTeacherData(false);
+                                                            } else if (e === "supervisor") {
+                                                               setSupervisorData(false);
+                                                            }
+                                                            const temp = Object.fromEntries(Object.entries(selectedRoles).filter(elm => elm[0] !== e));
+                                                            setSelectedRoles(temp);
+                                                         }
+                                                      );
                                                    }
-                                                );
-                                             }
-                                          }
-                                       />
+                                                }
+                                             />
+                                             : ""
+                                       }
                                     </Tab>
                               )
                         }

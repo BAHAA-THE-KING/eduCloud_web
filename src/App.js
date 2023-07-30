@@ -1,39 +1,48 @@
 import './App.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { Login, Header, Home, AddEmployee, AddTeacherData, AddSupervisorData, ViewEmployees, ViewEmployeeData, AddTestForm } from './Pages';
+import { Login, Header, Home, AddEmployee, AddTeacherData, AddSupervisorData, ViewEmployees, ViewEmployeeData, AddTestForm, ViewTestForms, ViewTestFormData } from './Pages';
+import { ADDEMPLOYEE, ADDSTUDENT, ADDSUPERVISOR, ADDTEACHER, ADDTESTFORM, HOME, LOGIN, VIEWEMPLOYEE, VIEWEMPLOYEEDATA, VIEWTESTFORMDATA, VIEWTESTFORMS } from "./handlers"
 
 const router = createBrowserRouter([
   {
-    path: "/login",
+    path: LOGIN,
     element: <Login />
   },
   {
-    path: "/",
+    path: HOME,
     element: <><Header /><Home /></>,
   },
   {
-    path: "/employee",
+    path: VIEWEMPLOYEE,
     element: <><Header active="employees" /><ViewEmployees /></>
   },
   {
-    path: "/employee/view/:id",
+    path: VIEWEMPLOYEEDATA + ":id",
     element: <><Header active="employees" /><ViewEmployeeData /></>
   },
   {
-    path: "/employee/add",
+    path: ADDEMPLOYEE,
     element: <><Header active="employees" /><AddEmployee /></>
   },
   {
-    path: "/teacher/add",
+    path: ADDTEACHER,
     element: <><Header active="employees" /><AddTeacherData /></>
   },
   {
-    path: "/supervisor/add",
+    path: ADDSUPERVISOR,
     element: <><Header active="employees" /><AddSupervisorData /></>
   },
   {
-    path: "/test-form/add",
+    path: ADDTESTFORM,
     element: <><Header active="tests" /><AddTestForm /></>
+  },
+  {
+    path: VIEWTESTFORMS,
+    element: <><Header active="tests" /><ViewTestForms /></>
+  },
+  {
+    path: VIEWTESTFORMDATA + ":id",
+    element: <><Header active="tests" /><ViewTestFormData /></>
   },
 ]);
 

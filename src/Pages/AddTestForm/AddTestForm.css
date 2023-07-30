@@ -13,7 +13,6 @@ div.addtestform>img.bg {
    left: 0;
    transform: translateX(-30%);
    clip-path: ellipse(60% 50% at 30% 50%);
-   /*clip-path: path();*/
 }
 
 div.addtestform>div.content {
