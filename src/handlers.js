@@ -228,6 +228,49 @@ function getTestForms(func) {
       );
 }
 
+function getTestFormData(id, func) {
+   const path = "/general/getNameOfType/" + id;
+
+   const url = host + path;
+
+   const method = "GET";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   fetch(url, { method, headers })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e["message"] === "Unauthenticated.") {
+               goTo(LOGIN);
+               return;
+            } else if (e.message === "Success!") {
+               func(e.data);
+            } else if (e.message === "this type id is not valid") {
+               alert("Test Form Not Found");
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
 function logIn(name, password) {
    const path = "/auth/login";
 
@@ -657,4 +700,4 @@ function removeEmployeeRole(id, role, func) {
 export { goTo, HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEE, ADDSTUDENT, VIEWEMPLOYEEDATA, ADDTESTFORM, VIEWTESTFORMS, VIEWTESTFORMDATA };
 export { logIn, getRoles, getSubjects };
 export { getEmployees, getEmployeeData, addEmployee, addTeacher, addSupervisor, addEmployeeRole, editEmployee, removeEmployeeRole };
-export { getTestForms, addTestForm, editTestForm };
+export { getTestForms, getTestFormData, addTestForm, editTestForm };

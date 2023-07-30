@@ -1,6 +1,6 @@
 import "./ViewTestFormData.css";
 
-import { TextInput, Title, ButtonWithIcon, DataHandler, MultipletButton } from "../../components";
+import { TextInput, Title, ButtonWithIcon } from "../../components";
 import { useEffect, useState } from "react";
 import * as handler from '../../handlers';
 import { useParams } from "react-router-dom";
@@ -12,8 +12,9 @@ function ViewTestFormData() {
 
    useEffect(
       function () {
-         handler.getTestForms(
-            data => data.map(e => e.id === Number(id) ? setName(e.name) : "")
+         handler.getTestFormData(
+            id,
+            data => setName(data.name)
          )
       },
       []
