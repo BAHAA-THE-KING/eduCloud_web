@@ -4,12 +4,14 @@ const LOGIN = "/login";
 const ADDEMPLOYEE = "/employee/add";
 const ADDTEACHER = "/teacher/add";
 const ADDSUPERVISOR = "/supervisor/add";
-const ADDSTUDENT = "/student/add";
 const VIEWEMPLOYEE = "/employee";
 const VIEWEMPLOYEEDATA = "/employee/view/";
 const ADDTESTFORM = "/test-form/add";
 const VIEWTESTFORMS = "/test-form";
 const VIEWTESTFORMDATA = "/test-form/view/";
+const ADDSTUDENT = "/student/add";
+const VIEWSTUDENTS = "/student/";
+const VIEWSTUDENTDATA = "/student/view/";
 
 const host = "http://127.0.0.1:8000/V1.0";
 
@@ -89,8 +91,9 @@ function getSubjects(func) {
             if (e["message"] === "Unauthenticated.") {
                goTo(LOGIN);
                return;
+            } else if (e.message==="Success!") {
+               func(e.data);
             }
-            func(e);
          }
       )
       .catch(
@@ -260,6 +263,47 @@ function getTestFormData(id, func) {
                func(e.data);
             } else if (e.message === "this type id is not valid") {
                alert("Test Form Not Found");
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
+function getStudents(params, func) {
+   const path = "/supervisor/studentSearch?" + params;
+
+   const url = host + path;
+
+   const method = "GET";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   fetch(url, { method, headers })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e["message"] === "Unauthenticated.") {
+               goTo(LOGIN);
+               return;
+            } else if (e.message === "results found successfully") {
+               func(e.data);
             }
          }
       )
@@ -697,7 +741,8 @@ function removeEmployeeRole(id, role, func) {
       );
 }
 
-export { goTo, HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEE, ADDSTUDENT, VIEWEMPLOYEEDATA, ADDTESTFORM, VIEWTESTFORMS, VIEWTESTFORMDATA };
+export { goTo, HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEE, ADDSTUDENT, VIEWEMPLOYEEDATA, ADDTESTFORM, VIEWTESTFORMS, VIEWTESTFORMDATA, VIEWSTUDENTS, VIEWSTUDENTDATA };
 export { logIn, getRoles, getSubjects };
-export { getEmployees, getEmployeeData, addEmployee, addTeacher, addSupervisor, addEmployeeRole, editEmployee, removeEmployeeRole };
-export { getTestForms, getTestFormData, addTestForm, editTestForm };
+export { addEmployee, addTeacher, addSupervisor, addEmployeeRole, getEmployees, getEmployeeData, editEmployee, removeEmployeeRole };
+export { addTestForm, getTestForms, getTestFormData, editTestForm };
+export { getStudents };

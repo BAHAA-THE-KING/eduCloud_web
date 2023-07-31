@@ -6,7 +6,7 @@ import { Logo, HeaderList } from "../../components";
 const titles = ["الطلاب", "الاختبارات", "الخطة الدراسية", "العلامات", "الملاحظات", "الموظفون", "الرسائل"];
 const names = ["students", "tests", "schedule", "marks", "notes", "employees", "smss"];
 const actions = [
-   () => { },
+   () => handlers.goTo(handlers.VIEWSTUDENTS),
    () => handlers.goTo(handlers.VIEWTESTFORMS),
    () => { },
    () => { },

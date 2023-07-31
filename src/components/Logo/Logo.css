@@ -1,4 +1,5 @@
 div.logo {
+   cursor: pointer;
    overflow: hidden;
    user-select: none;
    width: 296px;
