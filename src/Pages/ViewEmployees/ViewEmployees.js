@@ -30,14 +30,15 @@ function ViewEmployees() {
          }
          handlers.getEmployees(
             res => {
-               setCurrent(res.current_page);
-               setNext(res.next_page_url);
-               setPrevious(res.prev_page_url);
+               const temp = res.current_page;
+               setCurrent(temp);
+               setNext(res.next_page_url ? temp + 1 : null);
+               setPrevious(temp === 1 ? null : temp - 1);
                const data = res.data;
                while (data.length < res.per_page) data.push({ id: "", first_name: "", last_name: "", roles: [] });
                setData(data);
             },
-            search + ((!!searchRole) ? ("?role=" + searchRole) : "")
+            search + ("?page=" + current) + (searchRole ? "&role=" + searchRole : "")
          );
       },
       [search, searchRole]
@@ -159,14 +160,15 @@ function ViewEmployees() {
                         }
                         handlers.getEmployees(
                            (res) => {
-                              setCurrent(res.current_page);
-                              setNext(res.next_page_url);
-                              setPrevious(res.prev_page_url);
+                              const temp = res.current_page;
+                              setCurrent(temp);
+                              setNext(res.next_page_url ? temp + 1 : null);
+                              setPrevious(temp === 1 ? null : temp - 1);
                               const data = res.data;
                               while (data.length < res.per_page) data.push({ id: "", first_name: "", last_name: "", roles: [] });
                               setData(data);
                            },
-                           previous.slice(previous.lastIndexOf("/") + 1)
+                           search + ("?page=" + previous) + (searchRole ? "&role=" + searchRole : "")
                         );
                      }
                   }
@@ -190,14 +192,15 @@ function ViewEmployees() {
                         }
                         handlers.getEmployees(
                            (res) => {
-                              setCurrent(res.current_page);
-                              setNext(res.next_page_url);
-                              setPrevious(res.prev_page_url);
+                              const temp = res.current_page;
+                              setCurrent(temp);
+                              setNext(res.next_page_url ? temp + 1 : null);
+                              setPrevious(temp === 1 ? null : temp - 1);
                               const data = res.data;
                               while (data.length < res.per_page) data.push({ id: "", first_name: "", last_name: "", roles: [] });
                               setData(data);
                            },
-                           next.slice(next.lastIndexOf("/") + 1)
+                           search + ("?page=" + next) + (searchRole ? "&role=" + searchRole : "")
                         );
                      }
                   }

@@ -91,7 +91,7 @@ function getSubjects(func) {
             if (e["message"] === "Unauthenticated.") {
                goTo(LOGIN);
                return;
-            } else if (e.message==="Success!") {
+            } else if (e.message === "Success!") {
                func(e.data);
             }
          }
@@ -598,6 +598,56 @@ function addTestForm(name, func) {
       );
 }
 
+
+function addAbsents(class_id, students, func) {
+   const path = "/supervisor/todaysAbsences";
+
+   const url = host + path;
+
+   const method = "POST";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   const body = JSON.stringify({ "class_id": class_id, "absences": students });
+
+   fetch(url, { method, headers, body })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e.message === "Success!") {
+               alert("Success!");
+               func();
+            } else if (e.message.indexOf("The selected") === 0) {
+               alert("Invalid Student.");
+            } else if (e.message.indexOf("been marked as absent for today or is entered twice") !== -1) {
+               alert("The Students Marked Already.");
+            } else if (e.message.indexOf("belong to this class") !== -1) {
+               alert("The Student Doesn't Belong To The Class.");
+            } else {
+               alert(e.message);
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
 function editEmployee(id, name, surname, func) {
    const path = "/principal/editEmployee/" + id;
 
@@ -745,4 +795,4 @@ export { goTo, HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEE
 export { logIn, getRoles, getSubjects };
 export { addEmployee, addTeacher, addSupervisor, addEmployeeRole, getEmployees, getEmployeeData, editEmployee, removeEmployeeRole };
 export { addTestForm, getTestForms, getTestFormData, editTestForm };
-export { getStudents };
+export { addAbsents, getStudents };

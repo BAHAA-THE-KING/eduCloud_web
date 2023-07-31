@@ -17,6 +17,8 @@ function ViewStudents() {
    const [grades, setGrades] = useState([]);
    const [allClasses, setAllClasses] = useState([]);
    const [classes, setClasses] = useState([]);
+   const [addAbsents, setAddAbsents] = useState(false);
+   const [absents, setAbsents] = useState([]);
 
    useEffect(
       () =>
@@ -49,13 +51,9 @@ function ViewStudents() {
       },
       [search, searchGrade, searchClass]
    );
-   useEffect(
-      () => { },
-      [searchGrade]
-   );
 
    return (
-      <div className='viewstudents'>
+      <div className={'viewstudents' + (addAbsents ? " editing" : "")}>
          <div className='content'>
             <div className='control'>
                <ButtonWithIcon
@@ -82,15 +80,17 @@ function ViewStudents() {
                   options={grades}
                   dataHook={
                      (grade, select) => {
+                        setAbsents([]);
+                        setAddAbsents(false);
+                        setSearchClass("");
+                        setSearchKeyword("");
+                        setSearch("");
                         if (select) {
-                           setSearchKeyword("");
-                           setSearch("");
                            setSearchGrade(grade);
                            const temp = allClasses.filter(e => e.id === grade)[0].g_classes;
                            setClasses(temp);
                         } else {
                            setSearchGrade("");
-                           setSearchClass("");
                            setClasses([]);
                         }
                      }
@@ -104,9 +104,11 @@ function ViewStudents() {
                   options={classes}
                   dataHook={
                      (theclass, select) => {
+                        setAbsents([]);
+                        setAddAbsents(false);
+                        setSearchKeyword("");
+                        setSearch("");
                         if (select) {
-                           setSearchKeyword("");
-                           setSearch("");
                            setSearchClass(theclass);
                         } else {
                            setSearchClass("");
@@ -175,6 +177,16 @@ function ViewStudents() {
                      setSelected={() => { }}
                   />
                   {
+                     addAbsents &&
+                     <TableTile
+                        selected={false}
+                        id={-1}
+                        className="headings"
+                        text="الغياب"
+                        setSelected={() => { }}
+                     />
+                  }
+                  {
                      data.map(
                         (e) => (
                            <React.Fragment>
@@ -224,8 +236,25 @@ function ViewStudents() {
                                  selected={selected === e.id}
                                  id={e.id}
                                  setSelected={setSelected}
-                                 text={e.place_of_living??"asd"}
+                                 text={e.place_of_living}
                               />
+                              {
+                                 addAbsents &&
+                                 <TableTile
+                                    selected={selected === e.id}
+                                    id={e.id}
+                                    className="check"
+                                    setSelected={setSelected}
+                                    text={
+                                       e.id &&
+                                       <input
+                                          type='checkbox'
+                                          onChange={() => { setAbsents([...absents, { student_id: e.id, justification: "none" }]) }}
+                                          checked={absents.filter(ee => ee.student_id === e.id).length === 1}
+                                       />
+                                    }
+                                 />
+                              }
                            </React.Fragment>
                         )
                      )
@@ -293,6 +322,32 @@ function ViewStudents() {
                   disabled={!next}
                />
             }
+            <Button
+               disabled={searchClass === ""}
+               text={addAbsents ? "تسجيل" : "إدخال الغيابات"}
+               className="addabsents"
+               hook={
+                  () => {
+                     if (searchClass === "") {
+                        alert("اختر شعبة لإدخال غياباتها.");
+                        return;
+                     }
+                     if (addAbsents) {
+                        handlers.addAbsents(
+                           searchClass,
+                           absents,
+                           () => {
+                              setAddAbsents(false);
+                              setAbsents([]);
+                           }
+                        );
+                     } else {
+                        setAddAbsents(true);
+                        setAbsents([]);
+                     }
+                  }
+               }
+            />
          </div>
       </div>
    )
