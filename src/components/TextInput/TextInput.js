@@ -5,7 +5,8 @@ function TextInput(props) {
       <div className='text'>
          <input
             className='inptext'
-            type='text'
+            type={props.type ?? 'text'}
+            step={0.1}
             dir='rtl'
             disabled={!(props.editable ?? true)}
             placeholder={props.hint}

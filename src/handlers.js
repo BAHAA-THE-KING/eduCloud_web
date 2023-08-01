@@ -1,17 +1,24 @@
 //paths
 const HOME = "/";
 const LOGIN = "/login";
+
 const ADDEMPLOYEE = "/employee/add";
 const ADDTEACHER = "/teacher/add";
 const ADDSUPERVISOR = "/supervisor/add";
 const VIEWEMPLOYEE = "/employee";
 const VIEWEMPLOYEEDATA = "/employee/view/";
+
 const ADDTESTFORM = "/test-form/add";
 const VIEWTESTFORMS = "/test-form";
 const VIEWTESTFORMDATA = "/test-form/view/";
+
 const ADDSTUDENT = "/student/add";
 const VIEWSTUDENTS = "/student/";
 const VIEWSTUDENTDATA = "/student/view/";
+
+const ADDTEST = "/test/add";
+const VIEWTESTS = "/test";
+const VIEWTESTDATA = "/test/view/";
 
 const host = "http://127.0.0.1:8000/V1.0";
 
@@ -598,6 +605,61 @@ function addTestForm(name, func) {
       );
 }
 
+function addTest(title, passMark, maxMark, type, date, theClass, subject, func) {
+   const path = "/supervisor/addTest";
+
+   const url = host + path;
+
+   const method = "POST";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   const body = JSON.stringify(
+      {
+         "title": title,
+         "min_mark": passMark,
+         "max_mark": maxMark,
+         "date": date,
+         "type_id": type,
+         "g_class_id": theClass,
+         "subject_id": subject,
+         "image_url": "asd",
+      }
+   );
+
+   fetch(url, { method, headers, body })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e.message === "test created successfully") {
+               alert("Success!");
+               func();
+            } else if (e.message === "this title is already in use for this subject and class") {
+               alert("Choose Another Title.");
+            } else {
+               alert(e.message);
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
 
 function addAbsents(class_id, students, func) {
    const path = "/supervisor/todaysAbsences";
@@ -791,8 +853,9 @@ function removeEmployeeRole(id, role, func) {
       );
 }
 
-export { goTo, HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEE, ADDSTUDENT, VIEWEMPLOYEEDATA, ADDTESTFORM, VIEWTESTFORMS, VIEWTESTFORMDATA, VIEWSTUDENTS, VIEWSTUDENTDATA };
+export { goTo, HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEE, ADDSTUDENT, VIEWEMPLOYEEDATA, ADDTESTFORM, VIEWTESTFORMS, VIEWTESTFORMDATA, VIEWSTUDENTS, VIEWSTUDENTDATA, ADDTEST, VIEWTESTS, VIEWTESTDATA };
 export { logIn, getRoles, getSubjects };
 export { addEmployee, addTeacher, addSupervisor, addEmployeeRole, getEmployees, getEmployeeData, editEmployee, removeEmployeeRole };
 export { addTestForm, getTestForms, getTestFormData, editTestForm };
+export { addTest };
 export { addAbsents, getStudents };
