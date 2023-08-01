@@ -18,7 +18,7 @@ function ViewStudents() {
    const [allClasses, setAllClasses] = useState([]);
    const [classes, setClasses] = useState([]);
    const [addAbsents, setAddAbsents] = useState(false);
-   const [absents, setAbsents] = useState([]);
+   const [absents, setAbsents] = useState({});
 
    useEffect(
       () =>
@@ -80,7 +80,7 @@ function ViewStudents() {
                   options={grades}
                   dataHook={
                      (grade, select) => {
-                        setAbsents([]);
+                        setAbsents({});
                         setAddAbsents(false);
                         setSearchClass("");
                         setSearchKeyword("");
@@ -104,7 +104,7 @@ function ViewStudents() {
                   options={classes}
                   dataHook={
                      (theclass, select) => {
-                        setAbsents([]);
+                        setAbsents({});
                         setAddAbsents(false);
                         setSearchKeyword("");
                         setSearch("");
@@ -249,8 +249,26 @@ function ViewStudents() {
                                        e.id &&
                                        <input
                                           type='checkbox'
-                                          onChange={() => { setAbsents([...absents, { student_id: e.id, justification: "none" }]) }}
-                                          checked={absents.filter(ee => ee.student_id === e.id).length === 1}
+                                          onChange={
+                                             () => {
+                                                if (absents[e.id] === undefined) {
+                                                   setAbsents(
+                                                      {
+                                                         ...absents,
+                                                         [e.id]: "none"
+                                                      }
+                                                   );
+                                                } else {
+                                                   setAbsents(
+                                                      {
+                                                         ...absents,
+                                                         [e.id]: undefined
+                                                      }
+                                                   );
+                                                }
+                                             }
+                                          }
+                                          checked={!!absents[e.id]}
                                        />
                                     }
                                  />
@@ -333,17 +351,21 @@ function ViewStudents() {
                         return;
                      }
                      if (addAbsents) {
+                        const temp = [];
+                        for (const k in absents) {
+                           absents[k] && temp.push({ student_id: k, justification: absents[k] });
+                        }
                         handlers.addAbsents(
                            searchClass,
-                           absents,
+                           temp,
                            () => {
                               setAddAbsents(false);
-                              setAbsents([]);
+                              setAbsents({});
                            }
                         );
                      } else {
                         setAddAbsents(true);
-                        setAbsents([]);
+                        setAbsents({});
                      }
                   }
                }
