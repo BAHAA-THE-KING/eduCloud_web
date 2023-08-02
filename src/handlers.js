@@ -70,6 +70,47 @@ function getRoles(func) {
       );
 }
 
+function getGrades(func) {
+   const path = "/general/getAllGrades";
+
+   const url = host + path;
+
+   const method = "GET";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   fetch(url, { method, headers })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e["message"] === "Unauthenticated.") {
+               goTo(LOGIN);
+               return;
+            } else if (e.message === "Success!") {
+               func(e.data);
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
 function getSubjects(func) {
    const path = "/general/getAllGradesWithClassesAndSubjects";
 
@@ -311,6 +352,49 @@ function getTests(params, func) {
                return;
             } else if (e.message === "tests found successfully") {
                func(e.data);
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
+function getTestData(id, func) {
+   const path = "/supervisor/getTest/" + id;
+
+   const url = host + path;
+
+   const method = "GET";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   fetch(url, { method, headers })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e["message"] === "Unauthenticated.") {
+               goTo(LOGIN);
+               return;
+            } else if (e.message === "Success!") {
+               func(e.data);
+            } else {
+               alert(e.message);
             }
          }
       )
@@ -702,6 +786,80 @@ function addTest(title, passMark, maxMark, type, date, theClass, subject, func) 
       );
 }
 
+function addStudent(type, firstName, lastName, birthDate, birthPlace, placeOfLiving, grade, publicRecord, socialDescription, the6GradeAvg, previousSchool, fatherName, fatherAlive, fatherProfession, grandFatherName, motherName, motherLastName, transportationSubscriber, address, registrationPlace, registrationNumber, registrationDate, notes, func) {
+   const path = "/secretary/addStudentOrCandidate/" + type;
+
+   const url = host + path;
+
+   const method = "POST";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   const body = JSON.stringify(
+      {
+         "first_name": firstName,
+         "last_name": lastName,
+         "birth_date": birthDate,
+         "birth_place": birthPlace,
+         "place_of_living": placeOfLiving,
+         "grade_id": grade,
+         "public_record": publicRecord,
+         "social_description": socialDescription,
+         "6th_grade_avg": the6GradeAvg,
+         "previous_school": previousSchool,
+         "father_name": fatherName,
+         "father_alive": fatherAlive,
+         "father_profession": fatherProfession,
+         "grand_father_name": grandFatherName,
+         "mother_name": motherName,
+         "mother_last_name": motherLastName,
+         "transportation_subscriber": transportationSubscriber,
+         "address_id": address,
+         "registration_place": registrationPlace,
+         "registration_number": registrationNumber,
+         "registration_date": registrationDate,
+         "notes": notes
+      }
+   );
+
+   fetch(url, { method, headers, body })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e.message === "Success!") {
+               alert("Success!");
+               func();
+            } else if (e.message.indexOf("The selected") === 0) {
+               alert("Invalid Student.");
+            } else if (e.message.indexOf("been marked as absent for today or is entered twice") !== -1) {
+               alert("The Students Marked Already.");
+            } else if (e.message.indexOf("belong to this class") !== -1) {
+               alert("The Student Doesn't Belong To The Class.");
+            } else {
+               alert(e.message);
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
 function addAbsents(class_id, students, func) {
    const path = "/supervisor/todaysAbsences";
 
@@ -846,6 +1004,58 @@ function editTestForm(id, name, func) {
       );
 }
 
+function editTest(id, title, passMark, maxMark, type, date, theClass, subject, func) {
+   const path = "/supervisor/editTest/" + id;
+
+   const url = host + path;
+
+   const method = "POST";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   const body = JSON.stringify(
+      {
+         "title": title,
+         "min_mark": passMark,
+         "max_mark": maxMark,
+         "type_id": type,
+         "date": date,
+         "image_url": "none",
+      }
+   );
+
+   fetch(url, { method, headers, body })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e.message === "test info updated successfully") {
+               alert("Success!");
+               func();
+            } else {
+               alert(e.message);
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
 function removeEmployeeRole(id, role, func) {
    const path = "/principal/removeRolesFromEmployee/";
 
@@ -895,8 +1105,8 @@ function removeEmployeeRole(id, role, func) {
 }
 
 export { goTo, HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEE, ADDSTUDENT, VIEWEMPLOYEEDATA, ADDTESTFORM, VIEWTESTFORMS, VIEWTESTFORMDATA, VIEWSTUDENTS, VIEWSTUDENTDATA, ADDTEST, VIEWTESTS, VIEWTESTDATA };
-export { logIn, getRoles, getSubjects };
+export { logIn, getRoles, getGrades, getSubjects };
 export { addEmployee, addTeacher, addSupervisor, addEmployeeRole, getEmployees, getEmployeeData, editEmployee, removeEmployeeRole };
 export { addTestForm, getTestForms, getTestFormData, editTestForm };
-export { addTest, getTests };
-export { addAbsents, getStudents };
+export { addTest, getTests, getTestData, editTest };
+export { addStudent, addAbsents, getStudents };

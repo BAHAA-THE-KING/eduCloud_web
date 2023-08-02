@@ -30,11 +30,9 @@ function AddEmployee() {
          <div className="content">
             <form>
                <label>اسم الموظف :</label>
-               <br />
                <TextInput defaultValue={name} inputHook={setName} editable={true} enterHook={() => { }} hint="الاسم" />
                <br />
                <label>كنية الموظف :</label>
-               <br />
                <TextInput defaultValue={surName} inputHook={setSurName} editable={true} enterHook={() => { }} hint="الكنية" />
                <br />
                <label>الأدوار :</label>

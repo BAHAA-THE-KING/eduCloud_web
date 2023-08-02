@@ -7,7 +7,6 @@ import * as handlers from "../../handlers";
 function ViewTests() {
    const [search, setSearch] = useState("%");
    const [searchKeyword, setSearchKeyword] = useState("");
-   const [searchGrade, setSearchGrade] = useState("");
    const [searchClass, setSearchClass] = useState("");
    const [searchSubject, setSearchSubject] = useState("");
    const [searchStartDate, setSearchStartDate] = useState("");
@@ -92,6 +91,11 @@ function ViewTests() {
                   hook={() => (!!selected && selected !== -1) ? handlers.goTo(handlers.VIEWTESTDATA + selected) : alert("اختر اختباراً لعرض معلوماته.")}
                   src="Icons/subject.svg"
                />
+               <ButtonWithIcon
+                  text="عرض أنواع الاختبارات"
+                  hook={() => handlers.goTo(handlers.VIEWTESTFORMS)}
+                  src="Icons/subject.svg"
+               />
                {/*<ButtonWithIcon
                   text="حذف موظفين"
                   hook={() => { }}
@@ -132,13 +136,11 @@ function ViewTests() {
                         setSearchSubject("");
                         setSubjectName("");
                         if (select) {
-                           setSearchGrade(grade);
                            const temp = allClasses.filter(e => e.id === grade)[0].g_classes;
                            setClasses(temp);
                            const temp2 = allClasses.filter(e => e.id === grade)[0].subjects;
                            setSubjects(temp2);
                         } else {
-                           setSearchGrade("");
                            setClasses([]);
                            setSubjects([]);
                         }

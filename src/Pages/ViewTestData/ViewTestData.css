@@ -1,0 +1,57 @@
+div.viewtestdata {
+   width: 100%;
+   height: CALC(100% - 73px);
+   background-color: white;
+   user-select: none;
+}
+
+div.viewtestdata>img.bg {
+   width: 60%;
+   height: CALC(100% - 73px);
+   position: absolute;
+   bottom: 0;
+   left: 0;
+   transform: translateX(-30%);
+   clip-path: ellipse(60% 50% at 30% 50%);
+}
+
+div.viewtestdata>div.content {
+   width: 100%;
+   height: calc(100% - 73px);
+   background-color: white;
+   display: flex;
+   flex-flow: nowrap column;
+   justify-content: flex-start;
+   align-items: flex-start;
+}
+
+div.viewtestdata>div.content>form {
+   border: 6px #061E45 solid;
+   border-radius: 10px;
+   padding: 10px;
+   margin: 50px 70px 0 0;
+}
+
+div.viewtestdata>div.content>form>label {
+   font-size: 25px;
+   float: right;
+   color: #061E45;
+}
+
+div.viewtestdata>div.content>form input[type=text],
+div.viewtestdata>div.content>form input[type=number],
+div.viewtestdata>div.content>form input[type=date] {
+   font-size: 30px;
+   color: #061E45;
+   border-bottom-color: #061E45;
+}
+
+div.viewtestdata>div.content>form>div.multiple {
+   margin-right: 100px;
+   margin-top: 3px;
+}
+
+div.viewtestdata>div.content>form>input[type=button] {
+   font-size: 25px;
+   width: 200px;
+}

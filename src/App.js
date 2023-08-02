@@ -1,7 +1,7 @@
 import './App.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { Login, Header, Home, AddEmployee, AddTeacherData, AddSupervisorData, ViewEmployees, ViewEmployeeData, AddTestForm, ViewTestForms, ViewTestFormData, ViewStudents, AddTest, ViewTests } from './Pages';
-import { ADDEMPLOYEE, ADDSTUDENT, ADDSUPERVISOR, ADDTEACHER, ADDTEST, ADDTESTFORM, HOME, LOGIN, VIEWEMPLOYEE, VIEWEMPLOYEEDATA, VIEWSTUDENTS, VIEWTESTFORMDATA, VIEWTESTFORMS, VIEWTESTS } from "./handlers"
+import { Login, Header, Home, AddEmployee, AddTeacherData, AddSupervisorData, ViewEmployees, ViewEmployeeData, AddTestForm, ViewTestForms, ViewTestFormData, ViewStudents, AddTest, ViewTests, ViewTestData, AddStudent } from './Pages';
+import { ADDEMPLOYEE, ADDSTUDENT, ADDSUPERVISOR, ADDTEACHER, ADDTEST, ADDTESTFORM, HOME, LOGIN, VIEWEMPLOYEE, VIEWEMPLOYEEDATA, VIEWSTUDENTS, VIEWTESTDATA, VIEWTESTFORMDATA, VIEWTESTFORMS, VIEWTESTS } from "./handlers"
 
 const router = createBrowserRouter([
   {
@@ -45,6 +45,10 @@ const router = createBrowserRouter([
     element: <><Header active="tests" /><ViewTestFormData /></>
   },
   {
+    path: ADDSTUDENT,
+    element: <><Header active="students" /><AddStudent /></>
+  },
+  {
     path: VIEWSTUDENTS,
     element: <><Header active="students" /><ViewStudents /></>
   },
@@ -55,6 +59,10 @@ const router = createBrowserRouter([
   {
     path: VIEWTESTS,
     element: <><Header active="tests" /><ViewTests /></>
+  },
+  {
+    path: VIEWTESTDATA + ":id",
+    element: <><Header active="tests" /><ViewTestData /></>
   },
 ]);
 

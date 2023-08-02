@@ -10,7 +10,7 @@ function AddTest() {
    const [passMark, setPassMark] = useState(60);
    const [maxMark, setMaxMark] = useState(100);
    const dateObj = new Date();
-   const [date, setDate] = useState(dateObj.getFullYear() + "-" + (dateObj.getMonth().length === 1 ? "0" + dateObj.getMonth() : dateObj.getMonth()) + "-" + (dateObj.getDay().length === 1 ? "0" + dateObj.getDay() : dateObj.getDay()));
+   const [date, setDate] = useState(dateObj.getFullYear() + "-" + (dateObj.getMonth().length !== 1 ? "0" + dateObj.getMonth() : dateObj.getMonth()) + "-" + (dateObj.getDay().length !== 1 ? "0" + dateObj.getDay() : dateObj.getDay()));
    const [type, setType] = useState("");
    const [typeName, setTypeName] = useState("");
    const [types, setTypes] = useState([]);
@@ -19,7 +19,6 @@ function AddTest() {
    const [subjects, setSubjects] = useState([]);
    const [subject, setSubject] = useState();
    const [subjectName, setSubjectName] = useState("");
-   const [searchGrade, setSearchGrade] = useState("");
    const [searchGradeName, setSearchGradeName] = useState("");
    const [grades, setGrades] = useState([]);
    const [allClasses, setAllClasses] = useState([]);
@@ -98,13 +97,11 @@ function AddTest() {
                         setSubject("");
                         setSubjectName("");
                         if (select) {
-                           setSearchGrade(grade);
                            const temp = allClasses.filter(e => e.id === grade)[0].g_classes;
                            setClasses(temp);
                            const temp2 = allClasses.filter(e => e.id === grade)[0].subjects;
                            setSubjects(temp2);
                         } else {
-                           setSearchGrade("");
                            setClasses([]);
                            setSubjects([]);
                         }
