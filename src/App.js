@@ -1,7 +1,7 @@
 import './App.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { Login, Header, Home, AddEmployee, AddTeacherData, AddSupervisorData, ViewEmployees, ViewEmployeeData, AddTestForm, ViewTestForms, ViewTestFormData, ViewStudents, AddTest } from './Pages';
-import { ADDEMPLOYEE, ADDSTUDENT, ADDSUPERVISOR, ADDTEACHER, ADDTEST, ADDTESTFORM, HOME, LOGIN, VIEWEMPLOYEE, VIEWEMPLOYEEDATA, VIEWSTUDENTS, VIEWTESTFORMDATA, VIEWTESTFORMS } from "./handlers"
+import { Login, Header, Home, AddEmployee, AddTeacherData, AddSupervisorData, ViewEmployees, ViewEmployeeData, AddTestForm, ViewTestForms, ViewTestFormData, ViewStudents, AddTest, ViewTests } from './Pages';
+import { ADDEMPLOYEE, ADDSTUDENT, ADDSUPERVISOR, ADDTEACHER, ADDTEST, ADDTESTFORM, HOME, LOGIN, VIEWEMPLOYEE, VIEWEMPLOYEEDATA, VIEWSTUDENTS, VIEWTESTFORMDATA, VIEWTESTFORMS, VIEWTESTS } from "./handlers"
 
 const router = createBrowserRouter([
   {
@@ -51,6 +51,10 @@ const router = createBrowserRouter([
   {
     path: ADDTEST,
     element: <><Header active="tests" /><AddTest /></>
+  },
+  {
+    path: VIEWTESTS,
+    element: <><Header active="tests" /><ViewTests /></>
   },
 ]);
 

@@ -11,5 +11,6 @@ import ViewTestForms from "./ViewTestForms/ViewTestForms";
 import ViewTestFormData from "./ViewTestFormData/ViewTestFormData";
 import ViewStudents from "./ViewStudents/ViewStudents";
 import AddTest from "./AddTest/AddTest";
+import ViewTests from "./ViewTests/ViewTests";
 
-export { AddEmployee, AddSupervisorData, AddTeacherData, Header, Home, Login, ViewEmployees, ViewEmployeeData, AddTestForm, ViewTestForms, ViewTestFormData, ViewStudents, AddTest };
+export { AddEmployee, AddSupervisorData, AddTeacherData, Header, Home, Login, ViewEmployees, ViewEmployeeData, AddTestForm, ViewTestForms, ViewTestFormData, ViewStudents, AddTest, ViewTests };

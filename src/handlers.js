@@ -281,6 +281,47 @@ function getTestFormData(id, func) {
       );
 }
 
+function getTests(params, func) {
+   const path = "/supervisor/searchTests?";
+
+   const url = host + path + params;
+
+   const method = "GET";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   fetch(url, { method, headers })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e["message"] === "Unauthenticated.") {
+               goTo(LOGIN);
+               return;
+            } else if (e.message === "tests found successfully") {
+               func(e.data);
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
 function getStudents(params, func) {
    const path = "/supervisor/studentSearch?" + params;
 
@@ -857,5 +898,5 @@ export { goTo, HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEE
 export { logIn, getRoles, getSubjects };
 export { addEmployee, addTeacher, addSupervisor, addEmployeeRole, getEmployees, getEmployeeData, editEmployee, removeEmployeeRole };
 export { addTestForm, getTestForms, getTestFormData, editTestForm };
-export { addTest };
+export { addTest, getTests };
 export { addAbsents, getStudents };

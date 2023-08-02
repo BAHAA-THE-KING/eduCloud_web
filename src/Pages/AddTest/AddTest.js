@@ -12,6 +12,7 @@ function AddTest() {
    const dateObj = new Date();
    const [date, setDate] = useState(dateObj.getFullYear() + "-" + (dateObj.getMonth().length === 1 ? "0" + dateObj.getMonth() : dateObj.getMonth()) + "-" + (dateObj.getDay().length === 1 ? "0" + dateObj.getDay() : dateObj.getDay()));
    const [type, setType] = useState("");
+   const [typeName, setTypeName] = useState("");
    const [types, setTypes] = useState([]);
    const [theClass, setTheClass] = useState();
    const [theClassName, setTheClassName] = useState("");
@@ -42,7 +43,7 @@ function AddTest() {
    );
 
    return (
-      <div className="addtestform">
+      <div className="addtest">
          <Title text="إنشاء نموذج لاختبار القدرات" />
          <img src="Images/addtest.jpg" alt="" className="bg" />
          <div className="content">
@@ -63,7 +64,7 @@ function AddTest() {
                <br />
                <TextInput type="date" defaultValue={date} inputHook={setDate} editable={true} enterHook={() => { }} hint="التاريخ" />
                <br />
-               <label>{"نوع الاختبار :" + type}</label>
+               <label>{"نوع الاختبار :" + typeName}</label>
                <br />
                <br />
                <MultipletButton
@@ -79,7 +80,7 @@ function AddTest() {
                         }
                      }
                   }
-                  textHook={grade => setSearchGradeName(grade)}
+                  textHook={type => setTypeName(type)}
                />
                <br />
 
@@ -92,6 +93,10 @@ function AddTest() {
                   options={grades}
                   dataHook={
                      (grade, select) => {
+                        setTheClass("");
+                        setTheClassName("");
+                        setSubject("");
+                        setSubjectName("");
                         if (select) {
                            setSearchGrade(grade);
                            const temp = allClasses.filter(e => e.id === grade)[0].g_classes;
@@ -105,7 +110,15 @@ function AddTest() {
                         }
                      }
                   }
-                  textHook={grade => setSearchGradeName(grade)}
+                  textHook={
+                     (grade, select) => {
+                        if (select) {
+                           setSearchGradeName(grade);
+                        } else {
+                           setSearchGradeName("");
+                        }
+                     }
+                  }
                />
                <br />
                <label>{"الشعبة :" + theClassName}</label>
@@ -145,17 +158,6 @@ function AddTest() {
                   }
                   textHook={subject => setSubjectName(subject)}
                />
-
-
-               <br />
-               {/*<label>المادة :</label>
-               <br />
-               <TextInput defaultValue={subject} inputHook={setSubject} editable={true} enterHook={() => { }} hint="المادة" />
-               <br />
-               <label>علامة النجاح :</label>
-               <br />
-               <TextInput defaultValue={passMark} inputHook={setPassMark} editable={true} enterHook={() => { }} hint="العلامة" />
-               <br />*/}
                <Button
                   text="إدخال"
                   hook={
