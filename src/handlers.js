@@ -115,6 +115,47 @@ function getGrades(func) {
       );
 }
 
+function getGradeData(id, func) {
+   const path = "/principal/viewGrade/" + id;
+
+   const url = host + path;
+
+   const method = "GET";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   fetch(url, { method, headers })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e["message"] === "Unauthenticated.") {
+               goTo(LOGIN);
+               return;
+            } else if (e.message === "Success!") {
+               func(e.data);
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
 function getSubjects(func) {
    const path = "/general/getAllGradesWithClassesAndSubjects";
 
@@ -1107,6 +1148,51 @@ function editTest(id, title, passMark, maxMark, type, date, func) {
       );
 }
 
+function editGrade(id, name, func) {
+   const path = "/principal/editGrade/" + id;
+
+   const url = host + path;
+
+   const method = "POST";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   const body = JSON.stringify({ "name": name });
+
+   fetch(url, { method, headers, body })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e.message === "Success!") {
+               alert("Success!");
+               func();
+            } else if (e.message === "Failed. The grade you entered is already in the system!") {
+               alert("The name has already been taken.");
+            } else {
+               alert(e.message);
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
 function removeEmployeeRole(id, role, func) {
    const path = "/principal/removeRolesFromEmployee/";
 
@@ -1156,9 +1242,9 @@ function removeEmployeeRole(id, role, func) {
 }
 
 export { goTo, HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEES, ADDSTUDENT, VIEWEMPLOYEEDATA, ADDTESTFORM, VIEWTESTFORMS, VIEWTESTFORMDATA, VIEWSTUDENTS, VIEWSTUDENTDATA, ADDTEST, VIEWTESTS, VIEWTESTDATA, ADDGRADE, VIEWGRADES, VIEWGRADEDATA };
-export { logIn, getRoles, getGrades, getSubjects };
+export { logIn, getRoles, getSubjects };
 export { addEmployee, addTeacher, addSupervisor, addEmployeeRole, getEmployees, getEmployeeData, editEmployee, removeEmployeeRole };
 export { addTestForm, getTestForms, getTestFormData, editTestForm };
 export { addTest, getTests, getTestData, editTest };
 export { addStudent, addAbsents, getStudents };
-export { addGrade };
+export { addGrade, getGrades, getGradeData, editGrade };
