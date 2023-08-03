@@ -1,7 +1,7 @@
 import './App.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { Login, Header, Home, AddEmployee, AddTeacherData, AddSupervisorData, ViewEmployees, ViewEmployeeData, AddTestForm, ViewTestForms, ViewTestFormData, ViewStudents, AddTest, ViewTests, ViewTestData, AddStudent, AddGrade, ViewGradeData } from './Pages';
-import { ADDEMPLOYEE, ADDSTUDENT, ADDSUPERVISOR, ADDTEACHER, ADDTEST, ADDTESTFORM, HOME, LOGIN, VIEWEMPLOYEES, VIEWEMPLOYEEDATA, VIEWSTUDENTS, VIEWTESTDATA, VIEWTESTFORMDATA, VIEWTESTFORMS, VIEWTESTS, ADDGRADE, VIEWGRADES, VIEWGRADEDATA } from "./handlers"
+import { Login, Header, Home, AddEmployee, AddTeacherData, AddSupervisorData, ViewEmployees, ViewEmployeeData, AddTestForm, ViewTestForms, ViewTestFormData, ViewStudents, AddTest, ViewTests, ViewTestData, AddStudent, AddGrade, ViewGradeData, AddClass } from './Pages';
+import { ADDEMPLOYEE, ADDSTUDENT, ADDSUPERVISOR, ADDTEACHER, ADDTEST, ADDTESTFORM, HOME, LOGIN, VIEWEMPLOYEES, VIEWEMPLOYEEDATA, VIEWSTUDENTS, VIEWTESTDATA, VIEWTESTFORMDATA, VIEWTESTFORMS, VIEWTESTS, ADDGRADE, VIEWGRADES, VIEWGRADEDATA, ADDCLASS } from "./handlers"
 import ViewGrades from './Pages/ViewGrades/ViewGrades';
 
 const router = createBrowserRouter([
@@ -76,6 +76,10 @@ const router = createBrowserRouter([
   {
     path: VIEWGRADEDATA + ":id",
     element: <><Header active="managements" /><ViewGradeData /></>
+  },
+  {
+    path: ADDCLASS,
+    element: <><Header active="managements" /><AddClass /></>
   },
 ]);
 

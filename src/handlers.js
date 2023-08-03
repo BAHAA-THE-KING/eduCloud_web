@@ -24,6 +24,10 @@ const ADDGRADE = "/grade/add";
 const VIEWGRADES = "/grade";
 const VIEWGRADEDATA = "/grade/view/";
 
+const ADDCLASS = "/class/add";
+const VIEWCLASSES = "/class";
+const VIEWCLASSDATA = "/class/view/";
+
 const host = "http://127.0.0.1:8000/V1.0";
 
 function getToken() {
@@ -1001,6 +1005,60 @@ function addGrade(name, func) {
       );
 }
 
+function addClass(name, grade, maxNumber, func) {
+   const path = "/principal/addClassesToGrade/" + grade;
+
+   const url = host + path;
+
+   const method = "POST";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   const body = JSON.stringify(
+      [
+         {
+            "name": name,
+            "max_number": maxNumber
+         }
+      ]
+   );
+
+   fetch(url, { method, headers, body })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e.message === "Classes created successfully") {
+               alert("Success!");
+               func();
+            } else if (e.message === "This grade is already in the system") {
+               alert(e.errors.name);
+            } else if (e.message === "The name field is required.") {
+               alert(e.errors.name);
+            } else {
+               alert(e.message);
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
 function editEmployee(id, name, surname, func) {
    const path = "/principal/editEmployee/" + id;
 
@@ -1241,10 +1299,11 @@ function removeEmployeeRole(id, role, func) {
       );
 }
 
-export { goTo, HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEES, ADDSTUDENT, VIEWEMPLOYEEDATA, ADDTESTFORM, VIEWTESTFORMS, VIEWTESTFORMDATA, VIEWSTUDENTS, VIEWSTUDENTDATA, ADDTEST, VIEWTESTS, VIEWTESTDATA, ADDGRADE, VIEWGRADES, VIEWGRADEDATA };
+export { goTo, HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEES, ADDSTUDENT, VIEWEMPLOYEEDATA, ADDTESTFORM, VIEWTESTFORMS, VIEWTESTFORMDATA, VIEWSTUDENTS, VIEWSTUDENTDATA, ADDTEST, VIEWTESTS, VIEWTESTDATA, ADDGRADE, VIEWGRADES, VIEWGRADEDATA, ADDCLASS, VIEWCLASSES, VIEWCLASSDATA };
 export { logIn, getRoles, getSubjects };
 export { addEmployee, addTeacher, addSupervisor, addEmployeeRole, getEmployees, getEmployeeData, editEmployee, removeEmployeeRole };
 export { addTestForm, getTestForms, getTestFormData, editTestForm };
 export { addTest, getTests, getTestData, editTest };
 export { addStudent, addAbsents, getStudents };
 export { addGrade, getGrades, getGradeData, editGrade };
+export { addClass };
