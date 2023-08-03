@@ -1,7 +1,8 @@
 import './App.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Login, Header, Home, AddEmployee, AddTeacherData, AddSupervisorData, ViewEmployees, ViewEmployeeData, AddTestForm, ViewTestForms, ViewTestFormData, ViewStudents, AddTest, ViewTests, ViewTestData, AddStudent, AddGrade } from './Pages';
-import { ADDEMPLOYEE, ADDSTUDENT, ADDSUPERVISOR, ADDTEACHER, ADDTEST, ADDTESTFORM, HOME, LOGIN, VIEWEMPLOYEES, VIEWEMPLOYEEDATA, VIEWSTUDENTS, VIEWTESTDATA, VIEWTESTFORMDATA, VIEWTESTFORMS, VIEWTESTS, ADDGRADE } from "./handlers"
+import { ADDEMPLOYEE, ADDSTUDENT, ADDSUPERVISOR, ADDTEACHER, ADDTEST, ADDTESTFORM, HOME, LOGIN, VIEWEMPLOYEES, VIEWEMPLOYEEDATA, VIEWSTUDENTS, VIEWTESTDATA, VIEWTESTFORMDATA, VIEWTESTFORMS, VIEWTESTS, ADDGRADE, VIEWGRADES } from "./handlers"
+import ViewGrades from './Pages/ViewGrades/ViewGrades';
 
 const router = createBrowserRouter([
   {
@@ -65,8 +66,12 @@ const router = createBrowserRouter([
     element: <><Header active="tests" /><ViewTestData /></>
   },
   {
-    path:ADDGRADE,
+    path: ADDGRADE,
     element: <><Header active="managements" /><AddGrade /></>
+  },
+  {
+    path: VIEWGRADES,
+    element: <><Header active="managements" /><ViewGrades /></>
   },
 ]);
 
