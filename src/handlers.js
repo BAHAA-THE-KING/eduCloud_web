@@ -5,7 +5,7 @@ const LOGIN = "/login";
 const ADDEMPLOYEE = "/employee/add";
 const ADDTEACHER = "/teacher/add";
 const ADDSUPERVISOR = "/supervisor/add";
-const VIEWEMPLOYEE = "/employee";
+const VIEWEMPLOYEES = "/employee";
 const VIEWEMPLOYEEDATA = "/employee/view/";
 
 const ADDTESTFORM = "/test-form/add";
@@ -19,6 +19,10 @@ const VIEWSTUDENTDATA = "/student/view/";
 const ADDTEST = "/test/add";
 const VIEWTESTS = "/test";
 const VIEWTESTDATA = "/test/view/";
+
+const ADDGRADE = "/grade/add";
+const VIEWGRADES = "/grade";
+const VIEWGRADEDATA = "/grade/view/";
 
 const host = "http://127.0.0.1:8000/V1.0";
 
@@ -909,6 +913,53 @@ function addAbsents(class_id, students, func) {
       );
 }
 
+function addGrade(name, func) {
+   const path = "/principal/addGrade";
+
+   const url = host + path;
+
+   const method = "POST";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   const body = JSON.stringify({ "name": name });
+
+   fetch(url, { method, headers, body })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e.message === "Success!") {
+               alert("Success!");
+               func();
+            } else if (e.message === "This grade is already in the system") {
+               alert(e.errors.name);
+            } else if (e.message === "The name field is required.") {
+               alert(e.errors.name);
+            } else {
+               alert(e.message);
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
 function editEmployee(id, name, surname, func) {
    const path = "/principal/editEmployee/" + id;
 
@@ -1004,7 +1055,7 @@ function editTestForm(id, name, func) {
       );
 }
 
-function editTest(id, title, passMark, maxMark, type, date, theClass, subject, func) {
+function editTest(id, title, passMark, maxMark, type, date, func) {
    const path = "/supervisor/editTest/" + id;
 
    const url = host + path;
@@ -1104,9 +1155,10 @@ function removeEmployeeRole(id, role, func) {
       );
 }
 
-export { goTo, HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEE, ADDSTUDENT, VIEWEMPLOYEEDATA, ADDTESTFORM, VIEWTESTFORMS, VIEWTESTFORMDATA, VIEWSTUDENTS, VIEWSTUDENTDATA, ADDTEST, VIEWTESTS, VIEWTESTDATA };
+export { goTo, HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEES, ADDSTUDENT, VIEWEMPLOYEEDATA, ADDTESTFORM, VIEWTESTFORMS, VIEWTESTFORMDATA, VIEWSTUDENTS, VIEWSTUDENTDATA, ADDTEST, VIEWTESTS, VIEWTESTDATA, ADDGRADE, VIEWGRADES, VIEWGRADEDATA };
 export { logIn, getRoles, getGrades, getSubjects };
 export { addEmployee, addTeacher, addSupervisor, addEmployeeRole, getEmployees, getEmployeeData, editEmployee, removeEmployeeRole };
 export { addTestForm, getTestForms, getTestFormData, editTestForm };
 export { addTest, getTests, getTestData, editTest };
 export { addStudent, addAbsents, getStudents };
+export { addGrade };

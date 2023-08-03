@@ -3,21 +3,23 @@ import "./Header.css";
 import * as handlers from "../../handlers"
 import { Logo, HeaderList } from "../../components";
 
-const titles = ["الطلاب", "الاختبارات", "الخطة الدراسية", "العلامات", "الملاحظات", "الموظفون", "الرسائل"];
-const names = ["students", "tests", "schedule", "marks", "notes", "employees", "smss"];
+const titles = ["الطلاب", "الاختبارات", "الخطة الدراسية", "العلامات", "الملاحظات", "الموظفون", "أمور إدارية", "الرسائل"];
+const names = ["students", "tests", "schedule", "marks", "notes", "employees", "managements", "smss"];
 const actions = [
    () => handlers.goTo(handlers.VIEWSTUDENTS),
    () => handlers.goTo(handlers.VIEWTESTS),
    () => { },
    () => { },
    () => { },
-   () => handlers.goTo(handlers.VIEWEMPLOYEE),
+   () => handlers.goTo(handlers.VIEWEMPLOYEES),
+   () => handlers.goTo(handlers.VIEWGRADES),
    () => { },
 ];
 
 function Header(props) {
    return (
       <header>
+         <Logo />
          <ul>
             {
                titles.map(
@@ -31,7 +33,6 @@ function Header(props) {
                )
             }
          </ul>
-         <Logo />
       </header>
    );
 }
