@@ -50,6 +50,16 @@ function ViewGrades() {
                   hook={() => (!!selected) ? handlers.goTo(handlers.VIEWGRADEDATA + selected) : alert("اختر صفاً لعرض معلوماته.")}
                   src="Icons/subject.svg"
                />
+               <ButtonWithIcon
+                  text="عرض الشعب"
+                  hook={() => handlers.goTo(handlers.VIEWCLASSES)}
+                  src="Icons/subject.svg"
+               />
+               <ButtonWithIcon
+                  text="عرض المواد"
+                  hook={() => handlers.goTo(handlers.VIEWSUBJECTS)}
+                  src="Icons/subject.svg"
+               />
                {/*<ButtonWithIcon
                   text="حذف نموذج"
                   hook={() => { }}
