@@ -129,7 +129,7 @@ function ViewClasses() {
                                  selected={selected === e.id}
                                  id={e.id}
                                  setSelected={setSelected}
-                                 text={e.maxNum}
+                                 text={e.maxNum+" طالباً"}
                               />
                               <TableTile
                                  selected={selected === e.id}
