@@ -130,18 +130,22 @@ div.viewclasses>div.content>.show>.view {
 }
 
 div.viewclasses div.tabletile {
-   width: CALC(CALC(CALC(100% - 242px) / 2) - 6px);
+   width: CALC(CALC(CALC(100% - 242px) / 3) - 6px);
 }
 
-div.viewclasses div.tabletile:nth-child(4n+1) {
+div.viewclasses div.tabletile:nth-child(5n+1) {
    width: 100px;
 }
 
-div.viewclasses div.tabletile:nth-child(4n+4) {
+div.viewclasses div.tabletile:nth-child(5n+5) {
    width: 130px;
 }
 
 div.viewclasses div.tabletile:nth-last-child(4) {
+   border-bottom-right-radius: 0px;
+}
+
+div.viewclasses div.tabletile:nth-last-child(5) {
    border-bottom-right-radius: 5px;
 }
 

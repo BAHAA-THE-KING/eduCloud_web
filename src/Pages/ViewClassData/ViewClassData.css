@@ -1,0 +1,102 @@
+div.viewclassdata {
+   width: 100%;
+   height: CALC(100% - 73px);
+   background-color: white;
+   user-select: none;
+}
+
+div.viewclassdata>img.bg {
+   width: 60%;
+   height: CALC(100% - 73px);
+   position: absolute;
+   bottom: 0;
+   left: 0;
+   transform: translateX(-30%);
+   clip-path: ellipse(60% 50% at 30% 50%);
+}
+
+div.viewclassdata>div.content {
+   width: 100%;
+   height: CALC(100% - 73px);
+   background-color: white;
+   display: flex;
+   flex-flow: nowrap row;
+   justify-content: space-between;
+   align-items: flex-start;
+}
+
+div.viewclassdata>div.content>div.frm {
+   display: flex;
+   flex-flow: nowrap row;
+   justify-content: flex-start;
+   align-items: flex-start;
+   margin: 125px 200px 0 0;
+}
+
+div.viewclassdata>div.content>div.frm>div>label {
+   font-size: 27px;
+   float: right;
+   color: #061E45;
+}
+
+div.viewclassdata>div.content>div.frm input[type=text],
+div.viewclassdata>div.content>div.frm input[type=number] {
+   font-size: 30px;
+   color: #061E45;
+   border-bottom-color: #061E45;
+}
+
+div.viewclassdata>div.content>div.frm .react-tabs>ul {
+   display: flex;
+}
+
+div.viewclassdata>div.content>div.frm .react-tabs>ul>li {
+   display: flex;
+}
+
+div.viewclassdata>div.content>div.frm .react-tabs>ul>li>img.tabicon {
+   width: 18px;
+   margin-right: 5px;
+}
+
+div.viewclassdata>div.content>div.frm div.selectlist {
+   margin-right: 0;
+   grid-template-columns: 160px 160px;
+}
+
+div.viewclassdata>div.content>div.frm .add {
+   display: flex;
+   flex-flow: nowrap column;
+   justify-content: flex-start;
+   align-items: flex-start;
+}
+
+div.viewclassdata>div.content>div.frm .react-tabs>div:last-child div.selectlist {
+   font-size: 10px;
+   grid-template-columns: 160px 160px;
+}
+
+div.viewclassdata>div.content>div.frm .react-tabs>div {
+   width: 500px;
+}
+
+div.viewclassdata>div.content>div.frm span.datachunck {
+   font-size: 18px;
+}
+
+div.viewclassdata>div.content>div.frm>div>input[type=button] {
+   font-size: 25px;
+   width: 200px;
+}
+
+div.viewclassdata>div.content>div.btns {
+   position: absolute;
+   width: 250px;
+   right: 0;
+   margin-top: 30px;
+   margin-right: 20px;
+}
+
+div.viewclassdata>div.content>div.btns>.iconbutton>.btn {
+   font-size: 23px;
+}

@@ -160,6 +160,47 @@ function getGradeData(id, func) {
       );
 }
 
+function getClassData(id, func) {
+   const path = "/principal/viewClass/" + id;
+
+   const url = host + path;
+
+   const method = "GET";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   fetch(url, { method, headers })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e["message"] === "Unauthenticated.") {
+               goTo(LOGIN);
+               return;
+            } else if (e.message === "Success!") {
+               func(e.data);
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
 function getSubjects(func) {
    const path = "/general/getAllGradesWithClassesAndSubjects";
 
@@ -1251,6 +1292,56 @@ function editGrade(id, name, func) {
       );
 }
 
+function editClass(id, name, maxNum, func) {
+   const path = "/principal/editClass/" + id;
+
+   const url = host + path;
+
+   const method = "POST";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   const body = JSON.stringify(
+      {
+         "name": name,
+         "max_number": maxNum
+      }
+   );
+
+   fetch(url, { method, headers, body })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e.message === "Success!") {
+               alert("Success!");
+               func();
+            } else if (e.message === "Failed. The grade you entered is already in the system!") {
+               alert("The name has already been taken.");
+            } else {
+               alert(e.message);
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
 function removeEmployeeRole(id, role, func) {
    const path = "/principal/removeRolesFromEmployee/";
 
@@ -1306,4 +1397,4 @@ export { addTestForm, getTestForms, getTestFormData, editTestForm };
 export { addTest, getTests, getTestData, editTest };
 export { addStudent, addAbsents, getStudents };
 export { addGrade, getGrades, getGradeData, editGrade };
-export { addClass };
+export { addClass, editClass };

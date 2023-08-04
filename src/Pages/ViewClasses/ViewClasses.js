@@ -23,6 +23,7 @@ function ViewClasses() {
                         {
                            id: n.id,
                            name: n.name,
+                           maxNum: n.max_number,
                            grade: {
                               id: k.id,
                               name: k.name
@@ -62,7 +63,7 @@ function ViewClasses() {
                />
                <ButtonWithIcon
                   text="عرض شعبة"
-                  hook={() => (!!selected) ? handlers.goTo(handlers.VIEWTESTFORMDATA + selected) : alert("اختر نموذجاً لعرض معلوماته.")}
+                  hook={() => (!!selected) ? handlers.goTo(handlers.VIEWCLASSDATA + selected) : alert("اختر شعبة لعرض معلوماتها.")}
                   src="Icons/subject.svg"
                />
                {/*<ButtonWithIcon
@@ -85,6 +86,13 @@ function ViewClasses() {
                      id={-1}
                      className="headings"
                      text="الاسم"
+                     setSelected={() => { }}
+                  />
+                  <TableTile
+                     selected={false}
+                     id={-1}
+                     className="headings"
+                     text="العدد الأقصى للطلاب"
                      setSelected={() => { }}
                   />
                   <TableTile
@@ -116,6 +124,12 @@ function ViewClasses() {
                                  id={e.id}
                                  setSelected={setSelected}
                                  text={e.name}
+                              />
+                              <TableTile
+                                 selected={selected === e.id}
+                                 id={e.id}
+                                 setSelected={setSelected}
+                                 text={e.maxNum}
                               />
                               <TableTile
                                  selected={selected === e.id}
