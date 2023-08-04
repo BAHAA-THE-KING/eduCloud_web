@@ -1104,7 +1104,7 @@ function addClass(name, grade, maxNumber, func) {
       );
 }
 
-function addSubject(name, grade, maxMark, minMark, notes, func) {
+function addSubject(name, grade, maxMark, passMark, notes, func) {
    const path = "/principal/addSubjectsToGrade/" + grade;
 
    const url = host + path;
@@ -1122,7 +1122,7 @@ function addSubject(name, grade, maxMark, minMark, notes, func) {
          {
             "name": name,
             "max_mark": maxMark,
-            "min_mark": minMark,
+            "min_mark": passMark,
             "notes": notes,
          }
       ]

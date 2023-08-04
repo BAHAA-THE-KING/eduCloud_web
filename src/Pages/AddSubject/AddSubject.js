@@ -8,7 +8,7 @@ function AddSubject() {
    let [name, setName] = useState("");
    let [grade, setGrade] = useState("");
    let [maxMark, setMaxMark] = useState("");
-   let [minMark, setMinMark] = useState("");
+   let [passMark, setPassMark] = useState("");
    let [notes, setNotes] = useState("");
 
    let [grades, setGrades] = useState([]);
@@ -35,9 +35,9 @@ function AddSubject() {
                <br />
                <TextInput type="number" defaultValue={maxMark} inputHook={setMaxMark} hint="العلامة الكلية" />
                <br />
-               <label>{"علامة النجاح : " + minMark}</label>
+               <label>{"علامة النجاح : " + passMark}</label>
                <br />
-               <TextInput type="number" defaultValue={minMark} inputHook={setMinMark} hint="علامة النجاح" />
+               <TextInput type="number" defaultValue={passMark} inputHook={setPassMark} hint="علامة النجاح" />
                <br />
                <label>{"الملاحظات : "}</label>
                <br />
@@ -57,7 +57,7 @@ function AddSubject() {
                            name,
                            grade,
                            maxMark,
-                           minMark,
+                           passMark,
                            notes,
                            () => { }
                         );
