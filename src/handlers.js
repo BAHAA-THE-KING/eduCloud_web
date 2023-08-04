@@ -1402,6 +1402,58 @@ function editClass(id, name, maxNum, func) {
       );
 }
 
+function editSubject(id, name, maxMark, passMark, notes, func) {
+   const path = "/principal/editSubject/" + id;
+
+   const url = host + path;
+
+   const method = "POST";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+console.log(id, name, maxMark, passMark, notes);
+   const body = JSON.stringify(
+      {
+         "name": name,
+         "max_mark": maxMark,
+         "min_mark": passMark,
+         "notes": notes
+      }
+   );
+
+   fetch(url, { method, headers, body })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e.message === "Success!") {
+               alert("Success!");
+               func();
+            } else if (e.message === "Failed. The grade you entered is already in the system!") {
+               alert("The name has already been taken.");
+            } else {
+               alert(e.message);
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
 function removeEmployeeRole(id, role, func) {
    const path = "/principal/removeRolesFromEmployee/";
 
@@ -1458,4 +1510,4 @@ export { addTest, getTests, getTestData, editTest };
 export { addStudent, addAbsents, getStudents };
 export { addGrade, getGrades, getGradeData, editGrade };
 export { addClass, editClass };
-export { addSubject };
+export { addSubject, editSubject };

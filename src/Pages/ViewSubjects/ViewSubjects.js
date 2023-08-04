@@ -60,12 +60,12 @@ function ViewSubjects() {
             <div className='control'>
                <ButtonWithIcon
                   text="إضافة مادة دراسية"
-                  hook={() => handlers.goTo(handlers.ADDTESTFORM)}
+                  hook={() => handlers.goTo(handlers.ADDSUBJECT)}
                   src="Icons/add.svg"
                />
                <ButtonWithIcon
                   text="عرض المادة دراسية"
-                  hook={() => (!!selected) ? handlers.goTo(handlers.VIEWCLASSDATA + selected) : alert("اختر مادة دراسية لعرض معلوماتها.")}
+                  hook={() => (!!selected) ? handlers.goTo(handlers.VIEWSUBJECTDATA + selected) : alert("اختر مادة دراسية لعرض معلوماتها.")}
                   src="Icons/subject.svg"
                />
                {/*<ButtonWithIcon
@@ -157,7 +157,7 @@ function ViewSubjects() {
                                  selected={selected === e.id}
                                  id={e.id}
                                  setSelected={setSelected}
-                                 text={e.notes && e.notes.slice(0,15)+"....."}
+                                 text={e.notes && e.notes.slice(0, 15) + " ....."}
                               />
                               <TableTile
                                  selected={selected === e.id}
