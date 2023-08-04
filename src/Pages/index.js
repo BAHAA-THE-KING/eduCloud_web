@@ -23,5 +23,6 @@ import ViewClassData from "./ViewClassData/ViewClassData";
 import AddSubject from "./AddSubject/AddSubject";
 import ViewSubjects from "./ViewSubjects/ViewSubjects";
 import ViewSubjectData from "./ViewSubjectData/ViewSubjectData";
+import AddAbilityTestForm from "./AddAbilityTestForm/AddAbilityTestForm";
 
-export { AddEmployee, AddSupervisorData, AddTeacherData, Header, Home, Login, ViewEmployees, ViewEmployeeData, AddTestForm, ViewTestForms, ViewTestFormData, ViewStudents, AddTest, ViewTests, ViewTestData, AddStudent, AddGrade, ViewGrades, ViewGradeData, AddClass, ViewClasses, ViewClassData, AddSubject, ViewSubjects, ViewSubjectData };
+export { AddEmployee, AddSupervisorData, AddTeacherData, Header, Home, Login, ViewEmployees, ViewEmployeeData, AddTestForm, ViewTestForms, ViewTestFormData, ViewStudents, AddTest, ViewTests, ViewTestData, AddStudent, AddGrade, ViewGrades, ViewGradeData, AddClass, ViewClasses, ViewClassData, AddSubject, ViewSubjects, ViewSubjectData, AddAbilityTestForm };

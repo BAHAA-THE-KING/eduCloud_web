@@ -10,7 +10,7 @@ function ViewSubjects() {
    const [previous, setPrevious] = useState(null);
    const [data, setData] = useState([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]);
    const [selected, setSelected] = useState(-1);
-   const [classes, setClasses] = useState([]);
+   const [subjects, setSubjects] = useState([]);
 
    useEffect(
       () =>
@@ -34,7 +34,7 @@ function ViewSubjects() {
                      );
                   }
                }
-               setClasses(temp);
+               setSubjects(temp);
                data.length ? setCurrent(1) : setCurrent(0);
             }
          ),
@@ -43,11 +43,11 @@ function ViewSubjects() {
    useEffect(
       () => {
          setPrevious(current - 1);
-         const next = current * 10 >= classes.length ? 0 : current + 1;
+         const next = current * 10 >= subjects.length ? 0 : current + 1;
          setNext(next);
-         const start = (current - 1) * Math.floor(classes.length / 10) * 10;
-         const end = (current - 1) * Math.floor(classes.length / 10) * 10 + 10;
-         const temp = classes.slice(start, end);
+         const start = (current - 1) * Math.floor(subjects.length / 10) * 10;
+         const end = (current - 1) * Math.floor(subjects.length / 10) * 10 + 10;
+         const temp = subjects.slice(start, end);
          while (temp.length < 10) temp.push({});
          setData(temp);
       },

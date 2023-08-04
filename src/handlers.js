@@ -32,6 +32,10 @@ const ADDSUBJECT = "/subject/add";
 const VIEWSUBJECTS = "/subject";
 const VIEWSUBJECTDATA = "/subject/view/";
 
+const ADDABILITYTESTFORM = "/ability-test-form/add";
+const VIEWABILITYTESTFORMS = "/ability-test-form";
+const VIEWABILITYTESTFORMDATA = "/ability-test-form/view/";
+
 const host = "http://127.0.0.1:8000/V1.0";
 
 function getToken() {
@@ -125,47 +129,6 @@ function getGrades(func) {
 
 function getGradeData(id, func) {
    const path = "/principal/viewGrade/" + id;
-
-   const url = host + path;
-
-   const method = "GET";
-
-   const headers = {
-      "Content-Type": "application/json",
-      "Accept": "application/json",
-      "Authorization": "Bearer " + getToken()
-   };
-
-   fetch(url, { method, headers })
-      .then(
-         e => {
-            if (e.status >= 500) {
-               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
-               return;
-            }
-            return e.json();
-         }
-      )
-      .then(
-         e => {
-            if (e["message"] === "Unauthenticated.") {
-               goTo(LOGIN);
-               return;
-            } else if (e.message === "Success!") {
-               func(e.data);
-            }
-         }
-      )
-      .catch(
-         err => {
-            alert("An Error Occured.");
-            console.log(err);
-         }
-      );
-}
-
-function getClassData(id, func) {
-   const path = "/principal/viewClass/" + id;
 
    const url = host + path;
 
@@ -1160,6 +1123,59 @@ function addSubject(name, grade, maxMark, passMark, notes, func) {
       );
 }
 
+function addAbilityTestForm(subject, name, isEntry, sections, func) {
+   const path = "/principal/addAbilityTestForm/" + subject;
+
+   const url = host + path;
+
+   const method = "POST";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   const body = JSON.stringify(
+      {
+         "title": name,
+         "is_entry_test": isEntry,
+         "sections": sections,
+      }
+   );
+
+   fetch(url, { method, headers, body })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e.message === "Classes created successfully") {
+               alert("Success!");
+               func();
+            } else if (e.message === "This grade is already in the system") {
+               alert(e.errors.name);
+            } else if (e.message === "The name field is required.") {
+               alert(e.errors.name);
+            } else {
+               alert(e.message);
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
 function editEmployee(id, name, surname, func) {
    const path = "/principal/editEmployee/" + id;
 
@@ -1414,7 +1430,7 @@ function editSubject(id, name, maxMark, passMark, notes, func) {
       "Accept": "application/json",
       "Authorization": "Bearer " + getToken()
    };
-console.log(id, name, maxMark, passMark, notes);
+   console.log(id, name, maxMark, passMark, notes);
    const body = JSON.stringify(
       {
          "name": name,
@@ -1502,7 +1518,7 @@ function removeEmployeeRole(id, role, func) {
       );
 }
 
-export { goTo, HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEES, ADDSTUDENT, VIEWEMPLOYEEDATA, ADDTESTFORM, VIEWTESTFORMS, VIEWTESTFORMDATA, VIEWSTUDENTS, VIEWSTUDENTDATA, ADDTEST, VIEWTESTS, VIEWTESTDATA, ADDGRADE, VIEWGRADES, VIEWGRADEDATA, ADDCLASS, VIEWCLASSES, VIEWCLASSDATA, ADDSUBJECT, VIEWSUBJECTS, VIEWSUBJECTDATA };
+export { goTo, HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEES, ADDSTUDENT, VIEWEMPLOYEEDATA, ADDTESTFORM, VIEWTESTFORMS, VIEWTESTFORMDATA, VIEWSTUDENTS, VIEWSTUDENTDATA, ADDTEST, VIEWTESTS, VIEWTESTDATA, ADDGRADE, VIEWGRADES, VIEWGRADEDATA, ADDCLASS, VIEWCLASSES, VIEWCLASSDATA, ADDSUBJECT, VIEWSUBJECTS, VIEWSUBJECTDATA, ADDABILITYTESTFORM, VIEWABILITYTESTFORMS, VIEWABILITYTESTFORMDATA };
 export { logIn, getRoles, getSubjects };
 export { addEmployee, addTeacher, addSupervisor, addEmployeeRole, getEmployees, getEmployeeData, editEmployee, removeEmployeeRole };
 export { addTestForm, getTestForms, getTestFormData, editTestForm };
@@ -1511,3 +1527,4 @@ export { addStudent, addAbsents, getStudents };
 export { addGrade, getGrades, getGradeData, editGrade };
 export { addClass, editClass };
 export { addSubject, editSubject };
+export { addAbilityTestForm };
