@@ -11,12 +11,17 @@ function TextInput(props) {
             disabled={!(props.editable ?? true)}
             placeholder={props.hint}
             value={props.defaultValue ?? ""}
-            onChange={() => { }}
-            onInput={e => { props.inputHook(e.target.value) }}
+            onChange={e => { props.inputHook(props.type === "checkbox" ? e.target.checked : e.target.value) }}
+            checked={props.type === "checkbox" ? props.defaultValue : false}
+            onInput={() => { }}
             onKeyDown={
                e =>
                   (e.key === 'Enter') ?
-                     props.enterHook(e.target.value) : null
+                     (
+                        props.enterHook ?
+                           props.enterHook(e.target.value)
+                           : ""
+                     ) : null
             }
          />
          <img

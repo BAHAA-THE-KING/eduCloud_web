@@ -24,5 +24,6 @@ import AddSubject from "./AddSubject/AddSubject";
 import ViewSubjects from "./ViewSubjects/ViewSubjects";
 import ViewSubjectData from "./ViewSubjectData/ViewSubjectData";
 import AddAbilityTestForm from "./AddAbilityTestForm/AddAbilityTestForm";
+import Calendar from "./Calendar/Calendar";
 
-export { AddEmployee, AddSupervisorData, AddTeacherData, Header, Home, Login, ViewEmployees, ViewEmployeeData, AddTestForm, ViewTestForms, ViewTestFormData, ViewStudents, AddTest, ViewTests, ViewTestData, AddStudent, AddGrade, ViewGrades, ViewGradeData, AddClass, ViewClasses, ViewClassData, AddSubject, ViewSubjects, ViewSubjectData, AddAbilityTestForm };
+export { AddEmployee, AddSupervisorData, AddTeacherData, Header, Home, Login, ViewEmployees, ViewEmployeeData, AddTestForm, ViewTestForms, ViewTestFormData, ViewStudents, AddTest, ViewTests, ViewTestData, AddStudent, AddGrade, ViewGrades, ViewGradeData, AddClass, ViewClasses, ViewClassData, AddSubject, ViewSubjects, ViewSubjectData, AddAbilityTestForm, Calendar };

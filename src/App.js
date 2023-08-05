@@ -1,7 +1,7 @@
 import './App.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { Login, Header, Home, AddEmployee, AddTeacherData, AddSupervisorData, ViewEmployees, ViewEmployeeData, AddTestForm, ViewTestForms, ViewTestFormData, ViewStudents, AddTest, ViewTests, ViewTestData, AddStudent, AddGrade, ViewGradeData, AddClass, ViewGrades, ViewClasses, ViewClassData, AddSubject, ViewSubjects, ViewSubjectData, AddRole, AddAbilityTestForm } from './Pages';
-import { ADDEMPLOYEE, ADDSTUDENT, ADDSUPERVISOR, ADDTEACHER, ADDTEST, ADDTESTFORM, HOME, LOGIN, VIEWEMPLOYEES, VIEWEMPLOYEEDATA, VIEWSTUDENTS, VIEWTESTDATA, VIEWTESTFORMDATA, VIEWTESTFORMS, VIEWTESTS, ADDGRADE, VIEWGRADES, VIEWGRADEDATA, ADDCLASS, VIEWCLASSES, VIEWCLASSDATA, ADDSUBJECT, VIEWSUBJECTS, VIEWSUBJECTDATA, ADDROLE, VIEWROLES, VIEWROLEDATA, ADDABILITYTESTFORM, VIEWABILITYTESTFORMS, VIEWABILITYTESTFORMDATA } from "./handlers"
+import { Login, Header, Home, AddEmployee, AddTeacherData, AddSupervisorData, ViewEmployees, ViewEmployeeData, AddTestForm, ViewTestForms, ViewTestFormData, ViewStudents, AddTest, ViewTests, ViewTestData, AddStudent, AddGrade, ViewGradeData, AddClass, ViewGrades, ViewClasses, ViewClassData, AddSubject, ViewSubjects, ViewSubjectData, AddAbilityTestForm, Calendar } from './Pages';
+import { ADDEMPLOYEE, ADDSTUDENT, ADDSUPERVISOR, ADDTEACHER, ADDTEST, ADDTESTFORM, HOME, LOGIN, VIEWEMPLOYEES, VIEWEMPLOYEEDATA, VIEWSTUDENTS, VIEWTESTDATA, VIEWTESTFORMDATA, VIEWTESTFORMS, VIEWTESTS, ADDGRADE, VIEWGRADES, VIEWGRADEDATA, ADDCLASS, VIEWCLASSES, VIEWCLASSDATA, ADDSUBJECT, VIEWSUBJECTS, VIEWSUBJECTDATA, ADDABILITYTESTFORM, CALENDAR } from "./handlers"
 
 const router = createBrowserRouter([
   {
@@ -105,12 +105,8 @@ const router = createBrowserRouter([
     element: <><Header active="tests" /><AddAbilityTestForm /></>
   },
   {
-    path: VIEWABILITYTESTFORMS,
-    //element: <><Header active="tests" /><VieAbilitywTestForms /></>
-  },
-  {
-    path: VIEWABILITYTESTFORMDATA + ":id",
-    //element: <><Header active="tests" /><VieAbilitywTestFormData /></>
+    path: CALENDAR,
+    element: <><Header active="calendar" /><Calendar /></>
   },
 ]);
 

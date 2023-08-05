@@ -33,8 +33,8 @@ const VIEWSUBJECTS = "/subject";
 const VIEWSUBJECTDATA = "/subject/view/";
 
 const ADDABILITYTESTFORM = "/ability-test-form/add";
-const VIEWABILITYTESTFORMS = "/ability-test-form";
-const VIEWABILITYTESTFORMDATA = "/ability-test-form/view/";
+
+const CALENDAR = "/calendar";
 
 const host = "http://127.0.0.1:8000/V1.0";
 
@@ -524,6 +524,46 @@ function getStudents(params, func) {
             if (e["message"] === "Unauthenticated.") {
                goTo(LOGIN);
             } else if (e.message === "results found successfully") {
+               func(e.data);
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
+function getBaseCalendar(subjectId, func) {
+   const path = "/supervisor/getCalendarOfSubject/" + subjectId;
+
+   const url = host + path;
+
+   const method = "GET";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   fetch(url, { method, headers })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e["message"] === "Unauthenticated.") {
+               goTo(LOGIN);
+            } else if (e.message === "calendar retrieved successfully") {
                func(e.data);
             }
          }
@@ -1208,6 +1248,60 @@ function addAbilityTestForm(subject, name, isEntry, sections, func) {
       );
 }
 
+function addCalendar(subject, title, date, is_test, func) {
+   const path = "/principal/addBaseCalendar/";
+
+   const url = host + path;
+
+   const method = "POST";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+   console.log(+is_test);
+
+   const body = JSON.stringify(
+      {
+         "title": title,
+         "is_test": +is_test,
+         "subject_id": subject,
+         "grade_id": 1,
+         "date": date
+      }
+   );
+
+   fetch(url, { method, headers, body })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e.message === "plan created successfully") {
+               alert("Success!");
+               func(e.data);
+            } else if (e.message === "this title already exists with this subject and class") {
+               alert(e.errors.subject_id);
+            } else {
+               alert(e.message);
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
 function editEmployee(id, name, surname, func) {
    const path = "/principal/editEmployee/" + id;
 
@@ -1462,7 +1556,6 @@ function editSubject(id, name, maxMark, passMark, notes, func) {
       "Accept": "application/json",
       "Authorization": "Bearer " + getToken()
    };
-   console.log(id, name, maxMark, passMark, notes);
    const body = JSON.stringify(
       {
          "name": name,
@@ -1485,6 +1578,58 @@ function editSubject(id, name, maxMark, passMark, notes, func) {
       .then(
          e => {
             if (e.message === "Success!") {
+               alert("Success!");
+               func();
+            } else if (e.message === "Failed. The grade you entered is already in the system!") {
+               alert("The name has already been taken.");
+            } else {
+               alert(e.message);
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
+function editCalendar(id, title, date, is_test, func) {
+   const path = "/principal/editBaseCalendar/" + id;
+
+   const url = host + path;
+
+   const method = "POST";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+   const body = JSON.stringify(
+      {
+         "title": title,
+         "date": date,
+         "is_test": is_test,
+         "subject_id": 1,
+         "grade_id": 1
+      }
+   );
+
+   fetch(url, { method, headers, body })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e.message === "plan updated successfully") {
                alert("Success!");
                func();
             } else if (e.message === "Failed. The grade you entered is already in the system!") {
@@ -1555,7 +1700,7 @@ function removeEmployeeRole(id, roles, func) {
       );
 }
 
-export { goTo, HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEES, ADDSTUDENT, VIEWEMPLOYEEDATA, ADDTESTFORM, VIEWTESTFORMS, VIEWTESTFORMDATA, VIEWSTUDENTS, VIEWSTUDENTDATA, ADDTEST, VIEWTESTS, VIEWTESTDATA, ADDGRADE, VIEWGRADES, VIEWGRADEDATA, ADDCLASS, VIEWCLASSES, VIEWCLASSDATA, ADDSUBJECT, VIEWSUBJECTS, VIEWSUBJECTDATA, ADDABILITYTESTFORM, VIEWABILITYTESTFORMS, VIEWABILITYTESTFORMDATA };
+export { goTo, HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEES, ADDSTUDENT, VIEWEMPLOYEEDATA, ADDTESTFORM, VIEWTESTFORMS, VIEWTESTFORMDATA, VIEWSTUDENTS, VIEWSTUDENTDATA, ADDTEST, VIEWTESTS, VIEWTESTDATA, ADDGRADE, VIEWGRADES, VIEWGRADEDATA, ADDCLASS, VIEWCLASSES, VIEWCLASSDATA, ADDSUBJECT, VIEWSUBJECTS, VIEWSUBJECTDATA, ADDABILITYTESTFORM, CALENDAR };
 export { logIn, getRoles, getSubjects };
 export { addEmployee, addTeacher, addSupervisor, addEmployeeRole, getEmployees, getEmployeeData, editEmployee, removeEmployeeRole };
 export { addTestForm, getTestForms, getTestFormData, editTestForm };
@@ -1565,3 +1710,4 @@ export { addGrade, getGrades, getGradeData, editGrade };
 export { addClass, editClass };
 export { addSubject, getSubjectData, editSubject };
 export { addAbilityTestForm };
+export { addCalendar, getBaseCalendar, editCalendar };
