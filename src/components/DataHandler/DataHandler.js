@@ -5,13 +5,14 @@ import { DataChunck } from '..';
 function DataHandler(props) {
    const gradesWithNames = {};
    props.allGrades.map(e => gradesWithNames[e.id] = e.name);
-   
+
    return (
       <div className='datahandler'>
          {
             props.selectedData.map(
                (e, i) => {
                   const grade = props.allGrades.filter(elm => elm.id === e.grade_id)[0];
+                  if (!grade) return;
                   const subject = grade.subjects.filter(elm => elm.id === e.subject_id)[0]?.name;
                   const classes = grade.g_classes.map(elm => (e.classes_id.indexOf(elm.id + "") > -1) ? elm.name : undefined).filter(e => e);
 

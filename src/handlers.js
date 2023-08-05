@@ -73,7 +73,6 @@ function getRoles(func) {
          e => {
             if (e["message"] === "Unauthenticated.") {
                goTo(LOGIN);
-               return;
             }
             func(e);
          }
@@ -113,7 +112,6 @@ function getGrades(func) {
          e => {
             if (e["message"] === "Unauthenticated.") {
                goTo(LOGIN);
-               return;
             } else if (e.message === "Success!") {
                func(e.data);
             }
@@ -154,7 +152,6 @@ function getGradeData(id, func) {
          e => {
             if (e["message"] === "Unauthenticated.") {
                goTo(LOGIN);
-               return;
             } else if (e.message === "Success!") {
                func(e.data);
             }
@@ -195,7 +192,47 @@ function getSubjects(func) {
          e => {
             if (e["message"] === "Unauthenticated.") {
                goTo(LOGIN);
+            } else if (e.message === "Success!") {
+               func(e.data);
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
+function getSubjectData(id, func) {
+   const path = "/principal/viewSubject/" + id;
+
+   const url = host + path;
+
+   const method = "GET";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   fetch(url, { method, headers })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
                return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            func(e);
+            if (e["message"] === "Unauthenticated.") {
+               goTo(LOGIN);
             } else if (e.message === "Success!") {
                func(e.data);
             }
@@ -322,7 +359,6 @@ function getTestForms(func) {
          e => {
             if (e["message"] === "Unauthenticated.") {
                goTo(LOGIN);
-               return;
             } else if (e.message === "Success!") {
                func(e.data);
             }
@@ -363,7 +399,6 @@ function getTestFormData(id, func) {
          e => {
             if (e["message"] === "Unauthenticated.") {
                goTo(LOGIN);
-               return;
             } else if (e.message === "Success!") {
                func(e.data);
             } else if (e.message === "this type id is not valid") {
@@ -406,7 +441,6 @@ function getTests(params, func) {
          e => {
             if (e["message"] === "Unauthenticated.") {
                goTo(LOGIN);
-               return;
             } else if (e.message === "tests found successfully") {
                func(e.data);
             }
@@ -447,7 +481,6 @@ function getTestData(id, func) {
          e => {
             if (e["message"] === "Unauthenticated.") {
                goTo(LOGIN);
-               return;
             } else if (e.message === "Success!") {
                func(e.data);
             } else {
@@ -490,7 +523,6 @@ function getStudents(params, func) {
          e => {
             if (e["message"] === "Unauthenticated.") {
                goTo(LOGIN);
-               return;
             } else if (e.message === "results found successfully") {
                func(e.data);
             }
@@ -692,7 +724,7 @@ function addSupervisor(employeeId, arrayOfData, func) {
       );
 }
 
-function addEmployeeRole(id, role, func) {
+function addEmployeeRole(id, roles, func) {
    const path = "/principal/assignRolesToEmployee/";
 
    const url = host + path + id;
@@ -705,7 +737,7 @@ function addEmployeeRole(id, role, func) {
       "Authorization": "Bearer " + getToken()
    };
 
-   const body = JSON.stringify({ "roles": [role] });
+   const body = JSON.stringify({ "roles": roles });
 
    fetch(url, { method, headers, body })
       .then(
@@ -1470,7 +1502,7 @@ function editSubject(id, name, maxMark, passMark, notes, func) {
       );
 }
 
-function removeEmployeeRole(id, role, func) {
+function removeEmployeeRole(id, roles, func) {
    const path = "/principal/removeRolesFromEmployee/";
 
    const url = host + path + id;
@@ -1483,7 +1515,12 @@ function removeEmployeeRole(id, role, func) {
       "Authorization": "Bearer " + getToken()
    };
 
-   const body = JSON.stringify({ "roles": [role] });
+   const body = JSON.stringify(
+      {
+         "roles": [...roles]
+      }
+   );
+   console.log(body);
 
    fetch(url, { method, headers, body })
       .then(
@@ -1526,5 +1563,5 @@ export { addTest, getTests, getTestData, editTest };
 export { addStudent, addAbsents, getStudents };
 export { addGrade, getGrades, getGradeData, editGrade };
 export { addClass, editClass };
-export { addSubject, editSubject };
+export { addSubject, getSubjectData, editSubject };
 export { addAbilityTestForm };

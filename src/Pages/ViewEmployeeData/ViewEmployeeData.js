@@ -55,6 +55,8 @@ function ViewEmployeeData() {
    let [name, setName] = useState("");
    let [surName, setSurName] = useState("");
    let [selectedRoles, setSelectedRoles] = useState([]);
+   let [deletedRoles, setDeletedRoles] = useState([]);
+   let [addedRoles, setAddedRoles] = useState([]);
 
    useEffect(
       function () {
@@ -68,6 +70,7 @@ function ViewEmployeeData() {
          handler.getSubjects(
             grades => {
                setAllGrades(grades);
+               console.log(grades);
             }
          );
 
@@ -86,7 +89,7 @@ function ViewEmployeeData() {
                                  setTeacherData(e.teaches.map(e => { return { grade_id: e.grade_id, subject_id: e.subject_id, classes_id: [e.class_id + ""] }; }))
                                  : (
                                     e.ofClasses ?
-                                       setSupervisorData(e.ofClasses.map(e => { console.log(e.id); return { grade_id: e.grade_id, classes_id: [e.id + ""] }; }))
+                                       setSupervisorData(e.ofClasses.map(e => { return { grade_id: e.grade_id, classes_id: [e.id + ""] }; }))
                                        : ""
                                  )
                            )
@@ -102,7 +105,7 @@ function ViewEmployeeData() {
    const [isEdit, setIsEdit] = useState(false);
 
    const [setEdit, setSetEdit] = useState(0);
-   if (setEdit === 3) {
+   if (setEdit === 4) {
       setSetEdit(0);
       setIsEdit(false);
    }
@@ -142,19 +145,18 @@ function ViewEmployeeData() {
                                                 src="Icons/deleteRed.svg"
                                                 onClick={
                                                    () => {
-                                                      handler.removeEmployeeRole(
-                                                         id,
-                                                         e,
-                                                         () => {
-                                                            if (e === "teacher") {
-                                                               setTeacherData(false);
-                                                            } else if (e === "supervisor") {
-                                                               setSupervisorData(false);
-                                                            }
-                                                            const temp = Object.fromEntries(Object.entries(selectedRoles).filter(elm => elm[0] !== e));
-                                                            setSelectedRoles(temp);
-                                                         }
-                                                      );
+                                                      if (e === "teacher") {
+                                                         setTeacherData(false);
+                                                      } else if (e === "supervisor") {
+                                                         setSupervisorData(false);
+                                                      }
+                                                      const temp = Object.fromEntries(Object.entries(selectedRoles).filter(elm => elm[0] !== e));
+                                                      setSelectedRoles(temp);
+                                                      if (addedRoles.indexOf(e) != -1) {
+                                                         setAddedRoles(addedRoles.filter(ee => e !== ee));
+                                                      } else {
+                                                         setDeletedRoles([...deletedRoles, e]);
+                                                      }
                                                    }
                                                 }
                                              />
@@ -250,13 +252,7 @@ function ViewEmployeeData() {
                                  text="اختر الدور"
                                  options={allRoles}
                                  dataHook={
-                                    rid => {
-                                       handler.addEmployeeRole(
-                                          id,
-                                          rid,
-                                          () => { }
-                                       );
-                                    }
+                                    rid => { }
                                  }
                                  textHook={
                                     name => {
@@ -272,9 +268,12 @@ function ViewEmployeeData() {
                                        }
                                        const temp = { ...selectedRoles };
                                        temp[name] = val;
-                                       console.log(temp)
-                                       console.log(selectedRoles)
                                        setSelectedRoles(temp);
+                                       if (deletedRoles.indexOf(name) != -1) {
+                                          setDeletedRoles(deletedRoles.filter(ee => name !== ee));
+                                       } else {
+                                          setAddedRoles([...addedRoles, name]);
+                                       }
                                     }
                                  }
                               />
@@ -301,6 +300,31 @@ function ViewEmployeeData() {
                                  setSetEdit(setEdit + 1);
                               }
                            );
+
+                           if (deletedRoles.length !== 0) {
+                              console.log(deletedRoles)
+                              handler.removeEmployeeRole(
+                                 id,
+                                 deletedRoles,
+                                 () => {
+                                    setSetEdit(setEdit + 1);
+                                 }
+                              );
+                           } else {
+                              setSetEdit(setEdit + 1);
+                           }
+
+                           if (addedRoles.length !== 0) {
+                              handler.addEmployeeRole(
+                                 id,
+                                 addedRoles,
+                                 () => {
+                                    setSetEdit(setEdit + 1);
+                                 }
+                              );
+                           } else {
+                              setSetEdit(setEdit + 1);
+                           }
 
                            if (teacherData !== false) {
                               handler.addTeacher(

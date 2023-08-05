@@ -1,6 +1,6 @@
 import "./ViewSubjectData.css";
 
-import { TextInput, Title, ButtonWithIcon } from "../../components";
+import { TextInput, Title, ButtonWithIcon, Button } from "../../components";
 import { useEffect, useState } from "react";
 import * as handler from '../../handlers';
 import { useParams } from "react-router-dom";
@@ -13,23 +13,24 @@ function ViewSubjectData() {
    let [passMark, setPassMark] = useState("");
    let [notes, setNotes] = useState("");
    let [gradeName, setGradeName] = useState("");
+   let [teachers, setTeachers] = useState([]);
 
    useEffect(
       function () {
-         handler.getSubjects(
-            data => {
-               for (const k of data) {
-                  for (const n of k.subjects) {
-                     if (n.id == id) {
-                        setName(n.name);
-                        setMaxMark(n.max_mark);
-                        setPassMark(n.min_mark);
-                        setNotes(n.notes);
-                        setGradeName(k.name);
-                        break;
-                     }
+         handler.getSubjectData(
+            id,
+            subject => {
+               setName(subject.name);
+               setMaxMark(subject.max_mark);
+               setPassMark(subject.min_mark);
+               handler.getGradeData(
+                  subject.grade_id,
+                  grade => {
+                     setGradeName(grade.name);
                   }
-               }
+               );
+               setNotes(subject.notes);
+               setTeachers(subject.teachers);
             }
          )
       },
@@ -68,6 +69,25 @@ function ViewSubjectData() {
                   <TextInput type="text" editable={isEdit} defaultValue={notes} inputHook={setNotes} hint="ملاحظات عن المادة" />
                   <br />
                   <label>{"الصف الذي تتبع له : " + gradeName}</label>
+                  <br />
+                  <br />
+                  <label>{"المدرسين : "}</label>
+                  <br />
+                  {
+                     teachers.map(
+                        e =>
+                           <>
+                              <label>{"الاستاذ : " + e.first_name + " " + e.last_name}</label>
+                              <br />
+                              <Button
+                                 text="عرض الملف الشخصي"
+                                 className="show"
+                                 hook={() => handler.goTo(handler.VIEWEMPLOYEEDATA + e.id)}
+                              />
+                              <br />
+                           </>
+                     )
+                  }
                </div>
             </div>
             <div className='btns'>

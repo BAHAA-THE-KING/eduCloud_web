@@ -22,14 +22,7 @@ function AddAbilityTestForm() {
                      temp.push(
                         {
                            id: n.id,
-                           name: n.name,
-                           maxMark: n.max_mark,
-                           passMark: n.min_mark,
-                           notes: n.notes,
-                           grade: {
-                              id: k.id,
-                              name: k.name
-                           }
+                           name: n.name+" للصف "+k.name,
                         }
                      );
                   }

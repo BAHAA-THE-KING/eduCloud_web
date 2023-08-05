@@ -41,7 +41,7 @@ function AddSubject() {
                <br />
                <label>{"الملاحظات : "}</label>
                <br />
-               <TextInput type="number" defaultValue={notes} inputHook={setNotes} hint="ملاحظات" />
+               <TextInput defaultValue={notes} inputHook={setNotes} hint="ملاحظات" />
                <br />
                <label>{"الصف الذي تتبع له : " + gradeName}</label>
                <br />

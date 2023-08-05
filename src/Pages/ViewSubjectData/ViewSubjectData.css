@@ -31,12 +31,17 @@ div.viewsubjectdata>div.content>div.frm {
    justify-content: flex-start;
    align-items: flex-start;
    margin: 125px 200px 0 0;
+   padding-bottom: 30px;
 }
 
 div.viewsubjectdata>div.content>div.frm>div>label {
    font-size: 27px;
    float: right;
    color: #061E45;
+}
+
+div.viewsubjectdata>div.content>div.frm>div>.show {
+   width: auto !important;
 }
 
 div.viewsubjectdata>div.content>div.frm input[type=text],
