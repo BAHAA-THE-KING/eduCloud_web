@@ -56,13 +56,13 @@ function ViewTests() {
             return;
          }
          handlers.getTests(
-            ("page=" + current) +
-            ((!!search) ? ("&title=" + search) : "") +
-            ((!!searchType) ? ("&type_id=" + searchType) : "") +
-            ((!!searchSubject) ? ("&subject_id=" + searchSubject) : "") +
-            ((!!searchClass) ? ("&g_class_id=" + searchClass) : "") +
-            ((!!searchStartDate) ? ("&start_date=" + searchStartDate) : "") +
-            ((!!searchEndDate) ? ("&end_date=" + searchEndDate) : ""),
+            current,
+            search,
+            searchType,
+            searchSubject,
+            searchClass,
+            searchStartDate,
+            searchEndDate,
             res => {
                const temp = res.current_page;
                setCurrent(temp);
@@ -322,13 +322,13 @@ function ViewTests() {
                            return;
                         }
                         handlers.getTests(
-                           ("page=" + previous) +
-                           ((!!search) ? ("&title=" + search) : "") +
-                           ((!!searchType) ? ("&type_id=" + searchType) : "") +
-                           ((!!searchSubject) ? ("&subject_id=" + searchSubject) : "") +
-                           ((!!searchClass) ? ("&g_class_id=" + searchClass) : "") +
-                           ((!!searchStartDate) ? ("&start_date=" + searchStartDate) : "") +
-                           ((!!searchEndDate) ? ("&end_date=" + searchEndDate) : ""),
+                           previous,
+                           search,
+                           searchType,
+                           searchSubject,
+                           searchClass,
+                           searchStartDate,
+                           searchEndDate,
                            res => {
                               const temp = res.current_page;
                               setCurrent(temp);
@@ -360,13 +360,13 @@ function ViewTests() {
                            return;
                         }
                         handlers.getTests(
-                           ("page=" + next) +
-                           ((!!search) ? ("&title=" + search) : "") +
-                           ((!!searchType) ? ("&type_id=" + searchType) : "") +
-                           ((!!searchSubject) ? ("&subject_id=" + searchSubject) : "") +
-                           ((!!searchClass) ? ("&g_class_id=" + searchClass) : "") +
-                           ((!!searchStartDate) ? ("&start_date=" + searchStartDate) : "") +
-                           ((!!searchEndDate) ? ("&end_date=" + searchEndDate) : ""),
+                           next,
+                           search,
+                           searchType,
+                           searchSubject,
+                           searchClass,
+                           searchStartDate,
+                           searchEndDate,
                            res => {
                               const temp = res.current_page;
                               setCurrent(temp);

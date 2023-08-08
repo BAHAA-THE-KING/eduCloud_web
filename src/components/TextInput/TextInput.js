@@ -18,7 +18,7 @@ function TextInput(props) {
                e =>
                   (e.key === 'Enter') ?
                      (
-                        props.enterHook ?
+                        !!props.enterHook ?
                            props.enterHook(e.target.value)
                            : ""
                      ) : null

@@ -37,7 +37,10 @@ function ViewStudents() {
             return;
          }
          handlers.getStudents(
-            ("search=" + search) + ("&page=" + current) + ((!!searchGrade) ? ("&grade_id=" + searchGrade) : "") + ((!!searchClass) ? ("&class_id=" + searchClass) : ""),
+            search,
+            current,
+            searchGrade,
+            searchClass,
             res => {
                const temp = res.current_page;
                setCurrent(temp);
@@ -57,13 +60,18 @@ function ViewStudents() {
          <div className='content'>
             <div className='control'>
                <ButtonWithIcon
-                  text="إضافة طالب"
+                  text="تسجيل طالب"
                   hook={() => handlers.goTo(handlers.ADDSTUDENT)}
                   src="Icons/personAdd.svg"
                />
                <ButtonWithIcon
                   text="عرض صفحة الطالب"
                   hook={() => (!!selected) ? handlers.goTo(handlers.VIEWSTUDENTDATA + selected) : alert("اختر طالباً لعرض معلوماته.")}
+                  src="Icons/person.svg"
+               />
+               <ButtonWithIcon
+                  text="قبول الطلاب"
+                  hook={() => handlers.goTo(handlers.ACCEPTSTUDENTS)}
                   src="Icons/person.svg"
                />
                {/*<ButtonWithIcon
@@ -75,7 +83,6 @@ function ViewStudents() {
                <TextInput defaultValue={searchKeyword} hint="بحث" inputHook={setSearchKeyword} enterHook={setSearch} />
                <MultipletButton
                   text="اختر الصف"
-                  dontClose={true}
                   open={true}
                   options={grades}
                   dataHook={
@@ -99,7 +106,6 @@ function ViewStudents() {
                />
                <MultipletButton
                   text="اختر الشعبة"
-                  dontClose={true}
                   open={true}
                   options={classes}
                   dataHook={
@@ -292,7 +298,10 @@ function ViewStudents() {
                            return;
                         }
                         handlers.getStudents(
-                           ("search=" + search) + ("&page=" + previous) + ((!!searchGrade) ? ("&grade_id=" + searchGrade) : "") + ((!!searchClass) ? ("&class_id=" + searchClass) : ""),
+                           search,
+                           previous,
+                           searchGrade,
+                           searchClass,
                            res => {
                               const temp = res.current_page;
                               setCurrent(temp);
@@ -324,7 +333,10 @@ function ViewStudents() {
                            return;
                         }
                         handlers.getStudents(
-                           ("search=" + search) + ("&page=" + next) + ((!!searchGrade) ? ("&grade_id=" + searchGrade) : "") + ((!!searchClass) ? ("&class_id=" + searchClass) : ""),
+                           search,
+                           next,
+                           searchGrade,
+                           searchClass,
                            res => {
                               const temp = res.current_page;
                               setCurrent(temp);

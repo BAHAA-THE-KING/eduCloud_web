@@ -160,13 +160,6 @@ function AddTest() {
                   hook={
                      e => {
                         e.preventDefault();
-                        console.log("title = ", title);
-                        console.log("passMark = ", passMark);
-                        console.log("maxMark = ", maxMark);
-                        console.log("type = ", type);
-                        console.log("date = ", date);
-                        console.log("theClass = ", theClass);
-                        console.log("subject = ", subject);
                         handlers.addTest(
                            title,
                            passMark,

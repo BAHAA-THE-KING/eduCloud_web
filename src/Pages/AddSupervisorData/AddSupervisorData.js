@@ -31,11 +31,9 @@ function AddTeacherData() {
    }
 
    const [allGrades, setAllGrades] = useState([]);
-   console.log("allGrades", allGrades);
 
    //[{ grade_id, classes_id: [] }]
    const [selectedData, setSelectedData] = useState([]);
-   console.log("selectedData", selectedData);
 
    return (
       <div className="addsupervisor">

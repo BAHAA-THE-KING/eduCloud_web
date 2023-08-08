@@ -70,7 +70,6 @@ function ViewEmployeeData() {
          handler.getSubjects(
             grades => {
                setAllGrades(grades);
-               console.log(grades);
             }
          );
 
@@ -302,7 +301,6 @@ function ViewEmployeeData() {
                            );
 
                            if (deletedRoles.length !== 0) {
-                              console.log(deletedRoles)
                               handler.removeEmployeeRole(
                                  id,
                                  deletedRoles,

@@ -14,7 +14,7 @@ dontClose
 */
 
 function MultipletButton(props) {
-   const [open, setOpen] = useState(props.editable && (props.open ?? false));
+   const [open, setOpen] = useState((props.editable ?? true) && (props.open ?? false));
    const [selected, setSelected] = useState("");
 
    return (
@@ -25,7 +25,7 @@ function MultipletButton(props) {
                : ""
          }
          {
-            props.editable &&
+            (props.editable ?? true) &&
             <div className='selectlist' style={(open) ? { height: Math.ceil(props.options.length / 2) * 60 + "px" } : null}>
                {
                   props.options.map((e, i) =>

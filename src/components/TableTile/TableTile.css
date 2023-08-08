@@ -45,6 +45,10 @@ div.tabletile>div.inner {
    scrollbar-width: none;
 }
 
+div.tabletile>div.inner.editable {
+   min-width: 75px;
+}
+
 div.tabletile>div.inner::-webkit-scrollbar {
    display: none;
 }

@@ -148,7 +148,6 @@ function Calendar() {
                                        setTitle(e.title);
                                        setDate(e.date);
                                        setIsTest(isTest);
-                                       console.log(isTest);
                                        setId(e.id);
                                     }
                                  }
