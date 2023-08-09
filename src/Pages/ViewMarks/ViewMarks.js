@@ -140,12 +140,13 @@ function ViewMarks() {
                   text="إدخال"
                   hook={
                      () => {
-                        const temp = Object.entries(marks)
+                        let temp = [...allData];
+                        const temp1 = Object.entries(marks)
                            .map(
                               e => {
                                  if ((e[1] ?? -1) === -1)
                                     return undefined;
-                                 setAllData(allData.filter(ee => ee.id != e[0]));
+                                 temp = temp.filter(ee => ee.id != e[0]);
                                  setCurrent(1);
                                  return {
                                     "student_id": e[0],
@@ -156,9 +157,11 @@ function ViewMarks() {
                            .filter(e => e);
                         handlers.addMarks(
                            test,
-                           temp,
-                           res => {
-                              console.log(res);
+                           temp1,
+                           () => {
+                              console.log(allData);
+                              console.log(temp);
+                              setAllData(temp);
                            }
                         );
                      }
@@ -352,12 +355,22 @@ function ViewMarks() {
                                  }
                                  enterHook={
                                     value => {
-                                       handlers.editMark(
-                                          e.editId,
-                                          value,
-                                          () => {
-                                             e.mark = selectedValue;
-                                          });
+                                       all &&
+                                          handlers.editMark(
+                                             e.editId,
+                                             value,
+                                             () => {
+                                                setAllData(
+                                                   allData.map(
+                                                      ee => {
+                                                         if (ee.id === e.id) ee.mark = selectedValue;
+                                                         return ee;
+                                                      }
+                                                   )
+                                                );
+                                                setSelected(-1);
+                                                setSelectedValue("");
+                                             });
                                     }
                                  }
                               />

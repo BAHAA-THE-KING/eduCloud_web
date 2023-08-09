@@ -38,6 +38,7 @@ const ADDABILITYTESTFORM = "/ability-test-form/add";
 const CALENDAR = "/calendar";
 
 const ACCEPTSTUDENTS = "/student/accept";
+const DISTRIBUTESTUDENTS = "/student/distribute";
 
 const host = "http://localhost:8000/V1.0";
 //const host = "https://bdh.point-dev.nl/V1.0";
@@ -1471,11 +1472,9 @@ function addCandidateToOfficial(grade, selectedStudents, func) {
       )
       .then(
          e => {
-            if (e.message === "plan created successfully") {
+            if (e.message.indexOf("Success!") === 0) {
                alert("Success!");
                func(e.data);
-            } else if (e.message === "this title already exists with this subject and class") {
-               alert(e.errors.subject_id);
             } else {
                alert(e.message);
             }
@@ -1665,7 +1664,7 @@ function addMarks(test, marks, func) {
       )
       .then(
          e => {
-            if (e.message === "test info updated successfully") {
+            if (e.message === "marks added successfully") {
                alert("Success!");
                func();
             } else {
@@ -1979,7 +1978,7 @@ function removeEmployeeRole(id, roles, func) {
       );
 }
 
-export { goTo, HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEES, ADDSTUDENT, VIEWEMPLOYEEDATA, ADDTESTFORM, VIEWTESTFORMS, VIEWTESTFORMDATA, VIEWSTUDENTS, VIEWSTUDENTDATA, ADDTEST, VIEWTESTS, VIEWTESTDATA, ADDGRADE, VIEWGRADES, VIEWGRADEDATA, ADDCLASS, VIEWCLASSES, VIEWCLASSDATA, ADDSUBJECT, VIEWSUBJECTS, VIEWSUBJECTDATA, ADDABILITYTESTFORM, CALENDAR, ACCEPTSTUDENTS, VIEWMARKS };
+export { goTo, HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEES, ADDSTUDENT, VIEWEMPLOYEEDATA, ADDTESTFORM, VIEWTESTFORMS, VIEWTESTFORMDATA, VIEWSTUDENTS, VIEWSTUDENTDATA, ADDTEST, VIEWTESTS, VIEWTESTDATA, ADDGRADE, VIEWGRADES, VIEWGRADEDATA, ADDCLASS, VIEWCLASSES, VIEWCLASSDATA, ADDSUBJECT, VIEWSUBJECTS, VIEWSUBJECTDATA, ADDABILITYTESTFORM, CALENDAR, ACCEPTSTUDENTS, VIEWMARKS, DISTRIBUTESTUDENTS };
 export { logIn, getRoles, getSubjects };
 export { addEmployee, addTeacher, addSupervisor, addEmployeeRole, getEmployees, getEmployeeData, editEmployee, removeEmployeeRole };
 export { addTestForm, getTestForms, getTestFormData, editTestForm };
