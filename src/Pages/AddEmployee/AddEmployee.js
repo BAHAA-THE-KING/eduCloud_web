@@ -3,8 +3,11 @@ import "./AddEmployee.css";
 import { TextInput, MultipletInput, Button, Title } from "../../components";
 import { useEffect, useState } from "react";
 import * as handler from './../../handlers';
+import { useNavigate } from "react-router-dom";
 
 function AddEmployee() {
+   const navigate = useNavigate();
+
    useEffect(
       function () {
          handler.getRoles(
@@ -59,10 +62,10 @@ function AddEmployee() {
                               if (selectedRolesNames.indexOf("supervisor") !== -1) next.push(handler.ADDSUPERVISOR);
                               if (next.length !== 0) {
                                  localStorage.setItem("next", JSON.stringify({ empData: { ...empData, roles: selectedRolesNames }, next }))
-                                 handler.goTo(next[0]);
+                                 navigate(next[0]);
                               } else {
                                  localStorage.removeItem("next");
-                                 handler.goTo(handler.HOME);
+                                 navigate(handler.HOME);
                               }
                            }
                         );

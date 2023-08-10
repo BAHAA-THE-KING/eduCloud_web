@@ -17,7 +17,7 @@ function MultipletInput(props) {
                   <div key={i}>
                      <input
                         type="checkbox"
-                        checked={props.currentData ? props.currentData.indexOf(e.id) > -1 : false}
+                        checked={props.currentData ? props.currentData.map(e => "" + e).indexOf("" + e.id) > -1 : false}
                         onChange={() => { }}
                         data-id={e.id}
                         onClick={

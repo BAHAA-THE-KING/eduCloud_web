@@ -3,8 +3,11 @@ import './ViewGrades.css';
 import { Button, ButtonWithIcon, TableTile } from '../../components';
 import React, { useEffect, useState } from 'react';
 import * as handlers from "../../handlers";
+import { useNavigate } from 'react-router-dom';
 
 function ViewGrades() {
+   const navigate = useNavigate();
+
    const [current, setCurrent] = useState(0);
    const [next, setNext] = useState(null);
    const [previous, setPrevious] = useState(null);
@@ -42,22 +45,22 @@ function ViewGrades() {
             <div className='control'>
                <ButtonWithIcon
                   text="إضافة صف"
-                  hook={() => handlers.goTo(handlers.ADDGRADE)}
+                  hook={() => navigate(handlers.ADDGRADE)}
                   src="Icons/add.svg"
                />
                <ButtonWithIcon
                   text="عرض الصف"
-                  hook={() => (!!selected) ? handlers.goTo(handlers.VIEWGRADEDATA + selected) : alert("اختر صفاً لعرض معلوماته.")}
+                  hook={() => (!!selected) ? navigate(handlers.VIEWGRADEDATA + selected) : alert("اختر صفاً لعرض معلوماته.")}
                   src="Icons/subject.svg"
                />
                <ButtonWithIcon
                   text="عرض الشعب"
-                  hook={() => handlers.goTo(handlers.VIEWCLASSES)}
+                  hook={() => navigate(handlers.VIEWCLASSES)}
                   src="Icons/subject.svg"
                />
                <ButtonWithIcon
                   text="عرض المواد"
-                  hook={() => handlers.goTo(handlers.VIEWSUBJECTS)}
+                  hook={() => navigate(handlers.VIEWSUBJECTS)}
                   src="Icons/subject.svg"
                />
                {/*<ButtonWithIcon

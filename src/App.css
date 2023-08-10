@@ -3,3 +3,17 @@
   height: 100vh;
   text-align: center;
 }
+
+a {
+  color: unset !important;
+  font-style: unset !important;
+  text-decoration: unset !important;
+}
+
+tr:not(:first-child) {
+  height: 54px;
+}
+
+td {
+  overflow: visible !important;
+}

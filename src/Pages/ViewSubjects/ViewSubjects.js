@@ -3,8 +3,11 @@ import './ViewSubjects.css';
 import { Button, ButtonWithIcon, TableTile } from '../../components';
 import React, { useEffect, useState } from 'react';
 import * as handlers from "../../handlers";
+import { useNavigate } from 'react-router-dom';
 
 function ViewSubjects() {
+   const navigate = useNavigate();
+
    const [current, setCurrent] = useState(0);
    const [next, setNext] = useState(null);
    const [previous, setPrevious] = useState(null);
@@ -60,12 +63,12 @@ function ViewSubjects() {
             <div className='control'>
                <ButtonWithIcon
                   text="إضافة مادة دراسية"
-                  hook={() => handlers.goTo(handlers.ADDSUBJECT)}
+                  hook={() => navigate(handlers.ADDSUBJECT)}
                   src="Icons/add.svg"
                />
                <ButtonWithIcon
                   text="عرض المادة دراسية"
-                  hook={() => (!!selected) ? handlers.goTo(handlers.VIEWSUBJECTDATA + selected) : alert("اختر مادة دراسية لعرض معلوماتها.")}
+                  hook={() => (!!selected) ? navigate(handlers.VIEWSUBJECTDATA + selected) : alert("اختر مادة دراسية لعرض معلوماتها.")}
                   src="Icons/subject.svg"
                />
                {/*<ButtonWithIcon

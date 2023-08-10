@@ -3,8 +3,11 @@ import './AcceptStudents.css';
 import { Button, ButtonWithIcon, MultipletButton, TableTile, TextInput } from '../../components';
 import React, { useEffect, useState } from 'react';
 import * as handlers from "../../handlers";
+import { useNavigate } from 'react-router-dom';
 
 function AcceptStudents() {
+   const navigate = useNavigate();
+
    const [searchGrade, setSearchGrade] = useState();
    const [minNum, setMinNum] = useState(100);
    const [tempMinNum, setTempMinNum] = useState();
@@ -87,11 +90,12 @@ function AcceptStudents() {
                   text="متابعة"
                   hook={
                      () => {
+                        if (!searchGrade) navigate(handlers.SELECTSTUDENTS);
                         handlers.addCandidateToOfficial(
                            searchGrade,
                            selectedStudents,
                            () => {
-                              handlers.goTo(handlers.DISTRIBUTESTUDENTS);
+                              navigate(handlers.SELECTSTUDENTS);
                            }
                         );
                      }

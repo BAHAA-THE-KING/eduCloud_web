@@ -3,6 +3,7 @@ import "./AddStudent.css";
 import { TextInput, Button, Title, MultipletButton } from "../../components";
 import { useEffect, useState } from "react";
 import * as handler from './../../handlers';
+import { useNavigate } from "react-router-dom";
 /*
 first_name
 last_name
@@ -28,6 +29,8 @@ notes
  */
 
 function AddStudent() {
+   const navigate = useNavigate();
+
    const [firstName, setFirstName] = useState("");
    const [lastName, setLastName] = useState("");
    const [birthDate, setBirthDate] = useState("");
@@ -178,7 +181,7 @@ function AddStudent() {
                            registrationDate,
                            notes,
                            () => {
-                              handler.goTo(handler.ADDSTUDENT);
+                              navigate(handler.ADDSTUDENT);
                            }
                         );
                      }

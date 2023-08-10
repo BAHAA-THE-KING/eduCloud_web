@@ -3,8 +3,11 @@ import './ViewTestForms.css';
 import { Button, ButtonWithIcon, TableTile } from '../../components';
 import React, { useEffect, useState } from 'react';
 import * as handlers from "../../handlers";
+import { useNavigate } from 'react-router-dom';
 
 function ViewTestForms() {
+   const navigate = useNavigate();
+
    const [current, setCurrent] = useState(0);
    const [next, setNext] = useState(null);
    const [previous, setPrevious] = useState(null);
@@ -42,12 +45,12 @@ function ViewTestForms() {
             <div className='control'>
                <ButtonWithIcon
                   text="إضافة نموذج اختبار"
-                  hook={() => handlers.goTo(handlers.ADDTESTFORM)}
+                  hook={() => navigate(handlers.ADDTESTFORM)}
                   src="Icons/add.svg"
                />
                <ButtonWithIcon
                   text="عرض صفحة نموذج"
-                  hook={() => (!!selected) ? handlers.goTo(handlers.VIEWTESTFORMDATA + selected) : alert("اختر نموذجاً لعرض معلوماته.")}
+                  hook={() => (!!selected) ? navigate(handlers.VIEWTESTFORMDATA + selected) : alert("اختر نموذجاً لعرض معلوماته.")}
                   src="Icons/subject.svg"
                />
                {/*<ButtonWithIcon

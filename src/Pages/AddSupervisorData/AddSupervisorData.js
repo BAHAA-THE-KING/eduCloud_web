@@ -1,10 +1,13 @@
 import "./AddSupervisorData.css";
 
-import { Button, MultipletButton, DataHandler, Title, DataChunck } from "../../components";
+import { Button, MultipletButton, DataHandler, Title } from "../../components";
 import { useEffect, useState } from "react";
 import * as handler from './../../handlers';
+import { useNavigate } from "react-router-dom";
 
 function AddTeacherData() {
+   const navigate = useNavigate();
+
    useEffect(
       function () {
          handler.getSubjects(
@@ -80,10 +83,10 @@ function AddTeacherData() {
                               next.shift();
                               if (next.length !== 0) {
                                  localStorage.setItem("next", JSON.stringify({ empData, next }))
-                                 handler.goTo(next[0]);
+                                 navigate(next[0]);
                               } else {
                                  localStorage.removeItem("next");
-                                 handler.goTo(handler.HOME);
+                                 navigate(handler.HOME);
                               }
                            }
                         )

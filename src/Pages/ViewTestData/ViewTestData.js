@@ -3,9 +3,11 @@ import "./ViewTestData.css";
 import { Title, TextInput, Button, MultipletButton } from "../../components";
 import { useEffect, useState } from "react";
 import * as handlers from './../../handlers';
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function ViewTestData() {
+   const navigate = useNavigate();
+
    const { id } = useParams();
 
    const [title, setTitle] = useState("");
@@ -37,6 +39,7 @@ function ViewTestData() {
                const temp = test.g_class.id;
                setTheClass(temp);
                setTheClassName(test.g_class.name);
+               setSubject(test.subject.id);
                setSubjectName(test.subject.name);
                handlers.getSubjects(
                   res => {
@@ -134,7 +137,7 @@ function ViewTestData() {
                            date,
                            theClass,
                            subject,
-                           () => handlers.goTo(handlers.VIEWTESTS)
+                           () => navigate(handlers.VIEWTESTS)
                         );
                      }
                   }

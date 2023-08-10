@@ -3,9 +3,11 @@ import "./ViewSubjectData.css";
 import { TextInput, Title, ButtonWithIcon, Button } from "../../components";
 import { useEffect, useState } from "react";
 import * as handler from '../../handlers';
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function ViewSubjectData() {
+   const navigate = useNavigate();
+   
    const { id } = useParams();
 
    let [name, setName] = useState("");
@@ -82,7 +84,7 @@ function ViewSubjectData() {
                               <Button
                                  text="عرض الملف الشخصي"
                                  className="show"
-                                 hook={() => handler.goTo(handler.VIEWEMPLOYEEDATA + e.id)}
+                                 hook={() => navigate(handler.VIEWEMPLOYEEDATA + e.id)}
                               />
                               <br />
                            </>

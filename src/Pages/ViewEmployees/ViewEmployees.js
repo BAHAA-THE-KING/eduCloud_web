@@ -3,8 +3,11 @@ import './ViewEmployees.css';
 import { Button, ButtonWithIcon, MultipletButton, TableTile, TextInput } from '../../components';
 import React, { useEffect, useState } from 'react';
 import * as handlers from "../../handlers";
+import { useNavigate } from 'react-router-dom';
 
 function ViewEmployees() {
+   const navigate = useNavigate();
+
    const [search, setSearch] = useState("%");
    const [searchKeyword, setSearchKeyword] = useState("");
    const [searchRole, setSearchRole] = useState("");
@@ -50,19 +53,14 @@ function ViewEmployees() {
             <div className='control'>
                <ButtonWithIcon
                   text="إضافة موظف"
-                  hook={() => handlers.goTo(handlers.ADDEMPLOYEE)}
+                  hook={() => navigate(handlers.ADDEMPLOYEE)}
                   src="Icons/personAdd.svg"
                />
                <ButtonWithIcon
                   text="عرض صفحة الموظف"
-                  hook={() => (!!selected) ? handlers.goTo(handlers.VIEWEMPLOYEEDATA + selected) : alert("اختر موظفاً لعرض معلوماته.")}
+                  hook={() => (!!selected) ? navigate(handlers.VIEWEMPLOYEEDATA + selected) : alert("اختر موظفاً لعرض معلوماته.")}
                   src="Icons/person.svg"
                />
-               {/*<ButtonWithIcon
-                  text="حذف موظفين"
-                  hook={() => { }}
-                  src="Icons/delete.svg"
-               />*/}
                <label>عوامل التصفية :</label>
                <TextInput defaultValue={searchKeyword} hint="بحث" inputHook={setSearchKeyword} enterHook={setSearch} />
                <MultipletButton

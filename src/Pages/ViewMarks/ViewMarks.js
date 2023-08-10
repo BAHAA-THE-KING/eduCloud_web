@@ -1,10 +1,13 @@
 import './ViewMarks.css';
 
-import { Button, ButtonWithIcon, MultipletButton, TableTile, TextInput } from '../../components';
+import { Button, ButtonWithIcon, MultipletButton, TableTile } from '../../components';
 import React, { useEffect, useState } from 'react';
 import * as handlers from "../../handlers";
+import { useNavigate } from 'react-router-dom';
 
 function ViewMarks() {
+   const navigate = useNavigate();
+
    const [searchGrade, setSearchGrade] = useState("");
    const [searchClass, setSearchClass] = useState("");
    const [searchSubject, setSearchSubject] = useState("");
@@ -170,7 +173,7 @@ function ViewMarks() {
                />
                <ButtonWithIcon
                   text="إضافة سبر"
-                  hook={() => handlers.goTo(handlers.ADDTEST)}
+                  hook={() => navigate(handlers.ADDTEST)}
                   src="Icons/add.svg"
                />
                <ButtonWithIcon
@@ -180,7 +183,7 @@ function ViewMarks() {
                />
                <ButtonWithIcon
                   text="عرض صفحة السبر"
-                  hook={() => (!!selected) ? handlers.goTo(handlers.VIEWTESTDATA + test) : alert("اختر سبراً لعرض معلوماته.")}
+                  hook={() => (!!selected) ? navigate(handlers.VIEWTESTDATA + test) : alert("اختر سبراً لعرض معلوماته.")}
                   src="Icons/subject.svg"
                />
                <label>عوامل التصفية :</label>

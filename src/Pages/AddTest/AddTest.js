@@ -3,8 +3,11 @@ import "./AddTest.css";
 import { Title, TextInput, Button, MultipletButton } from "../../components";
 import { useEffect, useState } from "react";
 import * as handlers from './../../handlers';
+import { useNavigate } from "react-router-dom";
 
 function AddTest() {
+   const navigate = useNavigate();
+
    const [title, setTitle] = useState("");
    //img
    const [passMark, setPassMark] = useState(60);
@@ -168,7 +171,7 @@ function AddTest() {
                            date,
                            theClass,
                            subject,
-                           () => handlers.goTo(handlers.VIEWTESTS)
+                           () => navigate(handlers.VIEWTESTS)
                         );
                      }
                   }

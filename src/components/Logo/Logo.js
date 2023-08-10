@@ -1,8 +1,11 @@
-import { HOME, goTo } from "../../handlers";
 import "./Logo.css";
 
+import { Link } from "react-router-dom";
+
+import { HOME } from "../../handlers";
+
 function Logo() {
-   return <div className="logo" onClick={() => goTo(HOME)}>EduCloud</div>;
+   return <Link to={{ pathname: HOME }}><div className="logo">EduCloud</div></Link>;
 }
 
 export default Logo;

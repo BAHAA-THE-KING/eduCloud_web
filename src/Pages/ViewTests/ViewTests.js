@@ -3,8 +3,11 @@ import './ViewTests.css';
 import { Button, ButtonWithIcon, MultipletButton, TableTile, TextInput } from '../../components';
 import React, { useEffect, useState } from 'react';
 import * as handlers from "../../handlers";
+import { useNavigate } from 'react-router-dom';
 
 function ViewTests() {
+   const navigate = useNavigate();
+
    const [search, setSearch] = useState("%");
    const [searchKeyword, setSearchKeyword] = useState("");
    const [searchClass, setSearchClass] = useState("");
@@ -83,24 +86,19 @@ function ViewTests() {
             <div className='control'>
                <ButtonWithIcon
                   text="إضافة اختبار"
-                  hook={() => handlers.goTo(handlers.ADDTEST)}
+                  hook={() => navigate(handlers.ADDTEST)}
                   src="Icons/add.svg"
                />
                <ButtonWithIcon
                   text="عرض صفحة اختبار"
-                  hook={() => (!!selected && selected !== -1) ? handlers.goTo(handlers.VIEWTESTDATA + selected) : alert("اختر اختباراً لعرض معلوماته.")}
+                  hook={() => (!!selected && selected !== -1) ? navigate(handlers.VIEWTESTDATA + selected) : alert("اختر اختباراً لعرض معلوماته.")}
                   src="Icons/subject.svg"
                />
                <ButtonWithIcon
                   text="عرض أنواع الاختبارات"
-                  hook={() => handlers.goTo(handlers.VIEWTESTFORMS)}
+                  hook={() => navigate(handlers.VIEWTESTFORMS)}
                   src="Icons/subject.svg"
                />
-               {/*<ButtonWithIcon
-                  text="حذف موظفين"
-                  hook={() => { }}
-                  src="Icons/delete.svg"
-               />*/}
                <label>عوامل التصفية :</label>
                <TextInput defaultValue={searchKeyword} hint="بحث" inputHook={setSearchKeyword} enterHook={setSearch} />
                <br />

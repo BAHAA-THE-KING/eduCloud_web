@@ -38,6 +38,7 @@ const ADDABILITYTESTFORM = "/ability-test-form/add";
 const CALENDAR = "/calendar";
 
 const ACCEPTSTUDENTS = "/student/accept";
+const SELECTSTUDENTS = "/student/select";
 const DISTRIBUTESTUDENTS = "/student/distribute";
 
 const host = "http://localhost:8000/V1.0";
@@ -510,7 +511,7 @@ function getTestData(id, func) {
       );
 }
 
-function getStudents(search, page, grade, theClass, func) {
+function getStudents(search, page, grade, theClass, hasClass, func) {
    const path = "/supervisor/studentSearch?";
 
    const params = [];
@@ -518,6 +519,7 @@ function getStudents(search, page, grade, theClass, func) {
    if (!!page) params.push("page=" + page);
    if (!!grade) params.push("grade_id=" + grade);
    if (!!theClass) params.push("class_id=" + theClass);
+   params.push("hasClass=" + (+hasClass));
 
    const url = host + path + params.join("&");
 
@@ -1488,6 +1490,102 @@ function addCandidateToOfficial(grade, selectedStudents, func) {
       );
 }
 
+function addStudentsToClasses(grade, force, assignments, func) {
+   const path = "/secretary/addOrMoveStudentsToClasses/" + grade;
+
+   const url = host + path;
+
+   const method = "POST";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   const body = JSON.stringify(
+      {
+         "allowMoving": force,
+         "assignments": assignments
+      }
+   );
+
+   fetch(url, { method, headers, body })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e.message.indexOf("Success!") === 0) {
+               alert("Success!");
+               func();
+            } else {
+               alert(e.message);
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
+function addStudentsToClassesAutomatically(students, classes, type, func) {
+   const path = "/secretary/automaticStudentsDistribution/" + type;
+
+   const url = host + path;
+
+   const method = "POST";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   const body = JSON.stringify(
+      {
+         "force": true,
+         "students_ids": students,
+         "classes_ids": classes
+      }
+   );
+
+   fetch(url, { method, headers, body })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e.message === "Success!") {
+               func(e.data);
+            } else {
+               alert(e.message);
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
 function editEmployee(id, name, surname, func) {
    const path = "/principal/editEmployee/" + id;
 
@@ -1978,7 +2076,7 @@ function removeEmployeeRole(id, roles, func) {
       );
 }
 
-export { goTo, HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEES, ADDSTUDENT, VIEWEMPLOYEEDATA, ADDTESTFORM, VIEWTESTFORMS, VIEWTESTFORMDATA, VIEWSTUDENTS, VIEWSTUDENTDATA, ADDTEST, VIEWTESTS, VIEWTESTDATA, ADDGRADE, VIEWGRADES, VIEWGRADEDATA, ADDCLASS, VIEWCLASSES, VIEWCLASSDATA, ADDSUBJECT, VIEWSUBJECTS, VIEWSUBJECTDATA, ADDABILITYTESTFORM, CALENDAR, ACCEPTSTUDENTS, VIEWMARKS, DISTRIBUTESTUDENTS };
+export { goTo, HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEES, ADDSTUDENT, VIEWEMPLOYEEDATA, ADDTESTFORM, VIEWTESTFORMS, VIEWTESTFORMDATA, VIEWSTUDENTS, VIEWSTUDENTDATA, ADDTEST, VIEWTESTS, VIEWTESTDATA, ADDGRADE, VIEWGRADES, VIEWGRADEDATA, ADDCLASS, VIEWCLASSES, VIEWCLASSDATA, ADDSUBJECT, VIEWSUBJECTS, VIEWSUBJECTDATA, ADDABILITYTESTFORM, CALENDAR, ACCEPTSTUDENTS, VIEWMARKS, SELECTSTUDENTS, DISTRIBUTESTUDENTS };
 export { logIn, getRoles, getSubjects };
 export { addEmployee, addTeacher, addSupervisor, addEmployeeRole, getEmployees, getEmployeeData, editEmployee, removeEmployeeRole };
 export { addTestForm, getTestForms, getTestFormData, editTestForm };
@@ -1989,5 +2087,5 @@ export { addClass, editClass };
 export { addSubject, getSubjectData, editSubject };
 export { addAbilityTestForm };
 export { addCalendar, getBaseCalendar, editCalendar };
-export { getCandidateToOfficial, addCandidateToOfficial };
+export { getCandidateToOfficial, addCandidateToOfficial, addStudentsToClasses, addStudentsToClassesAutomatically };
 export { addMarks, getMarks, getRemainingStudents, editMark };

@@ -27,5 +27,7 @@ import AddAbilityTestForm from "./AddAbilityTestForm/AddAbilityTestForm";
 import Calendar from "./Calendar/Calendar";
 import AcceptStudents from "./AcceptStudents/AcceptStudents";
 import ViewMarks from "./ViewMarks/ViewMarks";
+import SelectStudents from "./SelectStudents/SelectStudents";
+import DistributeStudents from "./DistributeStudents/DistributeStudents";
 
-export { AddEmployee, AddSupervisorData, AddTeacherData, Header, Home, Login, ViewEmployees, ViewEmployeeData, AddTestForm, ViewTestForms, ViewTestFormData, ViewStudents, AddTest, ViewTests, ViewTestData, AddStudent, AddGrade, ViewGrades, ViewGradeData, AddClass, ViewClasses, ViewClassData, AddSubject, ViewSubjects, ViewSubjectData, AddAbilityTestForm, Calendar, AcceptStudents, ViewMarks };
+export { AddEmployee, AddSupervisorData, AddTeacherData, Header, Home, Login, ViewEmployees, ViewEmployeeData, AddTestForm, ViewTestForms, ViewTestFormData, ViewStudents, AddTest, ViewTests, ViewTestData, AddStudent, AddGrade, ViewGrades, ViewGradeData, AddClass, ViewClasses, ViewClassData, AddSubject, ViewSubjects, ViewSubjectData, AddAbilityTestForm, Calendar, AcceptStudents, ViewMarks, SelectStudents, DistributeStudents };
