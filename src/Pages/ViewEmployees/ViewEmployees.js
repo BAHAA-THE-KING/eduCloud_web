@@ -1,15 +1,16 @@
-import './ViewEmployees.css';
-
-import { Button, ButtonWithIcon, MultipletButton, TableTile, TextInput } from '../../components';
-import React, { useEffect, useState } from 'react';
+import { ListOfButtons, Multiple, Navigation } from '../../components';
+import { useEffect, useMemo, useState } from 'react';
 import * as handlers from "../../handlers";
 import { useNavigate } from 'react-router-dom';
+import { Col, Container, Form, Row } from 'react-bootstrap';
+import { MaterialReactTable } from 'material-react-table';
+import { Box } from '@mui/material';
 
 function ViewEmployees() {
    const navigate = useNavigate();
 
    const [search, setSearch] = useState("%");
-   const [searchKeyword, setSearchKeyword] = useState("");
+   const [tempSearch, setTempSearch] = useState("");
    const [searchRole, setSearchRole] = useState("");
    const [current, setCurrent] = useState(0);
    const [next, setNext] = useState(null);
@@ -38,7 +39,7 @@ function ViewEmployees() {
                setNext(res.next_page_url ? temp + 1 : null);
                setPrevious(temp === 1 ? null : temp - 1);
                const data = res.data;
-               while (data.length < res.per_page) data.push({ id: "", first_name: "", last_name: "", roles: [] });
+               while (data.length < res.per_page) data.push({});
                setData(data);
             },
             search + ("?page=" + current) + (searchRole ? "&role=" + searchRole : "")
@@ -46,167 +47,148 @@ function ViewEmployees() {
       },
       [search, searchRole]
    );
+   const columns = useMemo(
+      () => [
+         {
+            accessorKey: "id",
+            header: 'المعرّف',
+            Cell: ({ renderedCellValue, row }) => (
+               <Box
+                  onClick={() => row.toggleSelected()}
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            ),
+         },
+         {
+            accessorKey: "first_name",
+            header: 'الاسم',
+            Cell: ({ renderedCellValue, row }) => (
+               <Box
+                  onClick={() => row.toggleSelected()}
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            ),
+         },
+         {
+            accessorKey: "last_name",
+            header: 'الكنية',
+            Cell: ({ renderedCellValue, row }) => (
+               <Box
+                  onClick={() => row.toggleSelected()}
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            ),
+         },
+         {
+            accessorKey: "roles",
+            header: 'الأدوار',
+            Cell: ({ renderedCellValue, row }) => (
+               <Box
+                  onClick={() => row.toggleSelected()}
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>
+                     {
+                        renderedCellValue ?
+                           (
+                              (renderedCellValue.length !== 0) ?
+                                 (renderedCellValue.map(e => e.name).join(", ") + ".")
+                                 : (<i style={{ color: "#888888" }}>لا يوجد أدوار لهذا الموظف.</i>)
+                           )
+                           : " "
+                     }
+                  </span>
+               </Box>
+            ),
+         }
+      ],
+      [data]
+   );
 
    return (
-      <div className='viewemployees'>
-         <div className='content'>
-            <div className='control'>
-               <ButtonWithIcon
-                  text="إضافة موظف"
-                  hook={() => navigate(handlers.ADDEMPLOYEE)}
-                  src="Icons/personAdd.svg"
-               />
-               <ButtonWithIcon
-                  text="عرض صفحة الموظف"
-                  hook={() => (!!selected) ? navigate(handlers.VIEWEMPLOYEEDATA + selected) : alert("اختر موظفاً لعرض معلوماته.")}
-                  src="Icons/person.svg"
-               />
-               <label>عوامل التصفية :</label>
-               <TextInput defaultValue={searchKeyword} hint="بحث" inputHook={setSearchKeyword} enterHook={setSearch} />
-               <MultipletButton
-                  text="اختر الدور"
-                  dontClose={true}
-                  open={true}
-                  options={roles}
-                  dataHook={(role, select) => (select) ? setSearchRole(role) : setSearchRole("")}
-                  textHook={() => { }}
-               />
-            </div>
-            <div className='show'>
-               <div className='view'>
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="المعرّف"
-                     setSelected={() => { }}
-                  />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="الاسم"
-                     setSelected={() => { }}
-                  />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="الكنية"
-                     setSelected={() => { }}
-                  />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="الأدوار"
-                     setSelected={() => { }}
-                  />
-                  {
-                     data.map(
-                        (e) => (
-                           <React.Fragment>
-                              <TableTile
-                                 selected={selected === e.id}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.id}
-                              />
-                              <TableTile
-                                 selected={selected === e.id}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.first_name}
-                              />
-                              <TableTile
-                                 selected={selected === e.id}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.last_name}
-                              />
-                              <TableTile
-                                 selected={selected === e.id}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={
-                                    (!!e.id) ?
-                                       (
-                                          (e.roles.length !== 0) ?
-                                             e.roles.map(e => e.name).join(",")
-                                             : <i style={{ color: "#888888" }}>لا يوجد أدوار لهذا الموظف.</i>
-                                       )
-                                       : ""
-                                 }
-                              />
-                           </React.Fragment>
-                        )
-                     )
-                  }
-               </div>
-            </div>
-         </div>
-         <div className='navigation'>
-            {
-               <Button
-                  text="<   السابق"
-                  className="previous"
-                  hook={
-                     () => {
-                        if (search === "") {
-                           setSearch("%");
-                           return;
-                        }
-                        handlers.getEmployees(
-                           (res) => {
-                              const temp = res.current_page;
-                              setCurrent(temp);
-                              setNext(res.next_page_url ? temp + 1 : null);
-                              setPrevious(temp === 1 ? null : temp - 1);
-                              const data = res.data;
-                              while (data.length < res.per_page) data.push({ id: "", first_name: "", last_name: "", roles: [] });
-                              setData(data);
-                           },
-                           search + ("?page=" + previous) + (searchRole ? "&role=" + searchRole : "")
-                        );
+      <Container fluid>
+         <Row className='mt-2'>
+            <Col xs='2'>
+               <ListOfButtons data={
+                  [
+                     {
+                        name: "إضافة موظف",
+                        event: () => navigate(handlers.ADDEMPLOYEE)
+                     },
+                     {
+                        name: "عرض صفحة الموظف",
+                        event: () => (!!selected) ? navigate(handlers.VIEWEMPLOYEEDATA + selected) : alert("اختر موظفاً لعرض معلوماته.")
                      }
-                  }
-                  disabled={!previous}
-               />
-            }
-            <Button
-               text={current}
-               hook={() => { }}
-               className={"current"}
-            />
-            {
-               <Button
-                  text="التالي   >"
-                  className="next"
-                  hook={
-                     () => {
-                        if (search === "") {
-                           setSearch("%");
-                           return;
+                  ]
+               } />
+               <Row className='text-start'>
+                  <Form.Label htmlFor='searchInput'>عوامل التصفية :</Form.Label>
+                  <Form.Control
+                     id="searchInput"
+                     value={tempSearch}
+                     placeholder="بحث"
+                     onChange={e => setTempSearch(e.target.value)}
+                     onKeyDown={
+                        e => {
+                           if (e.key === 'Enter') {
+                              setSearch(e.target.value);
+                           }
                         }
-                        handlers.getEmployees(
-                           (res) => {
-                              const temp = res.current_page;
-                              setCurrent(temp);
-                              setNext(res.next_page_url ? temp + 1 : null);
-                              setPrevious(temp === 1 ? null : temp - 1);
-                              const data = res.data;
-                              while (data.length < res.per_page) data.push({ id: "", first_name: "", last_name: "", roles: [] });
-                              setData(data);
-                           },
-                           search + ("?page=" + next) + (searchRole ? "&role=" + searchRole : "")
-                        );
                      }
-                  }
-                  disabled={!next}
+                  />
+                  <Multiple
+                     id="role"
+                     text="الدور"
+                     options={roles}
+                     value={searchRole}
+                     hook={setSearchRole}
+                  />
+               </Row>
+            </Col>
+            <Col xs='10'>
+               <MaterialReactTable
+                  columns={columns}
+                  data={data}
+                  initialState={{ density: 'compact' }}
+                  enableSorting={false}
+                  enablePinning={false}
+                  enableDensityToggle={false}
+                  enablePagination={false}
+                  enableFilters={false}
+                  enableTopToolbar={false}
+                  enableBottomToolbar={false}
+                  enableRowSelection={false}
+                  enableMultiRowSelection={false}
+               //onRowSelectionChange={
+               //   e => setSelected(data[Object.keys(e())[0]].id)
+               //}
                />
-            }
-         </div>
-      </div>
+            </Col>
+         </Row>
+         <Navigation current={current} next={next} previous={previous} setCurrent={setCurrent} />
+      </Container>
    )
 };
 

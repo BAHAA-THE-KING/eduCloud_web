@@ -1,9 +1,10 @@
-import './ViewSubjects.css';
-
-import { Button, ButtonWithIcon, TableTile } from '../../components';
-import React, { useEffect, useState } from 'react';
+import { ListOfButtons, Navigation } from '../../components';
+import { useEffect, useMemo, useState } from 'react';
 import * as handlers from "../../handlers";
 import { useNavigate } from 'react-router-dom';
+import { Col, Container, Row } from 'react-bootstrap';
+import { MaterialReactTable } from 'material-react-table';
+import { Box } from '@mui/material';
 
 function ViewSubjects() {
    const navigate = useNavigate();
@@ -43,6 +44,7 @@ function ViewSubjects() {
          ),
       []
    );
+
    useEffect(
       () => {
          setPrevious(current - 1);
@@ -57,158 +59,160 @@ function ViewSubjects() {
       [current]
    );
 
+   const columns = useMemo(
+      () => [
+         {
+            accessorKey: "id",
+            header: 'المعرّف',
+            Cell: ({ renderedCellValue, row }) => (
+               <Box
+                  onClick={() => row.toggleSelected()}
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            ),
+         },
+         {
+            accessorKey: "name",
+            header: 'الاسم',
+            Cell: ({ renderedCellValue, row }) => (
+               <Box
+                  onClick={() => row.toggleSelected()}
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            ),
+         },
+         {
+            accessorKey: "maxMark",
+            header: 'العلامة الكلية',
+            Cell: ({ renderedCellValue, row }) => (
+               <Box
+                  onClick={() => row.toggleSelected()}
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            ),
+         },
+         {
+            accessorKey: "passMark",
+            header: 'علامة النجاح',
+            Cell: ({ renderedCellValue, row }) => (
+               <Box
+                  onClick={() => row.toggleSelected()}
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            ),
+         },
+         {
+            accessorKey: "notes",
+            header: 'ملاحظات',
+            Cell: ({ renderedCellValue, row }) => (
+               <Box
+                  onClick={() => row.toggleSelected()}
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            ),
+         },
+         {
+            accessorKey: "grade",
+            id: "gradeName",
+            header: 'الصف',
+            Cell: ({ renderedCellValue, row }) => (
+               <Box
+                  onClick={() => row.toggleSelected()}
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue?.name}</span>
+               </Box>
+            ),
+         },
+         {
+            accessorKey: "grade",
+            id: "gradeId",
+            header: 'معرف الصف',
+            Cell: ({ renderedCellValue, row }) => (
+               <Box
+                  onClick={() => row.toggleSelected()}
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue?.id}</span>
+               </Box>
+            ),
+         }
+      ],
+      [data]
+   );
+
    return (
-      <div className='viewsubjects'>
-         <div className='content'>
-            <div className='control'>
-               <ButtonWithIcon
-                  text="إضافة مادة دراسية"
-                  hook={() => navigate(handlers.ADDSUBJECT)}
-                  src="Icons/add.svg"
+      <Container fluid>
+         <Row className='mt-2'>
+            <Col xs='2'>
+               <ListOfButtons data={
+                  [
+                     {
+                        name: "إضافة مادة دراسية",
+                        event: () => navigate(handlers.ADDSUBJECT)
+                     },
+                     {
+                        name: "عرض المادة دراسية",
+                        event: () => (!!selected) ? navigate(handlers.VIEWSUBJECTDATA + selected) : alert("اختر مادة دراسية لعرض معلوماتها.")
+                     }
+                  ]
+               } />
+            </Col>
+            <Col xs='10'>
+               <MaterialReactTable
+                  columns={columns}
+                  data={data}
+                  initialState={{ density: 'compact' }}
+                  enableSorting={false}
+                  enablePinning={false}
+                  enableDensityToggle={false}
+                  enablePagination={false}
+                  enableFilters={false}
+                  enableTopToolbar={false}
+                  enableBottomToolbar={false}
                />
-               <ButtonWithIcon
-                  text="عرض المادة دراسية"
-                  hook={() => (!!selected) ? navigate(handlers.VIEWSUBJECTDATA + selected) : alert("اختر مادة دراسية لعرض معلوماتها.")}
-                  src="Icons/subject.svg"
-               />
-               {/*<ButtonWithIcon
-                  text="حذف نموذج"
-                  hook={() => { }}
-                  src="Icons/delete.svg"
-               />*/}
-            </div>
-            <div className='show'>
-               <div className='view'>
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="المعرّف"
-                     setSelected={() => { }}
-                  />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="الاسم"
-                     setSelected={() => { }}
-                  />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="العلامة الكلية"
-                     setSelected={() => { }}
-                  />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="علامة النجاح"
-                     setSelected={() => { }}
-                  />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="ملاحظات"
-                     setSelected={() => { }}
-                  />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="اسم الصف"
-                     setSelected={() => { }}
-                  />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="معرّف الصف"
-                     setSelected={() => { }}
-                  />
-                  {
-                     data.map(
-                        (e) => (
-                           <React.Fragment>
-                              <TableTile
-                                 selected={selected === e.id}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.id}
-                              />
-                              <TableTile
-                                 selected={selected === e.id}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.name}
-                              />
-                              <TableTile
-                                 selected={selected === e.id}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.maxMark}
-                              />
-                              <TableTile
-                                 selected={selected === e.id}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.passMark}
-                              />
-                              <TableTile
-                                 selected={selected === e.id}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.notes && e.notes.slice(0, 15) + " ....."}
-                              />
-                              <TableTile
-                                 selected={selected === e.id}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.grade?.name}
-                              />
-                              <TableTile
-                                 selected={selected === e.id}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.grade?.id}
-                              />
-                           </React.Fragment>
-                        )
-                     )
-                  }
-               </div>
-            </div>
-         </div>
-         <div className='navigation'>
-            {
-               <Button
-                  text="<   السابق"
-                  className="previous"
-                  hook={
-                     () => setCurrent(current - 1)
-                  }
-                  disabled={previous < 1}
-               />
-            }
-            <Button
-               text={current}
-               hook={() => { }}
-               className={"current"}
-            />
-            {
-               <Button
-                  text="التالي   >"
-                  className="next"
-                  hook={
-                     () => setCurrent(current + 1)
-                  }
-                  disabled={!next}
-               />
-            }
-         </div>
-      </div>
+            </Col>
+         </Row>
+         <Navigation current={current} next={next} previous={previous} setCurrent={setCurrent} />
+      </Container>
    )
 };
 

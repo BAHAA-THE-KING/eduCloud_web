@@ -68,7 +68,7 @@ function SelectStudents() {
                setNext(res.next_page_url ? temp + 1 : null);
                setPrevious(temp === 1 ? null : temp - 1);
                const data = res.data;
-               while (data.length < res.per_page) data.push({ id: "", first_name: "", last_name: "" });
+               while (data.length < res.per_page) data.push({});
                setData(data);
             }
          );

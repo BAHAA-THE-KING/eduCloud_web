@@ -1,9 +1,10 @@
 import * as handlers from '../../handlers';
-import React, { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button, Col, Container, Dropdown, Form, Row } from 'react-bootstrap';
 import { MaterialReactTable } from 'material-react-table';
 import { Box } from '@mui/material';
+import { Navigation } from '../../components';
 
 function DistributeStudents() {
    const extData = useLocation().state;
@@ -255,19 +256,7 @@ function DistributeStudents() {
                />
             </Col>
          </Row>
-         <Row>
-            <Col xs='12'>
-               <Button className='m-2' style={{ width: "6rem", height: "2.5rem" }} onClick={() => setCurrent(current - 1)} disabled={!previous}>
-                  {"<   السابق"}
-               </Button>
-               <Button className='m-2' style={{ width: "6rem", height: "2.5rem" }}>
-                  {current}
-               </Button>
-               <Button className='m-2' style={{ width: "6rem", height: "2.5rem" }} onClick={() => setCurrent(current + 1)} disabled={!next}>
-                  {"التالي   >"}
-               </Button>
-            </Col>
-         </Row>
+         <Navigation current={current} next={next} previous={previous} setCurrent={setCurrent} />
       </Container>
    )
 };
