@@ -14,8 +14,7 @@ function ViewClasses() {
    const [next, setNext] = useState(null);
    const [previous, setPrevious] = useState(null);
    const [data, setData] = useState([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]);
-   const [selected, setSelected] = useState(-1);
-   const [grades, setGrades] = useState([]);
+   const [selected, setSelected] = useState({});
    const [classes, setClasses] = useState([]);
 
    useEffect(
@@ -38,7 +37,6 @@ function ViewClasses() {
                      );
                   }
                }
-               setGrades(data);
                setClasses(temp);
                data.length ? setCurrent(1) : setCurrent(0);
             }
@@ -155,11 +153,12 @@ function ViewClasses() {
                   [
                      {
                         name: "إضافة شعبة",
-                        event: () => navigate(handlers.ADDTESTFORM)
+                        event: () => navigate(handlers.ADDCLASS)
                      },
                      {
                         name: "عرض شعبة",
-                        event: () => (!!selected) ? navigate(handlers.VIEWCLASSDATA + selected) : alert("اختر شعبة لعرض معلوماتها.")
+                        event: () => navigate(handlers.VIEWCLASSDATA + data[Object.keys(selected)[0]].id),
+                        disabled: !Object.keys(selected).length
                      },
                   ]
                } />
@@ -169,6 +168,9 @@ function ViewClasses() {
                   columns={columns}
                   data={data}
                   initialState={{ density: 'compact' }}
+                  state={{ rowSelection: selected }}
+                  enableRowSelection={(row) => row.original.id}
+                  onRowSelectionChange={setSelected}
                   enableSorting={false}
                   enablePinning={false}
                   enableDensityToggle={false}
@@ -176,6 +178,7 @@ function ViewClasses() {
                   enableFilters={false}
                   enableTopToolbar={false}
                   enableBottomToolbar={false}
+                  enableMultiRowSelection={false}
                />
             </Col>
          </Row>

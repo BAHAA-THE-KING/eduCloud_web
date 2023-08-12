@@ -1,4 +1,4 @@
-import {ListOfButtons, Navigation } from '../../components';
+import { ListOfButtons, Navigation } from '../../components';
 import { useEffect, useMemo, useState } from 'react';
 import * as handlers from "../../handlers";
 import { useNavigate } from 'react-router-dom';
@@ -13,7 +13,7 @@ function ViewGrades() {
    const [next, setNext] = useState(null);
    const [previous, setPrevious] = useState(null);
    const [data, setData] = useState([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]);
-   const [selected, setSelected] = useState(-1);
+   const [selected, setSelected] = useState({});
    const [grades, setGrades] = useState([]);
 
    useEffect(
@@ -90,7 +90,8 @@ function ViewGrades() {
                      },
                      {
                         name: "عرض الصف",
-                        event: () => (!!selected) ? navigate(handlers.VIEWGRADEDATA + selected) : alert("اختر صفاً لعرض معلوماته.")
+                        event: () => navigate(handlers.VIEWGRADEDATA + data[Object.keys(selected)[0]].id),
+                        disabled: !Object.keys(selected).length
                      },
                      {
                         name: "عرض الشعب",
@@ -108,6 +109,9 @@ function ViewGrades() {
                   columns={columns}
                   data={data}
                   initialState={{ density: 'compact' }}
+                  state={{ rowSelection: selected }}
+                  enableRowSelection={(row) => row.original.id}
+                  onRowSelectionChange={setSelected}
                   enableSorting={false}
                   enablePinning={false}
                   enableDensityToggle={false}
@@ -115,6 +119,7 @@ function ViewGrades() {
                   enableFilters={false}
                   enableTopToolbar={false}
                   enableBottomToolbar={false}
+                  enableMultiRowSelection={false}
                />
             </Col>
          </Row>

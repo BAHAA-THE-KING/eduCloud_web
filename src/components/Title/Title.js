@@ -1,10 +1,12 @@
-import "./Title.css";
+import { Col, Row } from "react-bootstrap";
 
 function Title(props) {
    return (
-      <span className="title">
-         <b>{props.text}</b>
-      </span>
+      <Row className="fs-1">
+         <Col xs='12'>
+            <b color="#061E45">{props.text}</b>
+         </Col>
+      </Row>
    );
 }
 

@@ -31,7 +31,7 @@ function ViewTests() {
    const [subjects, setSubjects] = useState([]);
    const [types, setSearchTypes] = useState([]);
 
-   const [selected, setSelected] = useState();
+   const [selected, setSelected] = useState({});
 
    useEffect(
       () => {
@@ -131,13 +131,18 @@ function ViewTests() {
          },
          {
             accessorKey: "g_class_id",
+            id: "grade",
             header: 'الصف',
             Cell: ({ renderedCellValue, row }) => {
                let grade;
                for (const k in allClasses) {
+                  if (grade) break;
                   const e = allClasses[k];
-                  for (const n of e.subjects) {
-                     if (n.id == renderedCellValue) grade = e.name
+                  for (const n of e.g_classes) {
+                     if (n.id == renderedCellValue) {
+                        grade = e.name
+                        break;
+                     }
                   }
                };
                return (
@@ -160,9 +165,13 @@ function ViewTests() {
             Cell: ({ renderedCellValue, row }) => {
                let theClass;
                for (const k in allClasses) {
+                  if (theClass) break;
                   const e = allClasses[k].g_classes;
                   for (const n of e) {
-                     if (n.id == renderedCellValue) theClass = n.name
+                     if (n.id == renderedCellValue) {
+                        theClass = n.name
+                        break;
+                     }
                   }
                }
                return (
@@ -185,9 +194,13 @@ function ViewTests() {
             Cell: ({ renderedCellValue, row }) => {
                let subject;
                for (const k in allClasses) {
+                  if (subject) break;
                   const e = allClasses[k].subjects;
                   for (const n of e) {
-                     if (n.id == renderedCellValue) subject = n.name
+                     if (n.id == renderedCellValue) {
+                        subject = n.name;
+                        break;
+                     }
                   }
                };
                return (
@@ -271,7 +284,8 @@ function ViewTests() {
                      },
                      {
                         name: "عرض صفحة اختبار",
-                        event: () => (!!selected && selected !== -1) ? navigate(handlers.VIEWTESTDATA + selected) : alert("اختر اختباراً لعرض معلوماته.")
+                        event: () => navigate(handlers.VIEWTESTDATA + data[Object.keys(selected)[0]].id),
+                        disabled: !Object.keys(selected).length
                      },
                      {
                         name: "عرض أنواع الاختبارات",
@@ -294,6 +308,22 @@ function ViewTests() {
                            }
                         }
                      }
+                  />
+                  <Form.Label htmlFor='startDateInput'>بعد التاريخ :</Form.Label>
+                  <Form.Control
+                     id="startDateInput"
+                     type="date"
+                     value={searchStartDate}
+                     placeholder="بحث"
+                     onChange={e => setSearchStartDate(e.target.value)}
+                  />
+                  <Form.Label htmlFor='endDateInput'>قبل التاريخ :</Form.Label>
+                  <Form.Control
+                     id="endDateInput"
+                     type="date"
+                     value={searchEndDate}
+                     placeholder="بحث"
+                     onChange={e => setSearchEndDate(e.target.value)}
                   />
                   <Multiple
                      id='type'
@@ -341,6 +371,9 @@ function ViewTests() {
                   columns={columns}
                   data={data}
                   initialState={{ density: 'compact' }}
+                  state={{ rowSelection: selected }}
+                  enableRowSelection={(row) => row.original.id}
+                  onRowSelectionChange={setSelected}
                   enableSorting={false}
                   enablePinning={false}
                   enableDensityToggle={false}
@@ -348,11 +381,7 @@ function ViewTests() {
                   enableFilters={false}
                   enableTopToolbar={false}
                   enableBottomToolbar={false}
-                  enableRowSelection={true}
                   enableMultiRowSelection={false}
-               //onRowSelectionChange={
-               //   e => setSelected(data[Object.keys(e())[0]].id)
-               //}
                />
             </Col>
          </Row>

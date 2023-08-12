@@ -135,8 +135,6 @@ function ViewTestData() {
                            maxMark,
                            type,
                            date,
-                           theClass,
-                           subject,
                            () => navigate(handlers.VIEWTESTS)
                         );
                      }

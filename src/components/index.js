@@ -11,8 +11,10 @@ import PasswordInput from "./PasswordInput/PasswordInput";
 import TableTile from "./TableTile/TableTile";
 import TextInput from "./TextInput/TextInput";
 import Title from "./Title/Title";
+
 import Multiple from "./Multiple/Multiple";
 import ListOfButtons from "./ListOfButtons/ListOfButtons";
 import Navigation from "./Navigation/Navigation";
+import InputWithLabel from "./InputWithLabel/InputWithLabel";
 
-export { Button, ButtonList, ButtonWithIcon, DataChunck, DataHandler, HeaderList, Logo, MultipletButton, MultipletInput, PasswordInput, TableTile, TextInput, Title, Multiple, ListOfButtons, Navigation };
+export { Button, ButtonList, ButtonWithIcon, DataChunck, DataHandler, HeaderList, Logo, MultipletButton, MultipletInput, PasswordInput, TableTile, TextInput, Title, Multiple, ListOfButtons, Navigation, InputWithLabel };

@@ -1,8 +1,7 @@
-import "./AddClass.css";
-
-import { Title, TextInput, Button, MultipletButton } from "../../components";
+import { Title, Multiple, ListOfButtons, InputWithLabel } from "../../components";
 import { useEffect, useState } from "react";
 import * as handler from './../../handlers';
+import { Col, Container, Form, Row } from "react-bootstrap";
 
 function AddClass() {
    let [name, setName] = useState("");
@@ -10,7 +9,6 @@ function AddClass() {
    let [maxNum, setMaxNum] = useState("");
 
    let [grades, setGrades] = useState([]);
-   let [gradeName, setGradeName] = useState("");
 
    useEffect(
       () => {
@@ -20,52 +18,67 @@ function AddClass() {
    );
 
    return (
-      <div className="addclass">
-         <Title text="إنشاء شعبة" />
-         <img src="Images/class.jpg" alt="" className="bg" />
-         <div className="content">
-            <form>
-               <label>اسم الشعبة :</label>
-               <br />
-               <TextInput defaultValue={name} inputHook={setName} editable={true} enterHook={() => { }} hint="مثال: تاسع أولى" />
-               <br />
-               <label>{"العدد الأقصى للطلاب : " + maxNum}</label>
-               <br />
-               <TextInput
-                  type="number"
-                  defaultValue={maxNum}
-                  inputHook={setMaxNum}
-                  hint="أقصى عدد للطلاب"
-               />
-               <br />
-               <label>{"الصف الذي تتبع له : " + gradeName}</label>
-               <br />
-               <br />
-               <MultipletButton
-                  open={true}
-                  text="اختر صفاً"
-                  options={grades}
-                  dataHook={setGrade}
-                  textHook={setGradeName}
-               />
-               <br />
-               <Button
-                  text="إدخال"
-                  hook={
-                     e => {
-                        e.preventDefault();
-                        handler.addClass(
-                           name,
-                           grade,
-                           maxNum,
-                           () => { }
-                        );
-                     }
-                  }
-               />
-            </form>
-         </div>
-      </div>
+      <Container fluid>
+         <img
+            src="Images/class.jpg"
+            alt=""
+            style={{
+               width: "60%",
+               height: "CALC(100% - 73px)",
+               position: "fixed",
+               bottom: "0",
+               left: "0",
+               transform: "translateX(-25%)",
+               clipPath: "ellipse(55% 50% at 30% 50%)"
+            }}
+         />
+         <Row className="mt-3">
+            <Col>
+               <Form className="w-25 text-start border p-5 ps-4 pt-0">
+                  <Title text="إضافة شعبة" />
+                  <InputWithLabel
+                     id="name"
+                     text="اسم الشعبة"
+                     hint="اسم الشعبة"
+                     value={name}
+                     hook={setName}
+                  />
+                  <InputWithLabel
+                     id="maxNumber"
+                     text="العدد الأقصى للطلاب"
+                     hint="العدد الأقصى للطلاب"
+                     value={maxNum}
+                     hook={setMaxNum}
+                  />
+                  <Multiple
+                     id="grade"
+                     text="الصف الذي تتبع له"
+                     options={grades}
+                     value={grade}
+                     hook={setGrade}
+                  />
+                  <Row className="mt-3">
+                     <ListOfButtons data={
+                        [
+                           {
+                              name: "إدخال",
+                              event: e => {
+                                 e.preventDefault();
+                                 handler.addClass(
+                                    name,
+                                    grade,
+                                    maxNum,
+                                    () => { }
+                                 );
+                              }
+                           }
+                        ]
+                     } />
+                  </Row>
+               </Form>
+            </Col>
+         </Row>
+      </Container>
    );
 }
 

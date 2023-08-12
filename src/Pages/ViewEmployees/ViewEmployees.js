@@ -16,7 +16,7 @@ function ViewEmployees() {
    const [next, setNext] = useState(null);
    const [previous, setPrevious] = useState(null);
    const [data, setData] = useState([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]);
-   const [selected, setSelected] = useState(-1);
+   const [selected, setSelected] = useState({});
    const [roles, setRoles] = useState([]);
 
    useEffect(
@@ -139,7 +139,8 @@ function ViewEmployees() {
                      },
                      {
                         name: "عرض صفحة الموظف",
-                        event: () => (!!selected) ? navigate(handlers.VIEWEMPLOYEEDATA + selected) : alert("اختر موظفاً لعرض معلوماته.")
+                        event: () => navigate(handlers.VIEWEMPLOYEEDATA + data[Object.keys(selected)[0]].id),
+                        disabled: !Object.keys(selected).length
                      }
                   ]
                } />
@@ -172,6 +173,9 @@ function ViewEmployees() {
                   columns={columns}
                   data={data}
                   initialState={{ density: 'compact' }}
+                  state={{ rowSelection: selected }}
+                  enableRowSelection={(row) => row.original.id}
+                  onRowSelectionChange={setSelected}
                   enableSorting={false}
                   enablePinning={false}
                   enableDensityToggle={false}
@@ -179,11 +183,7 @@ function ViewEmployees() {
                   enableFilters={false}
                   enableTopToolbar={false}
                   enableBottomToolbar={false}
-                  enableRowSelection={false}
                   enableMultiRowSelection={false}
-               //onRowSelectionChange={
-               //   e => setSelected(data[Object.keys(e())[0]].id)
-               //}
                />
             </Col>
          </Row>

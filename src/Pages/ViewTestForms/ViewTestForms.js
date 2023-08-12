@@ -13,7 +13,7 @@ function ViewTestForms() {
    const [next, setNext] = useState(null);
    const [previous, setPrevious] = useState(null);
    const [data, setData] = useState([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]);
-   const [selected, setSelected] = useState(-1);
+   const [selected, setSelected] = useState({});
    const [testForms, setTestForms] = useState([]);
 
    useEffect(
@@ -90,7 +90,8 @@ function ViewTestForms() {
                      },
                      {
                         name: "عرض صفحة نموذج",
-                        event: () => (!!selected) ? navigate(handlers.VIEWTESTFORMDATA + selected) : alert("اختر نموذجاً لعرض معلوماته.")
+                        event: () => navigate(handlers.VIEWTESTFORMDATA + data[Object.keys(selected)[0]].id),
+                        disabled: !Object.keys(selected).length
                      }
                   ]
                } />
@@ -100,6 +101,9 @@ function ViewTestForms() {
                   columns={columns}
                   data={data}
                   initialState={{ density: 'compact' }}
+                  state={{ rowSelection: selected }}
+                  enableRowSelection={(row) => row.original.id}
+                  onRowSelectionChange={setSelected}
                   enableSorting={false}
                   enablePinning={false}
                   enableDensityToggle={false}
@@ -107,6 +111,7 @@ function ViewTestForms() {
                   enableFilters={false}
                   enableTopToolbar={false}
                   enableBottomToolbar={false}
+                  enableMultiRowSelection={false}
                />
             </Col>
          </Row>

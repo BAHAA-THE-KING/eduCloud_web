@@ -2,12 +2,12 @@ import { Button, Col, Row } from "react-bootstrap";
 
 function ListOfButtons({ data }) {
    return (
-      <Row>
+      <Row className="justify-content-center">
          {
             data.map(
                elm =>
                   <Col xs='9' className='my-1'>
-                     <Button className='w-100' onClick={elm.event}>
+                     <Button className='w-100' onClick={elm.event} disabled={elm.disabled}>
                         {elm.name}
                      </Button>
                   </Col>

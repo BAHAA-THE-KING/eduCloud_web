@@ -13,7 +13,7 @@ function ViewSubjects() {
    const [next, setNext] = useState(null);
    const [previous, setPrevious] = useState(null);
    const [data, setData] = useState([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]);
-   const [selected, setSelected] = useState(-1);
+   const [selected, setSelected] = useState({});
    const [subjects, setSubjects] = useState([]);
 
    useEffect(
@@ -191,7 +191,8 @@ function ViewSubjects() {
                      },
                      {
                         name: "عرض المادة دراسية",
-                        event: () => (!!selected) ? navigate(handlers.VIEWSUBJECTDATA + selected) : alert("اختر مادة دراسية لعرض معلوماتها.")
+                        event: () => navigate(handlers.VIEWSUBJECTDATA + data[Object.keys(selected)[0]].id),
+                        disabled: !Object.keys(selected).length
                      }
                   ]
                } />
@@ -201,6 +202,9 @@ function ViewSubjects() {
                   columns={columns}
                   data={data}
                   initialState={{ density: 'compact' }}
+                  state={{ rowSelection: selected }}
+                  enableRowSelection={(row) => row.original.id}
+                  onRowSelectionChange={setSelected}
                   enableSorting={false}
                   enablePinning={false}
                   enableDensityToggle={false}
@@ -208,6 +212,7 @@ function ViewSubjects() {
                   enableFilters={false}
                   enableTopToolbar={false}
                   enableBottomToolbar={false}
+                  enableMultiRowSelection={false}
                />
             </Col>
          </Row>
