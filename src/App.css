@@ -10,7 +10,7 @@ a {
   text-decoration: unset !important;
 }
 
-tr:not(:first-child) {
+tbody>tr {
   height: 54px;
 }
 

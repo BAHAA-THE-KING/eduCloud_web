@@ -1,8 +1,8 @@
 import * as handlers from '../../handlers';
 import React, { useState, useMemo, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { MaterialReactTable } from 'material-react-table';
 import { Button, Col, Container, Dropdown, Form, Row } from 'react-bootstrap';
+import { MaterialReactTable } from 'material-react-table';
 import { Box } from '@mui/material';
 
 function DistributeStudents() {
@@ -28,7 +28,6 @@ function DistributeStudents() {
                e =>
                   (e.first_name.indexOf(search) !== -1) || (e.last_name.indexOf(search) !== -1)
             );
-         console.log(temp);
          setPrevious(current - 1);
          const next = current * 10 >= temp.length ? 0 : current + 1;
          setNext(next)
@@ -185,9 +184,9 @@ function DistributeStudents() {
          <Row className='mt-2'>
             <Col xs='2'>
                <Row>
-                  <Col>
+                  <Col xs='9'>
                      <Button
-                        className='w-50'
+                        className='w-100'
                         onClick={
                            () => {
                               const temp = {};
