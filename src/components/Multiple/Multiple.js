@@ -1,13 +1,23 @@
-import { Dropdown, Form } from "react-bootstrap";
+import { Col, Dropdown, Form, Row } from "react-bootstrap";
 
-function Multiple({ id, text, options, value, hook }) {
+function Multiple({ id, text, options, multiple, value, hook }) {
 
    return (
       <>
          <Form.Label htmlFor={id}>{text} :</Form.Label>
          <Dropdown id={id}>
             <Dropdown.Toggle>
-               {options.find(e => e.id == value)?.name ?? "اختر " + text}
+               {
+                  multiple ?
+                     (
+                        options.filter(e => value.indexOf(e.id) !== -1).length ?
+                           options.filter(e => value.indexOf(e.id) !== -1).map(e => e.name).join(", ")
+                           : "اختر " + text
+                     )
+                     : (
+                        options.find(e => e.id == value)?.name ?? "اختر " + text
+                     )
+               }
             </Dropdown.Toggle>
             <Dropdown.Menu>
                {
@@ -16,10 +26,36 @@ function Multiple({ id, text, options, value, hook }) {
                         option =>
                            <Dropdown.Item
                               onClick={
-                                 () => hook(option.id)
+                                 e => {
+                                    if (multiple) {
+                                       if (option.id === "") {
+                                          hook([]);
+                                          return;
+                                       }
+                                       e.stopPropagation();
+                                       if (value.find(e => e == option.id)) {
+                                          hook(value.filter(e => e != option.id));
+                                       } else {
+                                          hook([...value, option.id]);
+                                       }
+                                    }
+                                    else {
+                                       hook(option.id);
+                                    }
+                                 }
                               }
                            >
-                              {option.name}
+                              <Row>
+                                 {
+                                    multiple &&
+                                    <Col className="text-start">
+                                       <Form.Check type="checkbox" checked={!!value.find(e => e == option.id)} />
+                                    </Col>
+                                 }
+                                 <Col className="text-start">
+                                    {option.name}
+                                 </Col>
+                              </Row>
                            </Dropdown.Item>
                      )
                }

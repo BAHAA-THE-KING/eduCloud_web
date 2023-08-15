@@ -10,6 +10,8 @@ function DistributeStudents() {
    const extData = useLocation().state;
    const navigate = useNavigate();
 
+   console.log(extData);
+
    const [search, setSearch] = useState("");
    const [tempSearch, setTempSearch] = useState("");
    const [current, setCurrent] = useState(1);

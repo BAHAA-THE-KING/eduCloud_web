@@ -1,9 +1,12 @@
 import './SelectStudents.css';
 
-import { Button, ButtonWithIcon, MultipletButton, MultipletInput, TableTile, TextInput } from '../../components';
-import React, { useEffect, useState } from 'react';
+import { InputWithLabel, ListOfButtons, Multiple, Navigation } from '../../components';
+import { useEffect, useMemo, useState } from 'react';
 import * as handlers from "../../handlers";
 import { useNavigate } from 'react-router-dom';
+import { Col, Container, Form, Row } from 'react-bootstrap';
+import { MaterialReactTable } from 'material-react-table';
+import { Box } from '@mui/material';
 
 function SelectStudents() {
    const navigate = useNavigate();
@@ -16,8 +19,7 @@ function SelectStudents() {
    const [next, setNext] = useState(null);
    const [previous, setPrevious] = useState(null);
    const [data, setData] = useState([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]);
-   const [selected, setSelected] = useState(-1);
-   const [selectedStudents, setSelectedStudents] = useState([]);
+   const [selected, setSelected] = useState([]);
    const [selectedClasses, setSelectedClasses] = useState([]);
    const [sortType, setSortType] = useState("");
 
@@ -27,7 +29,7 @@ function SelectStudents() {
 
    useEffect(
       () => {
-         setSelectedStudents([]);
+         setSelected([]);
       },
       [searchGrade]
    );
@@ -76,274 +78,295 @@ function SelectStudents() {
       [current, search, searchGrade]
    );
 
-   return (
-      <div className={'selectstudents'}>
-         <div className='content'>
-            <div className='control'>
-               <ButtonWithIcon
-                  text="متابعة"
-                  hook={
-                     () => {
-                        if (sortType === "") return alert("اختر طريقة الترتيب.");
-                        if (!selectedStudents.length) return alert("اختر طلاباً لتوزيعهم.");
-                        if (!selectedClasses.length) return alert("اختر شعباً ليتم التوزيع عليها.");
-                        if (sortType === "manual") {
-                           return navigate(
-                              handlers.DISTRIBUTESTUDENTS,
-                              {
-                                 state: {
-                                    grade: grades.filter(e => e.id == searchGrade)[0],
-                                    students: selectedStudents,
-                                    classes: selectedClasses.map(e => { return classes.find((ee) => ee.id == e); }),
-                                    selection: {}
-                                 }
-                              }
-                           );
+   console.log(selected);
+
+   useEffect(
+      () => {
+         if (selected.filter(e => typeof (e) !== "object").length != 1) return;
+         setSelected(selected.map(
+            e => {
+               if (typeof (e) !== "object") {
+                  return data.filter(ee => ee.id == e)[0];
+               }
+               return e;
+            }
+         ));
+      },
+      [selected]
+   );
+
+   const columns = useMemo(
+      () => [
+         {
+            accessorKey: "accepted",
+            header: 'قبول',
+            Cell: ({ renderedCellValue, row }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>
+                     <Form.Check
+                        type="checkbox"
+                        className='ms-3'
+                        style={{ scale: "1.5" }}
+                        disabled={!row.getAllCells().find(e => e.id.indexOf("id") != -1)?.renderValue()}
+                        checked={
+                           renderedCellValue ||
+                           (!!selected.find(e => e.id == row.getAllCells().find(e => e.id.indexOf("id") != -1)?.renderValue()))
                         }
-                        handlers.addStudentsToClassesAutomatically(
-                           selectedStudents.map(e => e.id),
-                           selectedClasses,
-                           sortType,
-                           res => {
-                              const temp = {};
-                              for (const n of res.classes) {
-                                 const classId = n.id;
-                                 for (const k of n.newStudents) {
-                                    temp[k.id] = classId;
-                                 }
-                              }
-                              navigate(
+                        onChange={e => {
+                           const id = row.getAllCells().find(e => e.id.indexOf("id") != -1).renderValue();
+                           if (e.target.checked) {
+                              setSelected([...selected, id]);
+                           } else {
+                              setSelected(selected.filter(e => e.id != id));
+                           }
+                        }}
+                     />
+                  </span>
+               </Box>
+            ),
+         },
+         {
+            accessorKey: "id",
+            header: 'المعرّف',
+            Cell: ({ renderedCellValue }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            ),
+         },
+         {
+            accessorKey: "id",
+            id: "grade",
+            header: 'الصف',
+            Cell: ({ renderedCellValue }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue && grades.find(e => e.id == searchGrade)?.name}</span>
+               </Box>
+            ),
+         },
+         {
+            accessorKey: "first_name",
+            header: 'الاسم',
+            Cell: ({ renderedCellValue, row }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            ),
+         },
+         {
+            accessorKey: "last_name",
+            header: 'الكنية',
+            Cell: ({ renderedCellValue, row }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            ),
+         },
+         {
+            accessorKey: "father_name",
+            header: 'اسم الأب',
+            Cell: ({ renderedCellValue, row }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            ),
+         },
+         {
+            accessorKey: "mother_name",
+            header: 'اسم الأم',
+            Cell: ({ renderedCellValue, row }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            ),
+         },
+         {
+            accessorKey: "birth_date",
+            header: 'تاريخ الولادة',
+            Cell: ({ renderedCellValue, row }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            ),
+         },
+         {
+            accessorKey: "address_id",
+            header: 'العنوان',
+            Cell: ({ renderedCellValue, row }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            ),
+         }
+      ],
+      [data, selected]
+   );
+
+   return (
+      <Container fluid>
+         <Row className='mt-2'>
+            <Col xs='2'>
+               <ListOfButtons data={
+                  [
+                     {
+                        name: "متابعة",
+                        event: () => {
+                           if (sortType === "") return alert("اختر طريقة الترتيب.");
+                           if (!selected.length) return alert("اختر طلاباً لتوزيعهم.");
+                           if (!selectedClasses.length) return alert("اختر شعباً ليتم التوزيع عليها.");
+                           if (sortType === "manual") {
+                              return navigate(
                                  handlers.DISTRIBUTESTUDENTS,
                                  {
                                     state: {
                                        grade: grades.filter(e => e.id == searchGrade)[0],
-                                       students: selectedStudents,
+                                       students: selected,
                                        classes: selectedClasses.map(e => { return classes.find((ee) => ee.id == e); }),
-                                       selection: temp
+                                       selection: {}
                                     }
                                  }
                               );
                            }
-                        );
-                     }
-                  }
-                  src="Icons/person.svg"
-               />
-               <MultipletButton
-                  text="اختر التوزيع على الشعب"
-                  open={true}
-                  options={[{ id: "alphabeticPriority", name: "تدريجي" }, { id: "even", name: "متقارب" }, { id: "manual", name: "يدوي" }]}
-                  dataHook={
-                     (type, select) => {
-                        if (select) {
-                           setSortType(type);
-                        } else {
-                           setSortType("");
-                        }
-                     }
-                  }
-                  textHook={() => { }}
-               />
-               <label>عوامل التصفية :</label>
-               <TextInput defaultValue={tempSearch} hint="البحث" inputHook={setTempSearch} enterHook={setSearch} />
-               <MultipletButton
-                  text="اختر الصف"
-                  open={true}
-                  options={grades}
-                  dataHook={
-                     (grade, select) => {
-                        if (select) {
-                           setSearchGrade(grade);
-                           const temp = allClasses.filter(e => e.id === grade)[0].g_classes;
-                           setClasses(temp);
-                        } else {
-                           setSearchGrade("");
-                           setClasses([]);
-                        }
-                     }
-                  }
-                  textHook={() => { }}
-               />
-               <MultipletInput
-                  text="اختر الشعبة"
-                  open={true}
-                  currentData={selectedClasses}
-                  options={classes}
-                  dataHook={setSelectedClasses}
-                  textHook={() => { }}
-               />
-            </div>
-            <div className='show'>
-               <div className='view'>
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="المعرّف"
-                     setSelected={() => { }}
-                  />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="الصف"
-                     setSelected={() => { }}
-                  />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="الاسم"
-                     setSelected={() => { }}
-                  />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="الكنية"
-                     setSelected={() => { }}
-                  />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="اسم الأب"
-                     setSelected={() => { }}
-                  />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="اسم الأم"
-                     setSelected={() => { }}
-                  />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="تاريخ الولادة"
-                     setSelected={() => { }}
-                  />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="العنوان"
-                     setSelected={() => { }}
-                  />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="قبول"
-                     setSelected={() => { }}
-                  />
-                  {
-                     data.map(
-                        (e) => (
-                           <React.Fragment>
-                              <TableTile
-                                 selected={selected == e.id && selected != null}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.id}
-                              />
-                              <TableTile
-                                 selected={selected == e.id && selected != null}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.grade_id}
-                              />
-                              <TableTile
-                                 selected={selected == e.id && selected != null}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.first_name}
-                              />
-                              <TableTile
-                                 selected={selected == e.id && selected != null}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.last_name}
-                              />
-                              <TableTile
-                                 selected={selected == e.id && selected != null}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.father_name}
-                              />
-                              <TableTile
-                                 selected={selected == e.id && selected != null}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.mother_name}
-                              />
-                              <TableTile
-                                 selected={selected == e.id && selected != null}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.birth_date}
-                              />
-                              <TableTile
-                                 selected={selected == e.id && selected != null}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.address_id}
-                              />
-                              <TableTile
-                                 selected={selected == e.id && selected != null}
-                                 id={e.id}
-                                 className="check"
-                                 setSelected={setSelected}
-                                 text={
-                                    e.id &&
-                                    <input
-                                       type='checkbox'
-                                       onChange={
-                                          eee => {
-                                             if (eee.target.checked) {
-                                                setSelectedStudents([...selectedStudents, e]);
-                                             } else {
-                                                console.log(selectedStudents.filter(ee => ee.id != e.id))
-                                                setSelectedStudents(selectedStudents.filter(ee => ee.id != e.id));
-                                             }
-                                          }
-                                       }
-                                       checked={selectedStudents.find((ee) => ee.id == e.id)}
-                                    />
+                           handlers.addStudentsToClassesAutomatically(
+                              selected.map(e => e.id),
+                              selectedClasses,
+                              sortType,
+                              res => {
+                                 const temp = {};
+                                 for (const n of res.classes) {
+                                    const classId = n.id;
+                                    for (const k of n.newStudents) {
+                                       temp[k.id] = classId;
+                                    }
                                  }
-                              />
-                           </React.Fragment>
-                        )
-                     )
-                  }
-               </div>
-            </div>
-         </div>
-         <div className='navigation'>
-            <Button
-               text="<   السابق"
-               className="previous"
-               hook={
-                  () => setCurrent(current - 1)
-               }
-               disabled={!previous}
-            />
-            <Button
-               text={current}
-               hook={() => { }}
-               className={"current"}
-            />
-            <Button
-               text="التالي   >"
-               className="next"
-               hook={
-                  () => setCurrent(current + 1)
-               }
-               disabled={!next}
-            />
-         </div>
-      </div>
+                                 navigate(
+                                    handlers.DISTRIBUTESTUDENTS,
+                                    {
+                                       state: {
+                                          grade: grades.filter(e => e.id == searchGrade)[0],
+                                          students: selected,
+                                          classes: selectedClasses.map(e => { return classes.find((ee) => ee.id == e); }),
+                                          selection: temp
+                                       }
+                                    }
+                                 );
+                              }
+                           );
+                        }
+                     }
+                  ]
+               } />
+               <Row className='text-start'>
+                  <Multiple
+                     id="method"
+                     text="طريقة للتوزيع التلقائي"
+                     options={[{ id: "alphabeticPriority", name: "تدريجي" }, { id: "even", name: "متقارب" }, { id: "manual", name: "يدوي" }]}
+                     value={sortType}
+                     hook={setSortType}
+                  />
+                  <InputWithLabel
+                     id="search"
+                     value={tempSearch}
+                     text="عوامل التصفية"
+                     hint="بحث"
+                     hook={setTempSearch}
+                     ehook={setSearch}
+                  />
+                  <Multiple
+                     id="grade"
+                     text="الصف"
+                     options={grades}
+                     value={searchGrade}
+                     hook={
+                        (gradeId) => {
+                           setSearchGrade(gradeId);
+                           gradeId &&
+                              setClasses(allClasses.filter(e => e.id === gradeId)[0].g_classes);
+                        }
+                     }
+                  />
+                  <Multiple
+                     id="class"
+                     text="الشعبة"
+                     multiple={true}
+                     options={classes}
+                     value={selectedClasses}
+                     hook={setSelectedClasses}
+                  />
+               </Row>
+            </Col>
+            <Col xs='10'>
+               <MaterialReactTable
+                  columns={columns}
+                  data={data}
+                  initialState={{ density: 'compact' }}
+                  enableRowSelection={false}
+                  enableSorting={false}
+                  enablePinning={false}
+                  enableDensityToggle={false}
+                  enablePagination={false}
+                  enableFilters={false}
+                  enableTopToolbar={false}
+                  enableBottomToolbar={false}
+               />
+            </Col>
+         </Row>
+         <Navigation current={current} next={next} previous={previous} setCurrent={setCurrent} />
+      </Container>
    )
 };
 

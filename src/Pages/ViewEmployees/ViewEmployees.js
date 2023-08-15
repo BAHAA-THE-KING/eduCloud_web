@@ -1,8 +1,8 @@
-import { ListOfButtons, Multiple, Navigation } from '../../components';
+import { InputWithLabel, ListOfButtons, Multiple, Navigation } from '../../components';
 import { useEffect, useMemo, useState } from 'react';
 import * as handlers from "../../handlers";
 import { useNavigate } from 'react-router-dom';
-import { Col, Container, Form, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import { MaterialReactTable } from 'material-react-table';
 import { Box } from '@mui/material';
 
@@ -47,6 +47,7 @@ function ViewEmployees() {
       },
       [search, searchRole]
    );
+   
    const columns = useMemo(
       () => [
          {
@@ -145,19 +146,13 @@ function ViewEmployees() {
                   ]
                } />
                <Row className='text-start'>
-                  <Form.Label htmlFor='searchInput'>عوامل التصفية :</Form.Label>
-                  <Form.Control
-                     id="searchInput"
+                  <InputWithLabel
+                     id="search"
+                     text="عوامل التصفية"
+                     hint="البحث"
                      value={tempSearch}
-                     placeholder="بحث"
-                     onChange={e => setTempSearch(e.target.value)}
-                     onKeyDown={
-                        e => {
-                           if (e.key === 'Enter') {
-                              setSearch(e.target.value);
-                           }
-                        }
-                     }
+                     hook={setTempSearch}
+                     ehook={setSearch}
                   />
                   <Multiple
                      id="role"

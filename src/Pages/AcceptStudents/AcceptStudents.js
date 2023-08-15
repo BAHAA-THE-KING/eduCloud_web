@@ -1,9 +1,10 @@
-import './AcceptStudents.css';
-
-import { Button, ButtonWithIcon, MultipletButton, TableTile, TextInput } from '../../components';
-import React, { useEffect, useState } from 'react';
+import { InputWithLabel, ListOfButtons, Multiple, Navigation } from '../../components';
+import { useEffect, useMemo, useState } from 'react';
 import * as handlers from "../../handlers";
 import { useNavigate } from 'react-router-dom';
+import { Col, Container, Form, Row } from 'react-bootstrap';
+import { MaterialReactTable } from 'material-react-table';
+import { Box } from '@mui/material';
 
 function AcceptStudents() {
    const navigate = useNavigate();
@@ -18,8 +19,7 @@ function AcceptStudents() {
    const [data, setData] = useState([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]);
    const [allData, setAllData] = useState([]);
 
-   const [selected, setSelected] = useState(-1);
-   const [selectedStudents, setSelectedStudents] = useState([]);
+   const [selected, setSelected] = useState({});
 
    const [grades, setGrades] = useState([]);
 
@@ -42,7 +42,7 @@ function AcceptStudents() {
             res => {
                setAllData(res);
                const temp = res.filter(e => e.succeeded === true).map(e => e.id);
-               setSelectedStudents([...temp]);
+               setSelected([...temp]);
                setCurrent(1);
                setMinNum(100);
             }
@@ -59,8 +59,8 @@ function AcceptStudents() {
             minNum,
             res => {
                setAllData(res);
-               const temp = res.filter(e => e.succeeded === true).map(e => e.id);
-               setSelectedStudents([...temp]);
+               const temp = Object.fromEntries(res.filter(e => e.succeeded === true).map(e => [e.id, true]));
+               setSelected({ ...temp });
                setCurrent(1);
             }
          );
@@ -82,215 +82,221 @@ function AcceptStudents() {
       [current, allData]
    );
 
+   const columns = useMemo(
+      () => [
+         {
+            accessorKey: "accepted",
+            header: 'قبول',
+            Cell: ({ renderedCellValue, row }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>
+                     <Form.Check
+                        type="checkbox"
+                        className='ms-3'
+                        style={{ scale: "1.5" }}
+                        checked={renderedCellValue || selected[row.getAllCells().find(e => e.id.indexOf("id") != -1)?.renderValue()]}
+                        onChange={e => {
+                           setSelected({ ...selected, [row.getAllCells().find(e => e.id.indexOf("id") != -1).renderValue()]: e.target.checked });
+                        }}
+                     />
+                  </span>
+               </Box>
+            ),
+         },
+         {
+            accessorKey: "id",
+            header: 'المعرّف',
+            Cell: ({ renderedCellValue }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            ),
+         },
+         {
+            accessorKey: "id",
+            id: "grade",
+            header: 'الصف',
+            Cell: ({ renderedCellValue }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue && grades.find(e => e.id == searchGrade)?.name}</span>
+               </Box>
+            ),
+         },
+         {
+            accessorKey: "first_name",
+            header: 'الاسم',
+            Cell: ({ renderedCellValue, row }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            ),
+         },
+         {
+            accessorKey: "last_name",
+            header: 'الكنية',
+            Cell: ({ renderedCellValue, row }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            ),
+         },
+         {
+            accessorKey: "acceptance_rate",
+            header: 'العلامة',
+            Cell: ({ renderedCellValue, row }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            ),
+         },
+         {
+            accessorKey: "succeeded_in",
+            header: 'اجتاز',
+            Cell: ({ renderedCellValue, row }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{row.getAllCells().find(e => e.id.indexOf("id") != -1).renderValue() && (renderedCellValue.length ? renderedCellValue.join(", ") + "." : "")}</span>
+               </Box>
+            ),
+         },
+         {
+            accessorKey: "failed_in",
+            header: 'أخفق',
+            Cell: ({ renderedCellValue, row }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{row.getAllCells().find(e => e.id.indexOf("id") != -1).renderValue() && (renderedCellValue.length ? renderedCellValue.join(", ") + "." : "")}</span>
+               </Box>
+            ),
+         },
+         {
+            accessorKey: "error_in",
+            header: 'لم توضع علامة',
+            Cell: ({ renderedCellValue, row }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{row.getAllCells().find(e => e.id.indexOf("id") != -1).renderValue() && (renderedCellValue.length ? renderedCellValue.join(", ") + "." : "")}</span>
+               </Box>
+            ),
+         }
+      ],
+      [data, selected]
+   );
+
    return (
-      <div className={'viewacceptedstudents'}>
-         <div className='content'>
-            <div className='control'>
-               <ButtonWithIcon
-                  text="متابعة"
-                  hook={
-                     () => {
-                        if (!searchGrade) navigate(handlers.SELECTSTUDENTS);
-                        handlers.addCandidateToOfficial(
-                           searchGrade,
-                           selectedStudents,
-                           () => {
+      <Container fluid>
+         <Row className='mt-2'>
+            <Col xs='2'>
+               <ListOfButtons data={
+                  [
+                     {
+                        name: "متابعة",
+                        event: () => {
+                           if (!Object.keys(selected).length) {
                               navigate(handlers.SELECTSTUDENTS);
+                              return;
                            }
-                        );
+                           handlers.addCandidateToOfficial(
+                              searchGrade,
+                              Object.keys(selected),
+                              () => {
+                                 navigate(handlers.SELECTSTUDENTS);
+                              }
+                           );
+                        },
                      }
-                  }
-                  src="Icons/person.svg"
-               />
-               <label>عوامل التصفية :</label>
-               <TextInput defaultValue={tempMinNum} hint="أقل عدد للطلاب الناجحين" inputHook={setTempMinNum} enterHook={setMinNum} />
-               <MultipletButton
-                  text="اختر الصف"
-                  open={true}
-                  options={grades}
-                  dataHook={
-                     (grade, select) => {
-                        if (select) {
-                           setSearchGrade(grade);
-                        } else {
-                           setSearchGrade("");
-                        }
-                     }
-                  }
-                  textHook={() => { }}
-               />
-            </div>
-            <div className='show'>
-               <div className='view'>
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="المعرّف"
-                     setSelected={() => { }}
+                  ]
+               } />
+               <Row className='text-start'>
+                  <InputWithLabel
+                     id="mark"
+                     type="number"
+                     text="تحديد علامة النجاح"
+                     hint="علامة النجاح"
+                     value={tempMinNum}
+                     hook={setTempMinNum}
+                     ehook={setMinNum}
                   />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
+                  <Form.Label>عوامل التصفية :</Form.Label>
+                  <Multiple
+                     id="grade"
                      text="الصف"
-                     setSelected={() => { }}
+                     options={grades}
+                     value={searchGrade}
+                     hook={setSearchGrade}
                   />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="الاسم"
-                     setSelected={() => { }}
-                  />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="الكنية"
-                     setSelected={() => { }}
-                  />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="نسبة النجاح"
-                     setSelected={() => { }}
-                  />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="اجتاز"
-                     setSelected={() => { }}
-                  />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="أخفق"
-                     setSelected={() => { }}
-                  />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="لم توضع علامة"
-                     setSelected={() => { }}
-                  />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="قبول"
-                     setSelected={() => { }}
-                  />
-                  {
-                     data.map(
-                        (e) => (
-                           <React.Fragment>
-                              <TableTile
-                                 selected={selected == e.id && selected != null}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.id}
-                              />
-                              <TableTile
-                                 selected={selected == e.id && selected != null}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.grade_id}
-                              />
-                              <TableTile
-                                 selected={selected == e.id && selected != null}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.first_name}
-                              />
-                              <TableTile
-                                 selected={selected == e.id && selected != null}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.last_name}
-                              />
-                              <TableTile
-                                 selected={selected == e.id && selected != null}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.acceptance_rate}
-                              />
-                              <TableTile
-                                 selected={selected == e.id && selected != null}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.succeeded_in ? (e.succeeded_in.length > 0 ? e.succeeded_in.join(",") + "." : "") : ""}
-                              />
-                              <TableTile
-                                 selected={selected == e.id && selected != null}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.full_name}
-                              />
-                              <TableTile
-                                 selected={selected == e.id && selected != null}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.full_name}
-                              />
-                              <TableTile
-                                 selected={selected == e.id && selected != null}
-                                 id={e.id}
-                                 className="check"
-                                 setSelected={setSelected}
-                                 text={
-                                    e.id &&
-                                    <input
-                                       type='checkbox'
-                                       onChange={
-                                          () => {
-                                             if (selectedStudents.indexOf(e.id) === -1) {
-                                                setSelectedStudents([...selectedStudents, e.id]);
-                                             } else {
-                                                setSelectedStudents(selectedStudents.filter(ee => ee != e.id));
-                                             }
-                                          }
-                                       }
-                                       checked={selectedStudents.indexOf(e.id) !== -1}
-                                    />
-                                 }
-                              />
-                           </React.Fragment>
-                        )
-                     )
-                  }
-               </div>
-            </div>
-         </div>
-         <div className='navigation'>
-            <Button
-               text="<   السابق"
-               className="previous"
-               hook={
-                  () => setCurrent(current - 1)
-               }
-               disabled={previous < 1}
-            />
-            <Button
-               text={current}
-               hook={() => { }}
-               className={"current"}
-            />
-            <Button
-               text="التالي   >"
-               className="next"
-               hook={
-                  () => setCurrent(current + 1)
-               }
-               disabled={!next}
-            />
-         </div>
-      </div>
-   )
+               </Row>
+            </Col>
+            <Col xs='10'>
+               <MaterialReactTable
+                  columns={columns}
+                  data={data}
+                  initialState={{ density: 'compact' }}
+                  enableRowSelection={false}
+                  enableSorting={false}
+                  enablePinning={false}
+                  enableDensityToggle={false}
+                  enablePagination={false}
+                  enableFilters={false}
+                  enableTopToolbar={false}
+                  enableBottomToolbar={false}
+               />
+            </Col>
+         </Row>
+         <Navigation current={current} next={next} previous={previous} setCurrent={setCurrent} />
+      </Container>
+   );
 };
 
 export default AcceptStudents;

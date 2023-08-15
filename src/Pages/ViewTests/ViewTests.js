@@ -1,4 +1,4 @@
-import { ListOfButtons, Multiple, Navigation } from '../../components';
+import { InputWithLabel, ListOfButtons, Multiple, Navigation } from '../../components';
 import { useEffect, useMemo, useState } from 'react';
 import * as handlers from "../../handlers";
 import { useNavigate } from 'react-router-dom';
@@ -295,35 +295,29 @@ function ViewTests() {
                }
                />
                <Row className='text-start'>
-                  <Form.Label htmlFor='searchInput'>عوامل التصفية :</Form.Label>
-                  <Form.Control
-                     id="searchInput"
+                  <InputWithLabel
+                     id="search"
                      value={tempSearch}
-                     placeholder="بحث"
-                     onChange={e => setTempSearch(e.target.value)}
-                     onKeyDown={
-                        e => {
-                           if (e.key === 'Enter') {
-                              setSearch(e.target.value);
-                           }
-                        }
-                     }
+                     text="عوامل التصفية :"
+                     hint="بحث"
+                     hook={setTempSearch}
+                     ehook={setSearch}
                   />
-                  <Form.Label htmlFor='startDateInput'>بعد التاريخ :</Form.Label>
-                  <Form.Control
-                     id="startDateInput"
+                  <InputWithLabel
+                     id="startDate"
                      type="date"
+                     text="بعد التاريخ"
+                     hint="بحث"
                      value={searchStartDate}
-                     placeholder="بحث"
-                     onChange={e => setSearchStartDate(e.target.value)}
+                     hook={setSearchStartDate}
                   />
-                  <Form.Label htmlFor='endDateInput'>قبل التاريخ :</Form.Label>
-                  <Form.Control
-                     id="endDateInput"
+                  <InputWithLabel
+                     id="endDate"
                      type="date"
+                     text="قبل التاريخ"
+                     hint="بحث"
                      value={searchEndDate}
-                     placeholder="بحث"
-                     onChange={e => setSearchEndDate(e.target.value)}
+                     hook={setSearchEndDate}
                   />
                   <Multiple
                      id='type'
