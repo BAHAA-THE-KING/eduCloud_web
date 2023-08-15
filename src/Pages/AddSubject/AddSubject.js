@@ -1,4 +1,4 @@
-import { Title, TextInput, Button, MultipletButton, Multiple, ListOfButtons } from "../../components";
+import { Title, Multiple, ListOfButtons, InputWithLabel } from "../../components";
 import { useEffect, useState } from "react";
 import * as handler from './../../handlers';
 import { Col, Container, Form, Row } from "react-bootstrap";
@@ -11,7 +11,6 @@ function AddSubject() {
    let [notes, setNotes] = useState("");
 
    let [grades, setGrades] = useState([]);
-   let [gradeName, setGradeName] = useState("");
 
    useEffect(
       () => {
@@ -39,35 +38,36 @@ function AddSubject() {
             <Col>
                <Form className="w-25 text-start border p-5 ps-4 pt-0">
                   <Title text="إضافة مادة" />
-                  <Form.Label htmlFor="name">اسم المادة :</Form.Label>
-                  <Form.Control
+                  <InputWithLabel
                      id="name"
+                     text="اسم المادة"
+                     hint="مثال: رياضيات - جبر"
                      value={name}
-                     onChange={setName}
-                     placeholder="مثال: رياضيات - جبر"
+                     hook={setName}
                   />
-                  <Form.Label htmlFor="maxMark">العلامة الكلية : </Form.Label>
-                  <Form.Control
+                  <InputWithLabel
                      id="maxMark"
                      type="number"
+                     text="العلامة الكلية"
+                     hint="العلامة الكلية"
                      value={maxMark}
-                     onChange={setMaxMark}
-                     placeholder="العلامة الكلية"
+                     hook={setMaxMark}
                   />
-                  <Form.Label htmlFor="passMark">علامة النجاح : </Form.Label>
-                  <Form.Control
+                  <InputWithLabel
                      id="passMark"
                      type="number"
+                     text="علامة النجاح"
+                     hint="علامة النجاح"
                      value={passMark}
-                     onChange={setPassMark}
-                     placeholder="علامة النجاح"
+                     hook={setPassMark}
                   />
-                  <Form.Label htmlFor="notes">{"الملاحظات : "}</Form.Label>
-                  <Form.Control
+                  <InputWithLabel
                      id="notes"
+                     as="textarea"
+                     text="ملاحظات"
+                     hint="ملاحظات"
                      value={notes}
-                     onChange={setNotes}
-                     placeholder="ملاحظات"
+                     hook={setNotes}
                   />
                   <Multiple
                      id="grade"
