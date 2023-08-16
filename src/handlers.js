@@ -236,7 +236,6 @@ function getSubjectData(id, func) {
       )
       .then(
          e => {
-            func(e);
             if (e["message"] === "Unauthenticated.") {
                goTo(LOGIN);
             } else if (e.message === "Success!") {

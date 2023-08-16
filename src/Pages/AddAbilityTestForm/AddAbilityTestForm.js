@@ -22,7 +22,7 @@ function AddAbilityTestForm() {
                      temp.push(
                         {
                            id: n.id,
-                           name: n.name+" للصف "+k.name,
+                           name: n.name + " للصف " + k.name,
                         }
                      );
                   }

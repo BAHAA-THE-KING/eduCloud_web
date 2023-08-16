@@ -47,7 +47,7 @@ function ViewEmployees() {
       },
       [search, searchRole]
    );
-   
+
    const columns = useMemo(
       () => [
          {
@@ -165,6 +165,21 @@ function ViewEmployees() {
             </Col>
             <Col xs='10'>
                <MaterialReactTable
+                  muiSelectCheckboxProps={{
+                     sx: {
+                        float: "inline-start"
+                     }
+                  }}
+                  muiTableBodyProps={{
+                     sx: {
+                        '& tr.Mui-selected': {
+                           backgroundColor: '#AFAFAF',
+                        },
+                        '& tr:nth-of-type(odd)': {
+                           backgroundColor: '#f5f5f5',
+                        },
+                     },
+                  }}
                   columns={columns}
                   data={data}
                   initialState={{ density: 'compact' }}
