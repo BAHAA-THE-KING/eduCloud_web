@@ -1,10 +1,10 @@
 import { Col, Dropdown, Form, Row } from "react-bootstrap";
 
-function Multiple({ id, text, options, multiple, value, hook }) {
+function Multiple({ id, text, options, multiple, value, hook, noLabel }) {
 
    return (
       <>
-         <Form.Label htmlFor={id}>{text} :</Form.Label>
+         {(noLabel ?? false) || <Form.Label htmlFor={id}>{text} :</Form.Label>}
          <Dropdown id={id}>
             <Dropdown.Toggle>
                {

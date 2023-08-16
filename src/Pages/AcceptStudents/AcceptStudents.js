@@ -19,7 +19,7 @@ function AcceptStudents() {
    const [data, setData] = useState([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]);
    const [allData, setAllData] = useState([]);
 
-   const [selected, setSelected] = useState({});
+   const [selected, setSelected] = useState([]);
 
    const [grades, setGrades] = useState([]);
 
@@ -59,8 +59,8 @@ function AcceptStudents() {
             minNum,
             res => {
                setAllData(res);
-               const temp = Object.fromEntries(res.filter(e => e.succeeded === true).map(e => [e.id, true]));
-               setSelected({ ...temp });
+               const temp = res.filter(e => e.succeeded === true).map(e => e.id);
+               setSelected([...temp]);
                setCurrent(1);
             }
          );
@@ -87,27 +87,33 @@ function AcceptStudents() {
          {
             accessorKey: "accepted",
             header: 'قبول',
-            Cell: ({ renderedCellValue, row }) => (
-               <Box
-                  sx={{
-                     display: 'flex',
-                     alignItems: 'center',
-                     gap: '1rem',
-                  }}
-               >
-                  <span>
-                     <Form.Check
-                        type="checkbox"
-                        className='ms-3'
-                        style={{ scale: "1.5" }}
-                        checked={renderedCellValue || selected[row.getAllCells().find(e => e.id.indexOf("id") != -1)?.renderValue()]}
-                        onChange={e => {
-                           setSelected({ ...selected, [row.getAllCells().find(e => e.id.indexOf("id") != -1).renderValue()]: e.target.checked });
-                        }}
-                     />
-                  </span>
-               </Box>
-            ),
+            Cell: ({ renderedCellValue, row }) => {
+               const id = row.getAllCells().find(e => e.id.indexOf("id") != -1)?.renderValue();
+               return (
+                  <Box
+                     sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '1rem',
+                     }}
+                  >
+                     <span>
+                        <Form.Check
+                           type="checkbox"
+                           className='ms-3'
+                           style={{ scale: "1.5" }}
+                           checked={renderedCellValue || selected.find(e => e == id)}
+                           onChange={e => {
+                              if (e.target.checked)
+                                 setSelected([...selected, id]);
+                              else
+                                 setSelected(selected.filter(e => e != id));
+                           }}
+                        />
+                     </span>
+                  </Box>
+               );
+            },
          },
          {
             accessorKey: "id",
@@ -243,18 +249,26 @@ function AcceptStudents() {
                      {
                         name: "متابعة",
                         event: () => {
-                           if (!Object.keys(selected).length) {
+                           if (!selected.length) {
                               navigate(handlers.SELECTSTUDENTS);
                               return;
                            }
                            handlers.addCandidateToOfficial(
                               searchGrade,
-                              Object.keys(selected),
+                              selected,
                               () => {
                                  navigate(handlers.SELECTSTUDENTS);
                               }
                            );
                         },
+                     },
+                     {
+                        name: "عرض صفحة طالب",
+                        event: () => {
+                           if (!selected.length) return alert("اخترا طالباً لعرض معلوماته");
+                           if (selected.length > 1) return alert("اخترا طالباً واحداً لعرض معلوماته");
+                           navigate(handlers.VIEWSTUDENTDATA + selected[0]);
+                        }
                      }
                   ]
                } />

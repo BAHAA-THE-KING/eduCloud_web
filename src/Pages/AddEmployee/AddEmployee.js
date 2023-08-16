@@ -31,7 +31,7 @@ function AddEmployee() {
             alt=""
             style={{
                width: "40%",
-               position: "absolute",
+               position: "fixed",
                bottom: "0",
                left: "0"
             }}
@@ -78,7 +78,10 @@ function AddEmployee() {
                                        if (selectedRoles.indexOf("supervisor") !== -1) next.push(handler.ADDSUPERVISOR);
                                        if (selectedRoles.indexOf("teacher") !== -1) next.push(handler.ADDTEACHER);
                                        if (next.length)
-                                          navigate(next[0], { state: { id: empData.id, next } });
+                                          navigate(
+                                             next[0],
+                                             { state: { empData, next } }
+                                          );
                                        else
                                           navigate(handler.HOME);
 

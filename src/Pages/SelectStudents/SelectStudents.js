@@ -1,5 +1,3 @@
-import './SelectStudents.css';
-
 import { InputWithLabel, ListOfButtons, Multiple, Navigation } from '../../components';
 import { useEffect, useMemo, useState } from 'react';
 import * as handlers from "../../handlers";
@@ -77,8 +75,6 @@ function SelectStudents() {
       },
       [current, search, searchGrade]
    );
-
-   console.log(selected);
 
    useEffect(
       () => {
@@ -306,6 +302,14 @@ function SelectStudents() {
                                  );
                               }
                            );
+                        }
+                     },
+                     {
+                        name: "عرض صفحة طالب",
+                        event: () => {
+                           if (!selected.length) return alert("اخترا طالباً لعرض معلوماته");
+                           if (selected.length > 1) return alert("اخترا طالباً واحداً لعرض معلوماته");
+                           navigate(handlers.VIEWSTUDENTDATA + selected[0].id);
                         }
                      }
                   ]

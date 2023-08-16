@@ -1058,7 +1058,7 @@ function addTest(title, passMark, maxMark, type, date, theClass, subject, func) 
 }
 
 function addStudent(type, firstName, lastName, birthDate, birthPlace, placeOfLiving, grade, publicRecord, socialDescription, the6GradeAvg, previousSchool, fatherName, fatherAlive, fatherProfession, grandFatherName, motherName, motherLastName, transportationSubscriber, address, registrationPlace, registrationNumber, registrationDate, notes, func) {
-   const path = "/secretary/addStudentOrCandidate/" + type;
+   const path = "/secretary/addStudentOrCandidate/" + +type;
 
    const url = host + path;
 

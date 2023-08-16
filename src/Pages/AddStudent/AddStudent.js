@@ -1,9 +1,8 @@
-import "./AddStudent.css";
-
-import { TextInput, Button, Title, MultipletButton } from "../../components";
+import { TextInput, Button, Title, MultipletButton, InputWithLabel, Multiple, ListOfButtons } from "../../components";
 import { useEffect, useState } from "react";
 import * as handler from './../../handlers';
 import { useNavigate } from "react-router-dom";
+import { Col, Container, Form, Row } from "react-bootstrap";
 /*
 first_name
 last_name
@@ -69,127 +68,233 @@ function AddStudent() {
 
 
    return (
-      <div className="addstudent">
-         <img src="../Images/addemployee.png" alt="" className="bg" />
-         <Title text="تسجيل طالب" />
-         <div className="content">
-            <form>
-               <label>اسم الطالب :</label>
-               <TextInput defaultValue={firstName} inputHook={setFirstName} editable={true} enterHook={() => { }} hint="الاسم" />
-               <br />
-               <label>كنية الطالب :</label>
-               <TextInput defaultValue={lastName} inputHook={setLastName} editable={true} enterHook={() => { }} hint="الكنية" />
-               <br />
-               <label>تاريخ الولادة :</label>
-               <TextInput type="date" defaultValue={birthDate} inputHook={setBirthDate} editable={true} enterHook={() => { }} hint="تاريخ الولادة" />
-               <br />
-               <label>مكان الولادة :</label>
-               <TextInput defaultValue={birthPlace} inputHook={setBirthPlace} editable={true} enterHook={() => { }} hint="مكان الولادة" />
-               <br />
-               <label>السكن :</label>
-               <TextInput defaultValue={placeOfLiving} inputHook={setPlaceOfLiving} editable={true} enterHook={() => { }} hint="مكان السكن" />
-               <br />
-               <label>{"الصف : " + gradeName}</label>
-               <br />
-               <br />
-               <MultipletButton
-                  text="اختر الصف"
-                  currentData={grade}
-                  options={grades}
-                  dataHook={setGrade}
-                  textHook={setGradeName}
-               />
-               <br />
-               <label>السجل العام :</label>
-               <TextInput defaultValue={publicRecord} inputHook={setPublicRecord} editable={true} enterHook={() => { }} hint="السجل العام" />
-               <br />
-               <label>الوضع الاجتماعي :</label>
-               <TextInput defaultValue={socialDescription} inputHook={setSocialDescription} editable={true} enterHook={() => { }} hint="الحالة الاجتماعية" />
-               <br />
-               <label>علامة الصف السادس :</label>
-               <TextInput defaultValue={the6GradeAvg} inputHook={setThe6GradeAvg} editable={true} enterHook={() => { }} hint="علامة الصف السادس" />
-               <br />
-               <label>المدرسة السابقة :</label>
-               <TextInput defaultValue={previousSchool} inputHook={setPreviousSchool} editable={true} enterHook={() => { }} hint="اسم المدرسة السابقة" />
-               <br />
-               <label>اسم الأب :</label>
-               <TextInput defaultValue={fatherName} inputHook={setFatherName} editable={true} enterHook={() => { }} hint="اسم الأب" />
-               <br />
-               <label>هل الأب على قيد الحياة :</label>
-               <TextInput type="checkbox" defaultValue={fatherAlive} inputHook={setFatherAlive} editable={true} enterHook={() => { }} hint="الأب على قيد الحياة" />
-               <br />
-               <label>مهنة الأب :</label>
-               <TextInput defaultValue={fatherProfession} inputHook={setFatherProfession} editable={true} enterHook={() => { }} hint="اسم المهنة" />
-               <br />
-               <label>اسم الجد (أب الأب) :</label>
-               <TextInput defaultValue={grandFatherName} inputHook={setGrandFatherName} editable={true} enterHook={() => { }} hint="اسم الجد" />
-               <br />
-               <label>اسم الأم :</label>
-               <TextInput defaultValue={motherName} inputHook={setMotherName} editable={true} enterHook={() => { }} hint="اسم الأم" />
-               <br />
-               <label>كنية الأم :</label>
-               <TextInput defaultValue={motherLastName} inputHook={setMotherLastName} editable={true} enterHook={() => { }} hint="كنية الأم" />
-               <br />
-               <label>المواصلات :</label>
-               <TextInput type="checkbox" defaultValue={transportationSubscriber} inputHook={setTransportationSubscriber} editable={true} enterHook={() => { }} hint="اشتراك بالمواصلات" />
-               <br />
-               <label>خط المواصلات :</label>
-               <TextInput defaultValue={address} inputHook={setAddress} editable={true} enterHook={() => { }} hint="عنوان بالمواصلات" />
-               <br />
-               <label>مكان التسجيل :</label>
-               <TextInput defaultValue={registrationPlace} inputHook={setRegistrationPlace} editable={true} enterHook={() => { }} hint="الفرع" />
-               <br />
-               <label>رقم التسجيل :</label>
-               <TextInput defaultValue={registrationNumber} inputHook={setRegistrationNumber} editable={true} enterHook={() => { }} hint="رقم التسجيل" />
-               <br />
-               <label>تاريخ التسجيل :</label>
-               <TextInput type="date" defaultValue={registrationDate} inputHook={setRegistrationDate} editable={true} enterHook={() => { }} hint="تاريخ التسجيل" />
-               <br />
-               <label>ملاحظات :</label>
-               <TextInput defaultValue={notes} inputHook={setNotes} editable={true} enterHook={() => { }} hint="ملاحظات الطالب" />
-               <br />
-               <label>سيخضع لسبر ترشيحي :</label>
-               <TextInput type="checkbox" defaultValue={type} inputHook={setType} editable={true} enterHook={() => { }} hint="هل سيخضع الطالب لسبر ترشيحي" />
-               <br />
-               <Button
-                  text="إدخال"
-                  hook={
-                     e => {
-                        e.preventDefault();
-                        handler.addStudent(
-                           !type,
-                           firstName,
-                           lastName,
-                           birthDate,
-                           birthPlace,
-                           placeOfLiving,
-                           grade,
-                           publicRecord,
-                           socialDescription,
-                           the6GradeAvg,
-                           previousSchool,
-                           fatherName,
-                           fatherAlive,
-                           fatherProfession,
-                           grandFatherName,
-                           motherName,
-                           motherLastName,
-                           transportationSubscriber,
-                           address,
-                           registrationPlace,
-                           registrationNumber,
-                           registrationDate,
-                           notes,
-                           () => {
-                              navigate(handler.ADDSTUDENT);
+      <Container fluid>
+         <img
+            src="../Images/addemployee.png"
+            alt=""
+            style={{
+               width: "40%",
+               position: "fixed",
+               bottom: "0",
+               left: "0"
+            }}
+         />
+         <Row className="mt-3">
+            <Col>
+               <Form className="w-25 text-start border p-5 ps-4 pt-0">
+                  <Title text="تسجيل طالب" />
+                  <InputWithLabel
+                     id="name"
+                     text="اسم الطالب"
+                     hint="الاسم"
+                     value={firstName}
+                     hook={setFirstName}
+                  />
+                  <InputWithLabel
+                     id="lastName"
+                     text="كنية الطالب"
+                     hint="الكنية"
+                     value={lastName}
+                     hook={setLastName}
+                  />
+                  <InputWithLabel
+                     id="birthDate"
+                     type="date"
+                     text="تاريخ الولادة"
+                     hint="تاريخ الولادة"
+                     value={birthDate}
+                     hook={setBirthDate}
+                  />
+                  <InputWithLabel
+                     id="birthPlace"
+                     text="مكان الولادة"
+                     hint="مكان الولادة"
+                     value={birthPlace}
+                     hook={setBirthPlace}
+                  />
+                  <InputWithLabel
+                     id="address"
+                     text="مكان السكن"
+                     hint="مكان السكن"
+                     value={placeOfLiving}
+                     hook={setPlaceOfLiving}
+                  />
+                  <Multiple
+                     id="grade"
+                     text="الصف"
+                     options={grades}
+                     value={grade}
+                     hook={setGrade}
+                  />
+                  <InputWithLabel
+                     id="public"
+                     text="السجل العام"
+                     hint="السجل العام"
+                     value={publicRecord}
+                     hook={setPublicRecord}
+                  />
+                  <InputWithLabel
+                     id="social"
+                     text="الوضع الاجتماعي"
+                     hint="الحالة الاجتماعية"
+                     value={socialDescription}
+                     hook={setSocialDescription}
+                  />
+                  <InputWithLabel
+                     id="6GradeMark"
+                     type="number"
+                     text="علامة الصف السادس"
+                     hint="علامة الصف السادس"
+                     value={the6GradeAvg}
+                     hook={setThe6GradeAvg}
+                  />
+                  <InputWithLabel
+                     id="previouseSchool"
+                     text="المدرسة السابقة"
+                     hint="اسم المدرسة السابقة"
+                     value={previousSchool}
+                     hook={setPreviousSchool}
+                  />
+                  <InputWithLabel
+                     id="fatherName"
+                     text="اسم الأب"
+                     hint="اسم الأب"
+                     value={fatherName}
+                     hook={setFatherName}
+                  />
+                  <InputWithLabel
+                     id="isFatherAlive"
+                     type="checkbox"
+                     text="هل الأب على قيد الحياة"
+                     hint="هل الأب على قيد الحياة"
+                     value={fatherAlive}
+                     hook={setFatherAlive}
+                  />
+                  <InputWithLabel
+                     id="fatherJob"
+                     text="مهنة الأب"
+                     hint="مهنة الأب"
+                     value={fatherProfession}
+                     hook={setFatherProfession}
+                  />
+                  <InputWithLabel
+                     id="grandFatherName"
+                     text="اسم الجد (أب الأب)"
+                     hint="اسم الجد (أب الأب)"
+                     value={grandFatherName}
+                     hook={setGrandFatherName}
+                  />
+                  <InputWithLabel
+                     id="motherName"
+                     text="اسم الأم"
+                     hint="اسم الأم"
+                     value={motherName}
+                     hook={setMotherName}
+                  />
+                  <InputWithLabel
+                     id="motherLastName"
+                     text="كنية الأم"
+                     hint="كنية الأم"
+                     value={motherLastName}
+                     hook={setMotherLastName}
+                  />
+                  <InputWithLabel
+                     id="transportationSubscriber"
+                     type="checkbox"
+                     text="اشتراك بالمواصلات"
+                     hint="اشتراك بالمواصلات"
+                     value={transportationSubscriber}
+                     hook={setTransportationSubscriber}
+                  />
+                  <InputWithLabel
+                     id="address"
+                     text="خط المواصلات"
+                     hint="العنوان للمواصلات"
+                     value={address}
+                     hook={setAddress}
+                  />
+                  <InputWithLabel
+                     id="registrationPlace"
+                     text="مكان التسجيل"
+                     hint="الفرع"
+                     value={registrationPlace}
+                     hook={setRegistrationPlace}
+                  />
+                  <InputWithLabel
+                     id="registrationNumber"
+                     text="رقم التسجيل"
+                     hint="رقم التسجيل"
+                     value={registrationNumber}
+                     hook={setRegistrationNumber}
+                  />
+                  <InputWithLabel
+                     id="registrationDate"
+                     type="date"
+                     text="تاريخ التسجيل"
+                     hint="تاريخ التسجيل"
+                     value={registrationDate}
+                     hook={setRegistrationDate}
+                  />
+                  <InputWithLabel
+                     id="notes"
+                     as="textarea"
+                     text="ملاحظات"
+                     hint="ملاحظات"
+                     value={notes}
+                     hook={setNotes}
+                  />
+                  <InputWithLabel
+                     id="notes"
+                     type="switch"
+                     text="السبر ترشيحي"
+                     hint="السبر ترشيحي"
+                     value={type}
+                     hook={setType}
+                  />
+                  <ListOfButtons
+                     data={
+                        [
+                           {
+                              name: "إدخال",
+                              event: e => {
+                                 e.preventDefault();
+                                 handler.addStudent(
+                                    !type,
+                                    firstName,
+                                    lastName,
+                                    birthDate,
+                                    birthPlace,
+                                    placeOfLiving,
+                                    grade,
+                                    publicRecord,
+                                    socialDescription,
+                                    the6GradeAvg,
+                                    previousSchool,
+                                    fatherName,
+                                    fatherAlive,
+                                    fatherProfession,
+                                    grandFatherName,
+                                    motherName,
+                                    motherLastName,
+                                    transportationSubscriber,
+                                    address,
+                                    registrationPlace,
+                                    registrationNumber,
+                                    registrationDate,
+                                    notes,
+                                    () => {
+                                       navigate(handler.ADDSTUDENT);
+                                    }
+                                 );
+                              }
                            }
-                        );
+                        ]
                      }
-                  }
-               />
-            </form>
-         </div>
-      </div>
+                  />
+               </Form>
+            </Col>
+         </Row>
+      </Container>
    );
 }
 
