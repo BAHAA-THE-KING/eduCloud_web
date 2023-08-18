@@ -45,7 +45,7 @@ function ViewEmployees() {
             search + ("?page=" + current) + (searchRole ? "&role=" + searchRole : "")
          );
       },
-      [search, searchRole]
+      [search, searchRole, current]
    );
 
    const columns = useMemo(
@@ -116,6 +116,37 @@ function ViewEmployees() {
                            )
                            : " "
                      }
+                  </span>
+               </Box>
+            ),
+         },
+         {
+            accessorFn: e => e.id,
+            key: "rege",
+            header: 'إعادة تعيين كلمة السر',
+            Cell: ({ renderedCellValue }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>
+                     <ListOfButtons
+                        data={
+                           [
+                              {
+                                 name: "توليد",
+                                 event: () => {
+                                    handlers.regeneratePassword(
+                                       selected
+                                    )
+                                 }
+                              }
+                           ]
+                        }
+                     />
                   </span>
                </Box>
             ),

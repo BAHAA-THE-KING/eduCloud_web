@@ -377,6 +377,46 @@ function getEmployeeData(id, func) {
       );
 }
 
+function regeneratePassword(id, func) {
+   const path = "/principal/regenerateEmployeePassword/";
+
+   const url = host + path + id;
+
+   const method = "GET";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   fetch(url, { method, headers })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e["message"] === "Unauthenticated.") {
+               goTo(LOGIN);
+            } else if (e.maessage === "password changed successfully.") {
+               func(e.data);
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
 function getTestForms(func) {
    const path = "/general/getAllTypes";
 
@@ -757,6 +797,48 @@ function getRemainingStudents(test, func) {
       );
 }
 
+function getStudentData(id, func) {
+   const path = "/general/viewStudent/";
+
+   const params = "?all=1";
+
+   const url = host + path + id + params;
+
+   const method = "GET";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   fetch(url, { method, headers })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e["message"] === "Unauthenticated.") {
+               goTo(LOGIN);
+            } else if (e.message === "Success!") {
+               func(e.data);
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
 function logIn(name, password) {
    const path = "/auth/login";
 
@@ -1096,7 +1178,7 @@ function addTest(title, passMark, maxMark, type, date, theClass, subject, func) 
       );
 }
 
-function addStudent(type, firstName, lastName, birthDate, birthPlace, placeOfLiving, grade, publicRecord, socialDescription, the6GradeAvg, previousSchool, fatherName, fatherAlive, fatherProfession, grandFatherName, motherName, motherLastName, transportationSubscriber, address, registrationPlace, registrationNumber, registrationDate, notes, func) {
+function addStudent(type, firstName, lastName, birthDate, birthPlace, placeOfLiving, grade, publicRecord, socialDescription, the6GradeAvg, previousSchool, fatherName, fatherAlive, fatherProfession, grandFatherName, motherName, motherLastName, motherAlive, transportationSubscriber, address, registrationPlace, registrationNumber, registrationDate, notes, func) {
    const path = "/secretary/addStudentOrCandidate/" + +type;
 
    const url = host + path;
@@ -1127,6 +1209,7 @@ function addStudent(type, firstName, lastName, birthDate, birthPlace, placeOfLiv
          "grand_father_name": grandFatherName,
          "mother_name": motherName,
          "mother_last_name": motherLastName,
+         "mother_alive": motherAlive,
          "transportation_subscriber": transportationSubscriber,
          "address_id": address,
          "registration_place": registrationPlace,
@@ -2136,10 +2219,10 @@ function removeEmployeeRole(id, roles, func) {
 
 export { goTo, HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEES, ADDSTUDENT, VIEWEMPLOYEEDATA, ADDTESTFORM, VIEWTESTFORMS, VIEWTESTFORMDATA, VIEWSTUDENTS, VIEWSTUDENTDATA, ADDTEST, VIEWTESTS, VIEWTESTDATA, ADDGRADE, VIEWGRADES, VIEWGRADEDATA, ADDCLASS, VIEWCLASSES, VIEWCLASSDATA, ADDSUBJECT, VIEWSUBJECTS, VIEWSUBJECTDATA, ADDABILITYTESTFORM, CALENDAR, ACCEPTSTUDENTS, VIEWMARKS, SELECTSTUDENTS, DISTRIBUTESTUDENTS };
 export { logIn, getRoles, getSubjects };
-export { addEmployee, addTeacher, addSupervisor, addEmployeeRole, getEmployees, getEmployeeData, editEmployee, removeEmployeeRole };
+export { addEmployee, addTeacher, addSupervisor, addEmployeeRole, getEmployees, getEmployeeData, regeneratePassword, editEmployee, removeEmployeeRole };
 export { addTestForm, getTestForms, getTestFormData, editTestForm };
 export { addTest, getTests, getTestData, editTest };
-export { addStudent, addAbsents, getStudents };
+export { addStudent, addAbsents, getStudents, getStudentData };
 export { addGrade, getGrades, getGradeData, editGrade };
 export { addClass, getClassData, editClass };
 export { addSubject, getSubjectData, editSubject };

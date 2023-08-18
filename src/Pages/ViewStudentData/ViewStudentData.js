@@ -1,34 +1,32 @@
-import { TextInput, Button, Title, MultipletButton, InputWithLabel, Multiple, ListOfButtons } from "../../components";
 import { useEffect, useState } from "react";
-import * as handler from './../../handlers';
-import { useNavigate } from "react-router-dom";
+import * as handlers from "../../handlers";
 import { Col, Container, Form, Row } from "react-bootstrap";
-/*
-first_name
-last_name
-father_name
-mother_name
-grade_id
-birth_date
-birth_place
-place_of_living
-public_record
-6th_grade_avg
-social_description
-grand_father_name
-mother_last_name
-father_alive
-father_profession
-previous_school
-transportation_subscriber
-registration_place
-registration_number
-registration_date
-notes
- */
+import { useParams } from "react-router-dom";
+import { InputWithLabel, ListOfButtons, Multiple } from "../../components";
+import {
+   Chart as ChartJS,
+   CategoryScale,
+   LinearScale,
+   PointElement,
+   LineElement,
+   Title,
+   Tooltip,
+   Legend,
+} from 'chart.js';
+import { Line } from 'react-chartjs-2';
 
-function AddStudent() {
-   const navigate = useNavigate();
+ChartJS.register(
+   CategoryScale,
+   LinearScale,
+   PointElement,
+   LineElement,
+   Title,
+   Tooltip,
+   Legend
+);
+
+function ViewStudentData() {
+   const { id } = useParams();
 
    const [firstName, setFirstName] = useState("");
    const [lastName, setLastName] = useState("");
@@ -36,6 +34,7 @@ function AddStudent() {
    const [birthPlace, setBirthPlace] = useState("");
    const [placeOfLiving, setPlaceOfLiving] = useState("");
    const [grade, setGrade] = useState("");
+   const [theClass, setTheClass] = useState("");
    const [publicRecord, setPublicRecord] = useState("");
    const [socialDescription, setSocialDescription] = useState("");
    const [the6GradeAvg, setThe6GradeAvg] = useState("");
@@ -53,38 +52,132 @@ function AddStudent() {
    const [registrationNumber, setRegistrationNumber] = useState("");
    const [registrationDate, setRegistrationDate] = useState("");
    const [notes, setNotes] = useState("");
-   const [type, setType] = useState(1);
+   const [marks, setMarks] = useState([]);
+   const [subject, setSubject] = useState("");
+   const [data, setData] = useState(
+      {
+         //labels: [0, 1],
+         ylabels: [0, 100],
+         datasets: [
+            {
+               label: "",
+               data: [1, 1],
+               borderColor: 'rgb(53, 162, 235)',
+               backgroundColor: 'rgba(53, 162, 235, 0.5)'
+            },
+         ],
+      }
+   );
 
    const [grades, setGrades] = useState([]);
+   const [classes, setClasses] = useState([]);
+   const [subjects, setSubjects] = useState([]);
+
+   const [isEdit, setIsEdit] = useState(false);
 
    useEffect(
-      function () {
-         handler.getGrades(
-            grades => setGrades(grades)
+      () => {
+         handlers.getSubjects(
+            e => {
+               setGrades(e);
+               setClasses(e.map(e => e.g_classes).flat());
+            }
          );
       },
       []
    );
 
+   useEffect(
+      () => {
+         handlers.getStudentData(
+            id,
+            e => {
+               setFirstName(e.first_name ?? "");
+               setLastName(e.last_name ?? "");
+               setBirthDate(e.birth_date ?? "");
+               setBirthPlace(e.birth_place ?? "");
+               setPlaceOfLiving(e.place_of_living ?? "");
+               setGrade(e.grade_id ?? "");
+               setTheClass(e.g_class_id ?? "");
+               setPublicRecord(e.public_record ?? "");
+               setSocialDescription(e.social_description ?? "");
+               setThe6GradeAvg(e["6th_grade_avg"] ?? "");
+               setPreviousSchool(e.previous_school ?? "");
+               setFatherName(e.father_name ?? "");
+               setFatherAlive(e.father_alive ?? "");
+               setFatherProfession(e.father_profession ?? "");
+               setGrandFatherName(e.grand_father_name ?? "");
+               setMotherName(e.mother_name ?? "");
+               setMotherLastName(e.mother_last_name ?? "");
+               setMotherAlive(e.mother_alive ?? "");
+               setTransportationSubscriber(e.transportation_subscriber ?? "");
+               setAddress(e.address_id ?? "");
+               setRegistrationPlace(e.registration_place ?? "");
+               setRegistrationNumber(e.registration_number ?? "");
+               setRegistrationDate(e.registration_date ?? "");
+               setNotes(e.notes ?? "");
+               setMarks(e.marks);
+            }
+         );
+      },
+      []
+   );
+
+   useEffect(
+      () => {
+         setSubjects(grades.find(ee => ee.id === grade)?.subjects ?? []);
+      },
+      [grade]
+   );
+
+   useEffect(
+      () => {
+         const temp = marks.filter(e => e.subject_id === subject);
+         const temp2 = temp.map(e => e.date);
+         const temp3 = temp.map(e => e.percentage);
+         setData(
+            {
+               labels: temp2,
+               datasets: [
+                  {
+                     label: subjects.find(e => e.id === subject)?.name,
+                     data: temp3,
+                     borderColor: 'rgb(53, 162, 235)',
+                     backgroundColor: 'rgba(53, 162, 235, 0.5)'
+                  },
+               ],
+            }
+         );
+      },
+      [subject]
+   );
 
    return (
       <Container fluid>
-         <img
-            src="../Images/addemployee.png"
-            alt=""
-            style={{
-               width: "40%",
-               position: "fixed",
-               bottom: "0",
-               left: "0"
-            }}
-         />
-         <Row className="mt-3">
-            <Col>
-               <Form className="w-25 text-start border p-5 ps-4 pt-0">
-                  <Title text="تسجيل طالب" />
+         <Row className="my-2">
+            <Col xs='2'>
+               <Form className="text-start">
+                  <Form.Label>عرض الطالب</Form.Label>
+                  <ListOfButtons
+                     data={
+                        [
+                           {
+                              name: isEdit ? "تأكيد التعديلات" : "تعديل",
+                              event: () => {
+                                 if (!isEdit) {
+                                    setIsEdit(true);
+                                 } else {
+                                    setIsEdit(false);
+                                    //handlers;
+                                 }
+                              }
+                           }
+                        ]
+                     }
+                  />
                   <InputWithLabel
                      id="name"
+                     disabled={!isEdit}
                      text="اسم الطالب"
                      hint="الاسم"
                      value={firstName}
@@ -92,6 +185,7 @@ function AddStudent() {
                   />
                   <InputWithLabel
                      id="lastName"
+                     disabled={!isEdit}
                      text="كنية الطالب"
                      hint="الكنية"
                      value={lastName}
@@ -100,6 +194,7 @@ function AddStudent() {
                   <InputWithLabel
                      id="birthDate"
                      type="date"
+                     disabled={!isEdit}
                      text="تاريخ الولادة"
                      hint="تاريخ الولادة"
                      value={birthDate}
@@ -107,6 +202,7 @@ function AddStudent() {
                   />
                   <InputWithLabel
                      id="birthPlace"
+                     disabled={!isEdit}
                      text="مكان الولادة"
                      hint="مكان الولادة"
                      value={birthPlace}
@@ -114,20 +210,29 @@ function AddStudent() {
                   />
                   <InputWithLabel
                      id="address"
+                     disabled={!isEdit}
                      text="مكان السكن"
                      hint="مكان السكن"
                      value={placeOfLiving}
                      hook={setPlaceOfLiving}
                   />
-                  <Multiple
+                  <InputWithLabel
                      id="grade"
+                     disabled={true}
                      text="الصف"
-                     options={grades}
-                     value={grade}
-                     hook={setGrade}
+                     hint="الصف"
+                     value={grades.find(e => e.id == grade)?.name ?? ""}
+                  />
+                  <InputWithLabel
+                     id="class"
+                     disabled={true}
+                     text="الشعبة"
+                     hint="الشعبة"
+                     value={classes.find(e => e.id == theClass)?.name ?? ""}
                   />
                   <InputWithLabel
                      id="public"
+                     disabled={!isEdit}
                      text="السجل العام"
                      hint="السجل العام"
                      value={publicRecord}
@@ -135,6 +240,7 @@ function AddStudent() {
                   />
                   <InputWithLabel
                      id="social"
+                     disabled={!isEdit}
                      text="الوضع الاجتماعي"
                      hint="الحالة الاجتماعية"
                      value={socialDescription}
@@ -143,6 +249,7 @@ function AddStudent() {
                   <InputWithLabel
                      id="6GradeMark"
                      type="number"
+                     disabled={!isEdit}
                      text="علامة الصف السادس"
                      hint="علامة الصف السادس"
                      value={the6GradeAvg}
@@ -150,6 +257,7 @@ function AddStudent() {
                   />
                   <InputWithLabel
                      id="previouseSchool"
+                     disabled={!isEdit}
                      text="المدرسة السابقة"
                      hint="اسم المدرسة السابقة"
                      value={previousSchool}
@@ -157,6 +265,7 @@ function AddStudent() {
                   />
                   <InputWithLabel
                      id="fatherName"
+                     disabled={!isEdit}
                      text="اسم الأب"
                      hint="اسم الأب"
                      value={fatherName}
@@ -165,6 +274,7 @@ function AddStudent() {
                   <InputWithLabel
                      id="isFatherAlive"
                      type="checkbox"
+                     disabled={!isEdit}
                      text="هل الأب على قيد الحياة"
                      hint="هل الأب على قيد الحياة"
                      value={fatherAlive}
@@ -172,6 +282,7 @@ function AddStudent() {
                   />
                   <InputWithLabel
                      id="fatherJob"
+                     disabled={!isEdit}
                      text="مهنة الأب"
                      hint="مهنة الأب"
                      value={fatherProfession}
@@ -179,6 +290,7 @@ function AddStudent() {
                   />
                   <InputWithLabel
                      id="grandFatherName"
+                     disabled={!isEdit}
                      text="اسم الجد (أب الأب)"
                      hint="اسم الجد (أب الأب)"
                      value={grandFatherName}
@@ -186,6 +298,7 @@ function AddStudent() {
                   />
                   <InputWithLabel
                      id="motherName"
+                     disabled={!isEdit}
                      text="اسم الأم"
                      hint="اسم الأم"
                      value={motherName}
@@ -193,14 +306,16 @@ function AddStudent() {
                   />
                   <InputWithLabel
                      id="motherLastName"
+                     disabled={!isEdit}
                      text="كنية الأم"
                      hint="كنية الأم"
                      value={motherLastName}
                      hook={setMotherLastName}
                   />
                   <InputWithLabel
-                     id="isMotherAlive"
+                     id="isFatherAlive"
                      type="checkbox"
+                     disabled={!isEdit}
                      text="هل الأم على قيد الحياة"
                      hint="هل الأم على قيد الحياة"
                      value={motherAlive}
@@ -209,6 +324,7 @@ function AddStudent() {
                   <InputWithLabel
                      id="transportationSubscriber"
                      type="checkbox"
+                     disabled={!isEdit}
                      text="اشتراك بالمواصلات"
                      hint="اشتراك بالمواصلات"
                      value={transportationSubscriber}
@@ -216,6 +332,7 @@ function AddStudent() {
                   />
                   <InputWithLabel
                      id="address"
+                     disabled={!isEdit}
                      text="خط المواصلات"
                      hint="العنوان للمواصلات"
                      value={address}
@@ -223,6 +340,7 @@ function AddStudent() {
                   />
                   <InputWithLabel
                      id="registrationPlace"
+                     disabled={!isEdit}
                      text="مكان التسجيل"
                      hint="الفرع"
                      value={registrationPlace}
@@ -230,6 +348,7 @@ function AddStudent() {
                   />
                   <InputWithLabel
                      id="registrationNumber"
+                     disabled={!isEdit}
                      text="رقم التسجيل"
                      hint="رقم التسجيل"
                      value={registrationNumber}
@@ -238,6 +357,7 @@ function AddStudent() {
                   <InputWithLabel
                      id="registrationDate"
                      type="date"
+                     disabled={!isEdit}
                      text="تاريخ التسجيل"
                      hint="تاريخ التسجيل"
                      value={registrationDate}
@@ -246,65 +366,27 @@ function AddStudent() {
                   <InputWithLabel
                      id="notes"
                      as="textarea"
+                     disabled={!isEdit}
                      text="ملاحظات"
                      hint="ملاحظات"
                      value={notes}
                      hook={setNotes}
                   />
-                  <InputWithLabel
-                     id="notes"
-                     type="switch"
-                     text="السبر ترشيحي"
-                     hint="السبر ترشيحي"
-                     value={type}
-                     hook={setType}
-                  />
-                  <ListOfButtons
-                     data={
-                        [
-                           {
-                              name: "إدخال",
-                              event: e => {
-                                 e.preventDefault();
-                                 handler.addStudent(
-                                    !type,
-                                    firstName,
-                                    lastName,
-                                    birthDate,
-                                    birthPlace,
-                                    placeOfLiving,
-                                    grade,
-                                    publicRecord,
-                                    socialDescription,
-                                    the6GradeAvg,
-                                    previousSchool,
-                                    fatherName,
-                                    fatherAlive,
-                                    fatherProfession,
-                                    grandFatherName,
-                                    motherName,
-                                    motherLastName,
-                                    motherAlive,
-                                    transportationSubscriber,
-                                    address,
-                                    registrationPlace,
-                                    registrationNumber,
-                                    registrationDate,
-                                    notes,
-                                    () => {
-                                       navigate(handler.ADDSTUDENT);
-                                    }
-                                 );
-                              }
-                           }
-                        ]
-                     }
+                  <Multiple
+                     id="subject"
+                     text="المادة"
+                     options={subjects}
+                     value={subject}
+                     hook={setSubject}
                   />
                </Form>
+            </Col>
+            <Col xs='10'>
+               <Line options={{ responsive: true, scales: { y: { min: 0, max: 100 } } }} data={data} style={{ position: "fixed" }} />
             </Col>
          </Row>
       </Container>
    );
 }
 
-export default AddStudent;
+export default ViewStudentData;

@@ -1,6 +1,6 @@
 import { Form } from "react-bootstrap";
 
-function InputWithLabel({ id, type, as, text, hint, disabled, value, hook, ehook, noLabel }) {
+function InputWithLabel({ id, type, as, text, hint, disabled, value, hook, ehook, noLabel, name }) {
    return (
       <>
          {
@@ -8,7 +8,7 @@ function InputWithLabel({ id, type, as, text, hint, disabled, value, hook, ehook
             <Form.Label htmlFor={id}>{text} : </Form.Label>
          }
          {
-            (type !== "checkbox" && type !== "switch") ?
+            (type !== "checkbox" && type !== "switch" && type !== "radio") ?
                <Form.Control
                   id={id}
                   type={type ?? 'text'}
@@ -30,6 +30,7 @@ function InputWithLabel({ id, type, as, text, hint, disabled, value, hook, ehook
                   id={id}
                   type={type ?? 'checkbox'}
                   as={as ?? "input"}
+                  name={name}
                   disabled={disabled ?? false}
                   value={value}
                   placeholder={hint}

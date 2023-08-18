@@ -11,7 +11,15 @@ function ViewGradeData() {
 
    const { id } = useParams();
 
-   let [name, setName] = useState("");
+   const [name, setName] = useState("");
+
+   const [isEdit, setIsEdit] = useState(false);
+
+   const [current, setCurrent] = useState(0);
+   const [next, setNext] = useState(null);
+   const [previous, setPrevious] = useState(null);
+   const [data, setData] = useState([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]);
+   const [allData, setAllData] = useState([]);
 
    useEffect(
       function () {
@@ -31,14 +39,6 @@ function ViewGradeData() {
       },
       []
    );
-
-   const [isEdit, setIsEdit] = useState(false);
-
-   const [current, setCurrent] = useState(0);
-   const [next, setNext] = useState(null);
-   const [previous, setPrevious] = useState(null);
-   const [data, setData] = useState([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]);
-   const [allData, setAllData] = useState([]);
 
    useEffect(
       () => {

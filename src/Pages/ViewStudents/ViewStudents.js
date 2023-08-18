@@ -19,7 +19,7 @@ function ViewStudents() {
    const [next, setNext] = useState(null);
    const [previous, setPrevious] = useState(null);
    const [data, setData] = useState([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]);
-   const [selected, setSelected] = useState(-1);
+   const [selected, setSelected] = useState();
 
    const [grades, setGrades] = useState([]);
    const [allClasses, setAllClasses] = useState([]);
@@ -27,6 +27,8 @@ function ViewStudents() {
 
    const [addAbsents, setAddAbsents] = useState(false);
    const [absents, setAbsents] = useState({});
+
+   console.log(selected);
 
    useEffect(
       () =>
@@ -62,7 +64,7 @@ function ViewStudents() {
             }
          );
       },
-      [search, searchGrade, searchClass]
+      [search, searchGrade, searchClass, current]
    );
 
    useEffect(
@@ -86,6 +88,32 @@ function ViewStudents() {
    const columns = useMemo(
       () => {
          const columns = [
+            {
+               accessorFn: e => e.id,
+               key: "select",
+               header: "اختيار",
+               Cell: ({ renderedCellValue }) => (
+                  <Box
+                     sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '1rem',
+                     }}
+                  >
+                     <span>
+                        <InputWithLabel
+                           id={"select " + renderedCellValue}
+                           type="radio"
+                           name="select"
+                           disabled={!renderedCellValue}
+                           noLabel={true}
+                           value={renderedCellValue === selected}
+                           hook={() => setSelected(renderedCellValue)}
+                        />
+                     </span>
+                  </Box>
+               )
+            },
             {
                accessorKey: "id",
                header: "المعرّف",
@@ -251,7 +279,7 @@ function ViewStudents() {
             );
          return columns;
       },
-      [data, addAbsents, absents]
+      [data, addAbsents, absents, selected]
    );
 
    return (
@@ -271,7 +299,12 @@ function ViewStudents() {
                         },
                         {
                            name: "عرض صفحة الطالب",
-                           event: () => (!!selected) ? navigate(handlers.VIEWSTUDENTDATA + selected) : alert("اختر طالباً لعرض معلوماته.")
+                           event: () => {
+                              selected ?
+                                 navigate(handlers.VIEWSTUDENTDATA + selected)
+                                 : alert("اختر طالباً لعرض معلوماته.")
+                           },
+                           disabled: !selected
                         },
                         {
                            name: addAbsents ? "تأكيد الغيابات" : "تسجيل الغياب",
@@ -338,9 +371,7 @@ function ViewStudents() {
                   columns={columns}
                   data={data}
                   initialState={{ density: 'compact' }}
-                  state={{ rowSelection: selected }}
-                  enableRowSelection={(row) => row.original.id}
-                  onRowSelectionChange={setSelected}
+                  enableRowSelection={false}
                   enableSorting={false}
                   enablePinning={false}
                   enableDensityToggle={false}
