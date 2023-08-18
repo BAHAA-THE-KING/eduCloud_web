@@ -1183,7 +1183,19 @@ function addAbsents(class_id, students, func) {
       "Authorization": "Bearer " + getToken()
    };
 
-   const body = JSON.stringify({ "class_id": class_id, "absences": students });
+   const body = JSON.stringify(
+      {
+         "class_id": class_id,
+         "absences": Object.entries(students).map(
+            e => {
+               return {
+                  "student_id": e[0],
+                  "justification": e[1]
+               };
+            }
+         )
+      }
+   );
 
    fetch(url, { method, headers, body })
       .then(
@@ -1786,7 +1798,14 @@ function addMarks(test, marks, func) {
    };
 
    const body = JSON.stringify(
-      marks
+      Object.entries(marks).map(
+         e => {
+            return {
+               "student_id": e[0],
+               "mark": e[1]
+            };
+         }
+      )
    );
 
    fetch(url, { method, headers, body })

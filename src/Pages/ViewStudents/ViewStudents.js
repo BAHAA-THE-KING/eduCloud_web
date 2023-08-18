@@ -1,15 +1,17 @@
-import './ViewStudents.css';
-
-import { Button, ButtonWithIcon, MultipletButton, TableTile, TextInput } from '../../components';
-import React, { useEffect, useState } from 'react';
+import { InputWithLabel, ListOfButtons, Multiple, Navigation } from '../../components';
+import React, { useEffect, useMemo, useState } from 'react';
 import * as handlers from "../../handlers";
 import { useNavigate } from 'react-router-dom';
+import { Col, Container, Row } from 'react-bootstrap';
+import { MaterialReactTable } from 'material-react-table';
+import { Box } from '@mui/material';
+
 
 function ViewStudents() {
    const navigate = useNavigate();
 
    const [search, setSearch] = useState("%");
-   const [searchKeyword, setSearchKeyword] = useState("");
+   const [tempSearch, setTempSearch] = useState("");
    const [searchGrade, setSearchGrade] = useState("");
    const [searchClass, setSearchClass] = useState("");
 
@@ -31,11 +33,12 @@ function ViewStudents() {
          handlers.getSubjects(
             res => {
                setGrades(res.map(e => { return { id: e.id, name: e.name }; }));
-               setAllClasses(res);
+               setAllClasses(res.map(e => e.g_classes).flat());
             }
          ),
       []
    );
+
    useEffect(
       () => {
          if (search === "") {
@@ -62,291 +65,298 @@ function ViewStudents() {
       [search, searchGrade, searchClass]
    );
 
-   return (
-      <div className={'viewstudents' + (addAbsents ? " editing" : "")}>
-         <div className='content'>
-            <div className='control'>
-               <ButtonWithIcon
-                  text="تسجيل طالب"
-                  hook={() => navigate(handlers.ADDSTUDENT)}
-                  src="Icons/personAdd.svg"
-               />
-               <ButtonWithIcon
-                  text="عرض صفحة الطالب"
-                  hook={() => (!!selected) ? navigate(handlers.VIEWSTUDENTDATA + selected) : alert("اختر طالباً لعرض معلوماته.")}
-                  src="Icons/person.svg"
-               />
-               <ButtonWithIcon
-                  text="قبول الطلاب"
-                  hook={() => navigate(handlers.ACCEPTSTUDENTS)}
-                  src="Icons/person.svg"
-               />
-               <label>عوامل التصفية :</label>
-               <TextInput defaultValue={searchKeyword} hint="بحث" inputHook={setSearchKeyword} enterHook={setSearch} />
-               <MultipletButton
-                  text="اختر الصف"
-                  open={true}
-                  options={grades}
-                  dataHook={
-                     (grade, select) => {
-                        setAbsents({});
-                        setAddAbsents(false);
-                        setSearchClass("");
-                        setSearchKeyword("");
-                        setSearch("");
-                        if (select) {
-                           setSearchGrade(grade);
-                           const temp = allClasses.filter(e => e.id === grade)[0].g_classes;
-                           setClasses(temp);
-                        } else {
-                           setSearchGrade("");
-                           setClasses([]);
-                        }
-                     }
-                  }
-                  textHook={() => { }}
-               />
-               <MultipletButton
-                  text="اختر الشعبة"
-                  open={true}
-                  options={classes}
-                  dataHook={
-                     (theclass, select) => {
-                        setAbsents({});
-                        setAddAbsents(false);
-                        setSearchKeyword("");
-                        setSearch("");
-                        if (select) {
-                           setSearchClass(theclass);
-                        } else {
-                           setSearchClass("");
-                        }
-                     }
-                  }
-                  textHook={() => { }}
-               />
-            </div>
-            <div className='show'>
-               <div className='view'>
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="المعرّف"
-                     setSelected={() => { }}
-                  />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="الشعبة"
-                     setSelected={() => { }}
-                  />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="الاسم"
-                     setSelected={() => { }}
-                  />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="الكنية"
-                     setSelected={() => { }}
-                  />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="اسم الأب"
-                     setSelected={() => { }}
-                  />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="اسم الأم"
-                     setSelected={() => { }}
-                  />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="تاريخ الولادة"
-                     setSelected={() => { }}
-                  />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="السكن"
-                     setSelected={() => { }}
-                  />
-                  {
-                     addAbsents &&
-                     <TableTile
-                        selected={false}
-                        id={-1}
-                        className="headings"
-                        text="الغياب"
-                        setSelected={() => { }}
-                     />
-                  }
-                  {
-                     data.map(
-                        (e) => (
-                           <React.Fragment>
-                              <TableTile
-                                 selected={selected === e.id}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.id}
-                              />
-                              <TableTile
-                                 selected={selected === e.id}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.g_class_id}
-                              />
-                              <TableTile
-                                 selected={selected === e.id}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.first_name}
-                              />
-                              <TableTile
-                                 selected={selected === e.id}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.last_name}
-                              />
-                              <TableTile
-                                 selected={selected === e.id}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.father_name}
-                              />
-                              <TableTile
-                                 selected={selected === e.id}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.mother_name}
-                              />
-                              <TableTile
-                                 selected={selected === e.id}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.birth_date}
-                              />
-                              <TableTile
-                                 selected={selected === e.id}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.address_id}
-                              />
-                              {
-                                 addAbsents &&
-                                 <TableTile
-                                    selected={selected === e.id}
-                                    id={e.id}
-                                    className="check"
-                                    setSelected={setSelected}
-                                    text={
-                                       e.id &&
-                                       <input
-                                          type='checkbox'
-                                          onChange={
-                                             () => {
-                                                if (absents[e.id] === undefined) {
-                                                   setAbsents(
-                                                      {
-                                                         ...absents,
-                                                         [e.id]: "none"
-                                                      }
-                                                   );
-                                                } else {
-                                                   setAbsents(
-                                                      {
-                                                         ...absents,
-                                                         [e.id]: undefined
-                                                      }
-                                                   );
-                                                }
-                                             }
-                                          }
-                                          checked={!!absents[e.id]}
-                                       />
-                                    }
-                                 />
+   useEffect(
+      () => {
+         setAbsents({});
+         setAddAbsents(false);
+      },
+      [searchGrade, searchClass]
+   );
+
+   useEffect(
+      () => {
+         setSearchClass("");
+         if (!searchGrade) return;
+         const temp = allClasses.filter(e => e.grade_id === searchGrade);
+         setClasses(temp);
+      },
+      [searchGrade]
+   );
+
+   const columns = useMemo(
+      () => {
+         const columns = [
+            {
+               accessorKey: "id",
+               header: "المعرّف",
+               Cell: ({ renderedCellValue }) => (
+                  <Box
+                     sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '1rem',
+                     }}
+                  >
+                     <span>{renderedCellValue}</span>
+                  </Box>
+               )
+            },
+            {
+               accessorKey: "grade_id",
+               header: "الصف",
+               Cell: ({ renderedCellValue }) => (
+                  <Box
+                     sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '1rem',
+                     }}
+                  >
+                     <span>{grades.find(e => e.id == renderedCellValue)?.name}</span>
+                  </Box>
+               )
+            },
+            {
+               accessorKey: "g_class_id",
+               header: "الشعبة",
+               Cell: ({ renderedCellValue }) => (
+                  <Box
+                     sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '1rem',
+                     }}
+                  >
+                     <span>{allClasses.find(e => e.id == renderedCellValue)?.name}</span>
+                  </Box>
+               )
+            },
+            {
+               accessorKey: "first_name",
+               header: "الاسم",
+               Cell: ({ renderedCellValue }) => (
+                  <Box
+                     sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '1rem',
+                     }}
+                  >
+                     <span>{renderedCellValue}</span>
+                  </Box>
+               )
+            },
+            {
+               accessorKey: "last_name",
+               header: "الكنية",
+               Cell: ({ renderedCellValue }) => (
+                  <Box
+                     sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '1rem',
+                     }}
+                  >
+                     <span>{renderedCellValue}</span>
+                  </Box>
+               )
+            },
+            {
+               accessorKey: "father_name",
+               header: "اسم الأب",
+               Cell: ({ renderedCellValue }) => (
+                  <Box
+                     sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '1rem',
+                     }}
+                  >
+                     <span>{renderedCellValue}</span>
+                  </Box>
+               )
+            },
+            {
+               accessorKey: "mother_name",
+               header: "اسم الأم",
+               Cell: ({ renderedCellValue }) => (
+                  <Box
+                     sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '1rem',
+                     }}
+                  >
+                     <span>{renderedCellValue}</span>
+                  </Box>
+               )
+            },
+         ];
+         if (addAbsents)
+            columns.push(
+               {
+                  accessorFn: e => e.id,
+                  key: "absent",
+                  header: "الغياب",
+                  Cell: ({ renderedCellValue, row }) => {
+                     return <Box
+                        sx={{
+                           display: 'flex',
+                           alignItems: 'center',
+                           gap: '1rem',
+                        }}
+                     >
+                        <span>
+                           <InputWithLabel
+                              id={"absent" + renderedCellValue}
+                              type="checkbox"
+                              disabled={!renderedCellValue}
+                              noLabel={true}
+                              value={!!absents[renderedCellValue]}
+                              hook={
+                                 value => {
+                                    if (value) setAbsents({ ...absents, [renderedCellValue]: "" });
+                                    else setAbsents({ ...absents, [renderedCellValue]: undefined });
+                                 }
                               }
-                           </React.Fragment>
-                        )
-                     )
+                           />
+                        </span>
+                     </Box>
                   }
-               </div>
-            </div>
-         </div>
-         <div className='navigation'>
-            {
-               <Button
-                  text="<   السابق"
-                  className="previous"
-                  hook={
-                     () => setCurrent(current - 1)
+               },
+               {
+                  accessorFn: e => e.id,
+                  key: "reason",
+                  header: "تبرير الغياب",
+                  Cell: ({ renderedCellValue, row }) => {
+                     return <Box
+                        sx={{
+                           display: 'flex',
+                           alignItems: 'center',
+                           gap: '1rem',
+                        }}
+                     >
+                        <span>
+                           <InputWithLabel
+                              id={"reason" + renderedCellValue}
+                              disabled={!renderedCellValue}
+                              noLabel={true}
+                              value={absents[renderedCellValue] ?? ""}
+                              hook={note => setAbsents({ ...absents, [renderedCellValue]: note })}
+                           />
+                        </span>
+                     </Box>
                   }
-                  disabled={!previous}
-               />
-            }
-            <Button
-               text={current}
-               hook={() => { }}
-               className={"current"}
-            />
-            {
-               <Button
-                  text="التالي   >"
-                  className="next"
-                  hook={
-                     () => setCurrent(current + 1)
-                  }
-                  disabled={!next}
-               />
-            }
-            <Button
-               disabled={searchClass === ""}
-               text={addAbsents ? "تسجيل" : "إدخال الغيابات"}
-               className="addabsents"
-               hook={
-                  () => {
-                     if (searchClass === "") {
-                        alert("اختر شعبة لإدخال غياباتها.");
-                        return;
-                     }
-                     if (addAbsents) {
-                        const temp = [];
-                        for (const k in absents) {
-                           absents[k] && temp.push({ student_id: k, justification: absents[k] });
-                        }
-                        handlers.addAbsents(
-                           searchClass,
-                           temp,
-                           () => {
-                              setAddAbsents(false);
-                              setAbsents({});
+               },
+            );
+         return columns;
+      },
+      [data, addAbsents, absents]
+   );
+
+   return (
+      <Container fluid>
+         <Row className='mt-2'>
+            <Col xs='2'>
+               <ListOfButtons
+                  data={
+                     [
+                        {
+                           name: "تسجيل طالب",
+                           event: () => navigate(handlers.ADDSTUDENT)
+                        },
+                        {
+                           name: "قبول الطلاب",
+                           event: () => navigate(handlers.ACCEPTSTUDENTS)
+                        },
+                        {
+                           name: "عرض صفحة الطالب",
+                           event: () => (!!selected) ? navigate(handlers.VIEWSTUDENTDATA + selected) : alert("اختر طالباً لعرض معلوماته.")
+                        },
+                        {
+                           name: addAbsents ? "تأكيد الغيابات" : "تسجيل الغياب",
+                           event: () => {
+                              if (addAbsents) {
+                                 handlers.addAbsents(
+                                    searchClass,
+                                    absents,
+                                    () => {
+                                       setAddAbsents(false);
+                                    }
+                                 )
+                              } else {
+                                 if (!searchClass) return alert("اختر الشعبة التي تريد إدخال غياباتها.");
+                                 setAddAbsents(true)
+                              }
                            }
-                        );
-                     } else {
-                        setAddAbsents(true);
-                        setAbsents({});
-                     }
+                        },
+                     ]
                   }
-               }
-            />
-         </div>
-      </div>
-   )
+               />
+               <Row className='text-start'>
+                  <InputWithLabel
+                     id="search"
+                     text="عوامل التصفية"
+                     hint="البحث"
+                     value={tempSearch}
+                     hook={setTempSearch}
+                     ehook={setSearch}
+                  />
+                  <Multiple
+                     id="grade"
+                     text="الصف"
+                     options={grades}
+                     value={searchGrade}
+                     hook={setSearchGrade}
+                  />
+                  <Multiple
+                     id="class"
+                     text="الشعبة"
+                     options={classes}
+                     value={searchClass}
+                     hook={setSearchClass}
+                  />
+               </Row>
+            </Col>
+            <Col xs='10'>
+               <MaterialReactTable
+                  muiSelectCheckboxProps={{
+                     sx: {
+                        float: "inline-start"
+                     }
+                  }}
+                  muiTableBodyProps={{
+                     sx: {
+                        '& tr.Mui-selected': {
+                           backgroundColor: '#AFAFAF',
+                        },
+                        '& tr:nth-of-type(odd)': {
+                           backgroundColor: '#f5f5f5',
+                        },
+                     },
+                  }}
+                  columns={columns}
+                  data={data}
+                  initialState={{ density: 'compact' }}
+                  state={{ rowSelection: selected }}
+                  enableRowSelection={(row) => row.original.id}
+                  onRowSelectionChange={setSelected}
+                  enableSorting={false}
+                  enablePinning={false}
+                  enableDensityToggle={false}
+                  enablePagination={false}
+                  enableFilters={false}
+                  enableTopToolbar={false}
+                  enableBottomToolbar={false}
+                  enableHiding={false}
+                  enableColumnActions={false}
+                  enableMultiRowSelection={false}
+               />
+            </Col>
+         </Row>
+         <Navigation current={current} next={next} previous={previous} setCurrent={setCurrent} />
+      </Container>
+   );
 };
 
 export default ViewStudents;

@@ -1,9 +1,12 @@
 import { Form } from "react-bootstrap";
 
-function InputWithLabel({ id, type, as, text, hint, disabled, value, hook, ehook }) {
+function InputWithLabel({ id, type, as, text, hint, disabled, value, hook, ehook, noLabel }) {
    return (
       <>
-         <Form.Label htmlFor={id}>{text} : </Form.Label>
+         {
+            (!noLabel) &&
+            <Form.Label htmlFor={id}>{text} : </Form.Label>
+         }
          {
             (type !== "checkbox" && type !== "switch") ?
                <Form.Control

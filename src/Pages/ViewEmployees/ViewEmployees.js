@@ -55,7 +55,6 @@ function ViewEmployees() {
             header: 'المعرّف',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -71,7 +70,6 @@ function ViewEmployees() {
             header: 'الاسم',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -87,7 +85,6 @@ function ViewEmployees() {
             header: 'الكنية',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -103,7 +100,6 @@ function ViewEmployees() {
             header: 'الأدوار',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  
                   sx={{
                      display: 'flex',
                      alignItems: 'center',

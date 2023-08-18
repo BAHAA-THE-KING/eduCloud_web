@@ -1,9 +1,10 @@
-import './ViewMarks.css';
-
-import { Button, ButtonWithIcon, MultipletButton, TableTile } from '../../components';
-import React, { useEffect, useState } from 'react';
+import { InputWithLabel, ListOfButtons, Multiple, Navigation } from '../../components';
+import React, { useEffect, useMemo, useState } from 'react';
 import * as handlers from "../../handlers";
 import { useNavigate } from 'react-router-dom';
+import { Col, Container, Form, Row } from 'react-bootstrap';
+import { MaterialReactTable } from 'material-react-table';
+import { Box } from '@mui/material';
 
 function ViewMarks() {
    const navigate = useNavigate();
@@ -19,25 +20,26 @@ function ViewMarks() {
    const [previous, setPrevious] = useState(null);
    const [data, setData] = useState([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]);
    const [allData, setAllData] = useState([]);
-   const [selected, setSelected] = useState(-1);
-   const [selectedValue, setSelectedValue] = useState("");
 
    const [grades, setGrades] = useState([]);
    const [allClasses, setAllClasses] = useState([]);
+   const [allSubjects, setAllSubjects] = useState([]);
    const [classes, setClasses] = useState([]);
    const [subjects, setSubjects] = useState([]);
    const [types, setTypes] = useState([]);
    const [tests, setTests] = useState([]);
 
    const [all, setAll] = useState(true);
+   const [isEdit, setIsEdit] = useState(false);
    const [marks, setMarks] = useState({});
 
    useEffect(
       () => {
          handlers.getSubjects(
             res => {
-               setGrades(res.map(e => { return { id: e.id, name: e.name }; }));
-               setAllClasses(res);
+               setGrades(res);
+               setAllClasses(res.map(e => e.g_classes).flat());
+               setAllSubjects(res.map(e => e.subjects).flat());
             }
          );
          handlers.getTestForms(
@@ -51,6 +53,11 @@ function ViewMarks() {
 
    useEffect(
       () => {
+         if (!searchClass || !searchSubject || !searchType) {
+            setTests([]);
+            setTest("");
+            return;
+         }
          handlers.getTests(
             "",
             "",
@@ -84,13 +91,16 @@ function ViewMarks() {
    useEffect(
       () => {
          if (!test) return;
-         setData([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]);
          if (all)
             handlers.getMarks(
                test,
                res => {
-                  const temp = res.map(e => { return { ...e.student, mark: e.mark, editId: e.id }; });
-                  setAllData(temp);
+                  const temp = {};
+                  for (const k of res) {
+                     temp[k.student.id] = k.mark;
+                  }
+                  setMarks(temp);
+                  setAllData(res.map(e => e.student));
                   setCurrent(1);
                }
             );
@@ -98,319 +108,285 @@ function ViewMarks() {
             handlers.getRemainingStudents(
                test,
                res => {
+                  setMarks({});
                   setAllData(res);
                   setCurrent(1);
                }
             );
       },
-      [all, test]
+      [all, isEdit, test]
    );
 
    useEffect(
       () => {
          setMarks({});
+         setTest("");
       },
       [searchGrade, searchClass, searchSubject, searchType]
    );
 
    useEffect(
       () => {
-         setTest();
-      },
-      [searchGrade, searchClass, searchSubject, searchType]
-   );
-
-   useEffect(
-      () => {
-         setSearchClass("");
-         setSearchSubject("");
-         if (!!searchGrade) {
-            setClasses(allClasses.filter(e => e.id === searchGrade)[0].g_classes);
-            setSubjects(allClasses.filter(e => e.id === searchGrade)[0].subjects);
-         } else {
-            setClasses([]);
-            setSubjects([]);
-         }
+         if (!searchGrade) return;
+         const temp = allClasses.filter(e => e.grade_id === searchGrade);
+         const temp2 = allSubjects.filter(e => e.grade_id === searchGrade);
+         setClasses(temp);
+         setSubjects(temp2);
       },
       [searchGrade]
    );
 
+   const columns = useMemo(
+      () => {
+         const columns = [
+            {
+               accessorKey: "id",
+               header: "المعرّف",
+               Cell: ({ renderedCellValue }) => (
+                  <Box
+                     sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '1rem',
+                     }}
+                  >
+                     <span>{renderedCellValue}</span>
+                  </Box>
+               )
+            },
+            {
+               accessorKey: "grade_id",
+               header: "الصف",
+               Cell: ({ renderedCellValue }) => (
+                  <Box
+                     sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '1rem',
+                     }}
+                  >
+                     <span>{grades.find(e => e.id == renderedCellValue)?.name}</span>
+                  </Box>
+               )
+            },
+            {
+               accessorKey: "g_class_id",
+               header: "الشعبة",
+               Cell: ({ renderedCellValue }) => (
+                  <Box
+                     sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '1rem',
+                     }}
+                  >
+                     <span>{allClasses.find(e => e.id == renderedCellValue)?.name}</span>
+                  </Box>
+               )
+            },
+            {
+               accessorKey: "first_name",
+               header: "الاسم",
+               Cell: ({ renderedCellValue }) => (
+                  <Box
+                     sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '1rem',
+                     }}
+                  >
+                     <span>{renderedCellValue}</span>
+                  </Box>
+               )
+            },
+            {
+               accessorKey: "last_name",
+               header: "الكنية",
+               Cell: ({ renderedCellValue }) => (
+                  <Box
+                     sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '1rem',
+                     }}
+                  >
+                     <span>{renderedCellValue}</span>
+                  </Box>
+               )
+            },
+            {
+               accessorKey: "father_name",
+               header: "اسم الأب",
+               Cell: ({ renderedCellValue }) => (
+                  <Box
+                     sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '1rem',
+                     }}
+                  >
+                     <span>{renderedCellValue}</span>
+                  </Box>
+               )
+            },
+            {
+               accessorKey: "mother_name",
+               header: "اسم الأم",
+               Cell: ({ renderedCellValue }) => (
+                  <Box
+                     sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '1rem',
+                     }}
+                  >
+                     <span>{renderedCellValue}</span>
+                  </Box>
+               )
+            },
+            {
+               accessorFn: asdasdasdasd => asdasdasdasd?.id,
+               key: "mark",
+               header: "العلامة",
+               Cell: ({ renderedCellValue }) => {
+                  return (
+                     <Box
+                        sx={{
+                           display: 'flex',
+                           alignItems: 'center',
+                           gap: '1rem',
+                        }}
+                     >
+                        <span>
+                           <InputWithLabel
+                              id={"mark" + renderedCellValue}
+                              type="number"
+                              noLabel={true}
+                              disabled={!isEdit || !renderedCellValue}
+                              value={marks[renderedCellValue] ?? ""}
+                              hook={mark => setMarks({ ...marks, [renderedCellValue]: mark })}
+                           />
+                        </span>
+                     </Box>
+                  );
+               }
+            },
+         ];
+         return columns;
+      },
+      [data, all, marks, isEdit]
+   );
+
    return (
-      <div className='viewmarks'>
-         <div className='content'>
-            <div className='control'>
-               <ButtonWithIcon
-                  text="إدخال"
-                  hook={
-                     () => {
-                        let temp = [...allData];
-                        const temp1 = Object.entries(marks)
-                           .map(
-                              e => {
-                                 if ((e[1] ?? -1) === -1)
-                                    return undefined;
-                                 temp = temp.filter(ee => ee.id != e[0]);
-                                 setCurrent(1);
-                                 return {
-                                    "student_id": e[0],
-                                    "mark": e[1]
-                                 };
-                              }
-                           )
-                           .filter(e => e);
-                        handlers.addMarks(
-                           test,
-                           temp1,
-                           () => {
-                              setAllData(temp);
+      <Container fluid>
+         <Row className='mt-2'>
+            <Col xs='2'>
+               <ListOfButtons
+                  data={
+                     [
+                        {
+                           name: "إدخال",
+                           event: () => {
+                              if (!Object.keys(marks).length) return alert("أدخل العلامات المراد حفظها.");
+                              handlers.addMarks(
+                                 test,
+                                 marks,
+                                 () => {
+                                    setIsEdit(false);
+                                 }
+                              );
                            }
-                        );
-                     }
+                        },
+                        {
+                           name: !all ? "عرض العلامات المدخلة" : "عرض العلامات الناقصة",
+                           event: () => setAll(!all)
+                        },
+                        {
+                           name: isEdit ? "إلغاء التعديل" : "تعديل",
+                           event: () => setIsEdit(!isEdit)
+                        },
+                        {
+                           name: "عرض صفحة السبر",
+                           event: () => (!!test) ? navigate(handlers.VIEWTESTDATA + test) : alert("اختر سبراً لعرض معلوماته.")
+                        },
+                     ]
                   }
-                  src="Icons/subject.svg"
                />
-               <ButtonWithIcon
-                  text="إضافة سبر"
-                  hook={() => navigate(handlers.ADDTEST)}
-                  src="Icons/add.svg"
-               />
-               <ButtonWithIcon
-                  text={all ? "عرض العلامات الناقصة" : "عرض كل الطلاب"}
-                  hook={() => setAll(!all)}
-                  src="Icons/add.svg"
-               />
-               <ButtonWithIcon
-                  text="عرض صفحة السبر"
-                  hook={() => (!!selected) ? navigate(handlers.VIEWTESTDATA + test) : alert("اختر سبراً لعرض معلوماته.")}
-                  src="Icons/subject.svg"
-               />
-               <label>عوامل التصفية :</label>
-               <MultipletButton
-                  text="اختر الصف"
-                  open={true}
-                  options={grades}
-                  dataHook={
-                     (grade, select) => {
-                        if (select) {
-                           setSearchGrade(grade);
-                        } else {
-                           setSearchGrade("");
-                        }
-                     }
-                  }
-                  textHook={() => { }}
-               />
-               <MultipletButton
-                  text="اختر الشعبة"
-                  open={true}
-                  options={classes}
-                  dataHook={
-                     (theclass, select) => {
-                        if (select) {
-                           setSearchClass(theclass);
-                        } else {
-                           setSearchClass("");
-                        }
-                     }
-                  }
-                  textHook={() => { }}
-               />
-               <MultipletButton
-                  text="اختر المادة"
-                  open={true}
-                  options={subjects}
-                  dataHook={
-                     (subject, select) => {
-                        if (select) {
-                           setSearchSubject(subject);
-                        } else {
-                           setSearchSubject("");
-                        }
-                     }
-                  }
-                  textHook={() => { }}
-               />
-               <MultipletButton
-                  text="اختر النوع"
-                  open={true}
-                  options={types}
-                  dataHook={
-                     (type, select) => {
-                        if (select) {
-                           setSearchType(type);
-                        } else {
-                           setSearchType("");
-                        }
-                     }
-                  }
-                  textHook={() => { }}
-               />
-               <MultipletButton
-                  text="اختر الاختبار"
-                  open={true}
-                  options={tests}
-                  dataHook={
-                     (test, select) => {
-                        if (select) {
-                           setTest(test);
-                        } else {
-                           setTest("");
-                        }
-                     }
-                  }
-                  textHook={() => { }}
-               />
-            </div>
-            <div className='show'>
-               <div className='view'>
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="المعرّف"
-                     setSelected={() => { }}
+               <Row className='text-start'>
+                  <Form.Label>عوامل التصفية :</Form.Label>
+                  <Multiple
+                     id="grade"
+                     text="الصف"
+                     options={grades}
+                     value={searchGrade}
+                     hook={setSearchGrade}
                   />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="الاسم"
-                     setSelected={() => { }}
+                  <Multiple
+                     id="class"
+                     text="الشعبة"
+                     options={classes}
+                     value={searchClass}
+                     hook={setSearchClass}
                   />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="الكنية"
-                     setSelected={() => { }}
+                  <Multiple
+                     id="subject"
+                     text="المادة"
+                     options={subjects}
+                     value={searchSubject}
+                     hook={setSearchSubject}
                   />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="اسم الأب"
-                     setSelected={() => { }}
+                  <Multiple
+                     id="type"
+                     text="النوع"
+                     options={types}
+                     value={searchType}
+                     hook={setSearchType}
                   />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="اسم الأم"
-                     setSelected={() => { }}
-                  />
-                  <TableTile
-                     selected={false}
-                     id={-1}
-                     className="headings"
-                     text="العلامة"
-                     setSelected={() => { }}
-                  />
-                  {
-                     data.map(
-                        (e) => (
-                           <React.Fragment>
-                              <TableTile
-                                 selected={selected === e.id}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.id}
-                              />
-                              <TableTile
-                                 selected={selected === e.id}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.first_name}
-                              />
-                              <TableTile
-                                 selected={selected === e.id}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.last_name}
-                              />
-                              <TableTile
-                                 selected={selected === e.id}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.father_name}
-                              />
-                              <TableTile
-                                 selected={selected === e.id}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 text={e.mother_name}
-                              />
-                              <TableTile
-                                 selected={selected === e.id}
-                                 id={e.id}
-                                 setSelected={setSelected}
-                                 editable={(!all || selected == e.id) && !!test && !!e.id}
-                                 text={all ? (selected == e.id ? selectedValue : e.mark) : (marks[e.id] ?? "")}
-                                 inputHook={
-                                    text => {
-                                       all ?
-                                          setSelectedValue(text)
-                                          : (!!text) ?
-                                             setMarks({ ...marks, [e.id]: text })
-                                             : setMarks({ ...marks, [e.id]: undefined })
-                                    }
-                                 }
-                                 enterHook={
-                                    value => {
-                                       all &&
-                                          handlers.editMark(
-                                             e.editId,
-                                             value,
-                                             () => {
-                                                setAllData(
-                                                   allData.map(
-                                                      ee => {
-                                                         if (ee.id === e.id) ee.mark = selectedValue;
-                                                         return ee;
-                                                      }
-                                                   )
-                                                );
-                                                setSelected(-1);
-                                                setSelectedValue("");
-                                             });
-                                    }
-                                 }
-                              />
-                           </React.Fragment>
-                        )
-                     )
-                  }
-               </div>
-            </div>
-         </div>
-         <div className='navigation'>
-            {
-               <Button
-                  text="<   السابق"
-                  className="previous"
-                  hook={
-                     () => setCurrent(current - 1)
-                  }
-                  disabled={previous < 1}
+                  <Multiple
+                     id="test"
+                     text="الاختبار"
+                     options={tests}
+                     value={test}
+                     hook={setTest}
+                  /></Row>
+            </Col>
+            <Col xs='10'>
+               <MaterialReactTable
+                  muiSelectCheckboxProps={{
+                     sx: {
+                        float: "inline-start"
+                     }
+                  }}
+                  muiTableBodyProps={{
+                     sx: {
+                        '& tr.Mui-selected': {
+                           backgroundColor: '#AFAFAF',
+                        },
+                        '& tr:nth-of-type(odd)': {
+                           backgroundColor: '#f5f5f5',
+                        },
+                     },
+                  }}
+                  columns={columns}
+                  data={data}
+                  initialState={{ density: 'compact' }}
+                  enableRowSelection={false}
+                  enableSorting={false}
+                  enablePinning={false}
+                  enableDensityToggle={false}
+                  enablePagination={false}
+                  enableFilters={false}
+                  enableTopToolbar={false}
+                  enableBottomToolbar={false}
+                  enableHiding={false}
+                  enableColumnActions={false}
+                  enableMultiRowSelection={false}
                />
-            }
-            <Button
-               text={current}
-               hook={() => { }}
-               className={"current"}
-            />
-            {
-               <Button
-                  text="التالي   >"
-                  className="next"
-                  hook={
-                     () => setCurrent(current + 1)
-                  }
-                  disabled={!next}
-               />
-            }
-         </div>
-      </div>
-   )
+            </Col>
+         </Row>
+         <Navigation current={current} next={next} previous={previous} setCurrent={setCurrent} />
+      </Container>
+   );
 };
 
 export default ViewMarks;

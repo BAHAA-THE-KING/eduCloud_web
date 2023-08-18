@@ -12,8 +12,6 @@ function ViewGradeData() {
    const { id } = useParams();
 
    let [name, setName] = useState("");
-   let [subjects, setSubjects] = useState([]);
-   let [classes, setClasses] = useState([]);
 
    useEffect(
       function () {
@@ -21,8 +19,13 @@ function ViewGradeData() {
             id,
             data => {
                setName(data.name);
-               setClasses(data.g_classes);
-               setSubjects(data.subjects);
+               const temp = [];
+               temp.push(...data.supervisors.map(e => { return { id: e.id, name: e.first_name + " " + e.last_name, type: "supervisor" }; }));
+               temp.push(...data.teachers.map(e => { return { id: e.id, name: e.first_name + " " + e.last_name, type: "teacher" }; }));
+               temp.push(...data.g_classes.map(e => { return { id: e.id, name: e.first_name + " " + e.last_name, type: "class" }; }));
+               temp.push(...data.subjects.map(e => { return { id: e.id, name: e.first_name + " " + e.last_name, type: "subject" }; }));
+               setAllData(temp);
+               setCurrent(1);
             }
          )
       },
@@ -99,7 +102,7 @@ function ViewGradeData() {
             )
          },
          {
-            accessorKey: "type",
+            accessorFn: e => e.type,
             key: "goTo",
             header: "الانتقال لصفحة المدرس",
             Cell: ({ renderedCellValue, row }) => {
