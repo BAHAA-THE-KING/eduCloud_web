@@ -214,6 +214,8 @@ function AddSupervisorData() {
                   enableFilters={false}
                   enableTopToolbar={false}
                   enableBottomToolbar={false}
+                  enableHiding={false}
+                  enableColumnActions={false}
                />
             </Col>
          </Row>

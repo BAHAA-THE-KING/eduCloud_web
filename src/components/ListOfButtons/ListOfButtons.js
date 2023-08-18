@@ -6,7 +6,7 @@ function ListOfButtons({ data }) {
          {
             data.map(
                elm =>
-                  <Col xs='9' className='my-1'>
+                  <Col xs='9' className='my-1' key={elm.name}>
                      <Button style={{ minWidth: "100%" }} onClick={elm.event} disabled={elm.disabled}>
                         {elm.name}
                      </Button>

@@ -9,9 +9,9 @@ import { Box } from '@mui/material';
 function AcceptStudents() {
    const navigate = useNavigate();
 
-   const [searchGrade, setSearchGrade] = useState();
+   const [searchGrade, setSearchGrade] = useState("");
    const [minNum, setMinNum] = useState(100);
-   const [tempMinNum, setTempMinNum] = useState();
+   const [tempMinNum, setTempMinNum] = useState(100);
 
    const [current, setCurrent] = useState(0);
    const [next, setNext] = useState(null);
@@ -44,7 +44,6 @@ function AcceptStudents() {
                const temp = res.filter(e => e.succeeded === true).map(e => e.id);
                setSelected([...temp]);
                setCurrent(1);
-               setMinNum(100);
             }
          );
       },
@@ -102,7 +101,7 @@ function AcceptStudents() {
                            type="checkbox"
                            className='ms-3'
                            style={{ scale: "1.5" }}
-                           checked={renderedCellValue || selected.find(e => e == id)}
+                           checked={renderedCellValue || (selected.find(e => e == id) ?? false)}
                            onChange={e => {
                               if (e.target.checked)
                                  setSelected([...selected, id]);
@@ -320,6 +319,8 @@ function AcceptStudents() {
                   enableFilters={false}
                   enableTopToolbar={false}
                   enableBottomToolbar={false}
+                  enableHiding={false}
+                  enableColumnActions={false}
                />
             </Col>
          </Row>

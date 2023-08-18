@@ -171,6 +171,46 @@ function getGradeData(id, func) {
       );
 }
 
+function getClassData(id, func) {
+   const path = "/supervisor/getGClass/" + id;
+
+   const url = host + path;
+
+   const method = "GET";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   fetch(url, { method, headers })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e["message"] === "Unauthenticated.") {
+               goTo(LOGIN);
+            } else if (e.message === "Success!") {
+               func(e.data);
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
 function getSubjects(func) {
    const path = "/general/getAllGradesWithClassesAndSubjects";
 
@@ -2082,7 +2122,7 @@ export { addTestForm, getTestForms, getTestFormData, editTestForm };
 export { addTest, getTests, getTestData, editTest };
 export { addStudent, addAbsents, getStudents };
 export { addGrade, getGrades, getGradeData, editGrade };
-export { addClass, editClass };
+export { addClass, getClassData, editClass };
 export { addSubject, getSubjectData, editSubject };
 export { addAbilityTestForm };
 export { addCalendar, getBaseCalendar, editCalendar };

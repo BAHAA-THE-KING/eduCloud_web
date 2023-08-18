@@ -17,6 +17,7 @@ function InputWithLabel({ id, type, as, text, hint, disabled, value, hook, ehook
                   onKeyDown={
                      e => {
                         if (e.key === 'Enter') {
+                           e.preventDefault();
                            if (ehook) ehook(e.target.value);
                         }
                      }
@@ -33,6 +34,7 @@ function InputWithLabel({ id, type, as, text, hint, disabled, value, hook, ehook
                   onKeyDown={
                      e => {
                         if (e.key === 'Enter') {
+                           e.preventDefault();
                            if (ehook) ehook(e.target.checked);
                         }
                      }

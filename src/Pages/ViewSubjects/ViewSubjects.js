@@ -66,7 +66,7 @@ function ViewSubjects() {
             header: 'المعرّف',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  onClick={() => row.toggleSelected()}
+                  
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -82,7 +82,7 @@ function ViewSubjects() {
             header: 'الاسم',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  onClick={() => row.toggleSelected()}
+                  
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -98,7 +98,7 @@ function ViewSubjects() {
             header: 'العلامة الكلية',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  onClick={() => row.toggleSelected()}
+                  
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -114,7 +114,7 @@ function ViewSubjects() {
             header: 'علامة النجاح',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  onClick={() => row.toggleSelected()}
+                  
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -130,7 +130,7 @@ function ViewSubjects() {
             header: 'ملاحظات',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  onClick={() => row.toggleSelected()}
+                  
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -147,7 +147,7 @@ function ViewSubjects() {
             header: 'الصف',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  onClick={() => row.toggleSelected()}
+                  
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -164,7 +164,7 @@ function ViewSubjects() {
             header: 'معرف الصف',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  onClick={() => row.toggleSelected()}
+                  
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -227,6 +227,8 @@ function ViewSubjects() {
                   enableFilters={false}
                   enableTopToolbar={false}
                   enableBottomToolbar={false}
+                  enableHiding={false}
+                  enableColumnActions={false}
                   enableMultiRowSelection={false}
                />
             </Col>

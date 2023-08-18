@@ -55,7 +55,7 @@ function ViewEmployees() {
             header: 'المعرّف',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  onClick={() => row.toggleSelected()}
+                  
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -71,7 +71,7 @@ function ViewEmployees() {
             header: 'الاسم',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  onClick={() => row.toggleSelected()}
+                  
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -87,7 +87,7 @@ function ViewEmployees() {
             header: 'الكنية',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  onClick={() => row.toggleSelected()}
+                  
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -103,7 +103,7 @@ function ViewEmployees() {
             header: 'الأدوار',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  onClick={() => row.toggleSelected()}
+                  
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -193,6 +193,8 @@ function ViewEmployees() {
                   enableFilters={false}
                   enableTopToolbar={false}
                   enableBottomToolbar={false}
+                  enableHiding={false}
+                  enableColumnActions={false}
                   enableMultiRowSelection={false}
                />
             </Col>

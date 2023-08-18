@@ -26,6 +26,7 @@ function ViewTestForms() {
          ),
       []
    );
+
    useEffect(
       () => {
          setPrevious(current - 1);
@@ -47,7 +48,7 @@ function ViewTestForms() {
             header: 'المعرّف',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  onClick={() => row.toggleSelected()}
+                  
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -63,7 +64,7 @@ function ViewTestForms() {
             header: 'الاسم',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  onClick={() => row.toggleSelected()}
+                  
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -126,6 +127,8 @@ function ViewTestForms() {
                   enableFilters={false}
                   enableTopToolbar={false}
                   enableBottomToolbar={false}
+                  enableHiding={false}
+                  enableColumnActions={false}
                   enableMultiRowSelection={false}
                />
             </Col>

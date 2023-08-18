@@ -1,6 +1,8 @@
 import { Col, Dropdown, Form, Row } from "react-bootstrap";
 
-function Multiple({ id, text, options, multiple, value, hook, noLabel }) {
+function Multiple({ id, text, options, multiple, value, hook, noLabel, noNull }) {
+   const myOptions = [...options];
+   if (!noNull) myOptions.push({ id: "", name: <b>إلغاء</b> });
 
    return (
       <>
@@ -21,43 +23,43 @@ function Multiple({ id, text, options, multiple, value, hook, noLabel }) {
             </Dropdown.Toggle>
             <Dropdown.Menu>
                {
-                  [...options, { id: "", name: <b>إلغاء</b> }]
-                     .map(
-                        option =>
-                           <Dropdown.Item
-                              onClick={
-                                 e => {
-                                    if (multiple) {
-                                       if (option.id === "") {
-                                          hook([]);
-                                          return;
-                                       }
-                                       e.stopPropagation();
-                                       if (value.find(e => e == option.id)) {
-                                          hook(value.filter(e => e != option.id));
-                                       } else {
-                                          hook([...value, option.id]);
-                                       }
+                  myOptions.map(
+                     option =>
+                        <Dropdown.Item
+                           key={option.id}
+                           onClick={
+                              e => {
+                                 if (multiple) {
+                                    if (option.id === "") {
+                                       hook([]);
+                                       return;
                                     }
-                                    else {
-                                       hook(option.id);
+                                    e.stopPropagation();
+                                    if (value.find(e => e == option.id)) {
+                                       hook(value.filter(e => e != option.id));
+                                    } else {
+                                       hook([...value, option.id]);
                                     }
+                                 }
+                                 else {
+                                    hook(option.id);
                                  }
                               }
-                           >
-                              <Row>
-                                 {
-                                    multiple &&
-                                    <Col className="text-start">
-                                       <Form.Check type="checkbox" checked={!!value.find(e => e == option.id)} />
-                                    </Col>
-                                 }
+                           }
+                        >
+                           <Row>
+                              {
+                                 multiple &&
                                  <Col className="text-start">
-                                    {option.name}
+                                    <Form.Check type="checkbox" checked={!!value.find(e => e == option.id)} onChange={() => { }} />
                                  </Col>
-                              </Row>
-                           </Dropdown.Item>
-                     )
+                              }
+                              <Col className="text-start">
+                                 {option.name}
+                              </Col>
+                           </Row>
+                        </Dropdown.Item>
+                  )
                }
             </Dropdown.Menu>
          </Dropdown>

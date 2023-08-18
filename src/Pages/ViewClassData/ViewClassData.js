@@ -1,101 +1,256 @@
-import "./ViewClassData.css";
-
-import { TextInput, Title, ButtonWithIcon } from "../../components";
-import { useEffect, useState } from "react";
+import { InputWithLabel, ListOfButtons, Navigation } from "../../components";
+import { useEffect, useMemo, useState } from "react";
 import * as handler from '../../handlers';
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { Col, Container, Form, Row } from "react-bootstrap";
+import { MaterialReactTable } from "material-react-table";
+import { Box } from "@mui/material";
 
 function ViewClassData() {
+
+   const navigate = useNavigate();
+
    const { id } = useParams();
 
-   let [name, setName] = useState("");
-   let [maxNum, setMaxNum] = useState("");
-   let [gradeName, setGradeName] = useState("");
+   const [name, setName] = useState("");
+   const [maxNum, setMaxNum] = useState("");
+   const [gradeName, setGradeName] = useState("");
+
+   const [current, setCurrent] = useState(0);
+   const [next, setNext] = useState(null);
+   const [previous, setPrevious] = useState(null);
+   const [data, setData] = useState([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]);
+   const [allData, setAllData] = useState([]);
 
    useEffect(
       function () {
-         handler.getSubjects(
+         handler.getClassData(
+            id,
             data => {
-               for (const k of data) {
-                  for (const n of k.g_classes) {
-                     if (n.id == id) {
-                        setName(n.name);
-                        setMaxNum(n.max_number);
-                        setGradeName(k.name);
-                        break;
-                     }
-                  }
-               }
+               setName(data.name);
+               setMaxNum(data.max_number);
+               setGradeName(data.grade.name);
+               const subs = [];
+               let teachers = [];
+               data.subjects.map(e => {
+                  subs.push({ id: e.id, name: e.name, type: "subject" });
+                  e.teachers.map(e => {
+                     teachers = teachers.filter(ee => ee.id !== e.id);
+                     teachers.push({ id: e.id, name: e.first_name + " " + e.last_name, type: "teacher" })
+                  });
+               });
+               const supervisors = [];
+               data.supervisors.map(e => supervisors.push({ id: e.id, name: e.name, type: "supervisor" }))
+               const temp = [...subs, ...teachers, ...supervisors];
+               setAllData(temp);
+               setCurrent(1);
             }
          )
       },
       []
    );
 
+   useEffect(
+      () => {
+         setPrevious(current - 1);
+         const next = current * 10 >= allData.length ? 0 : current + 1;
+         setNext(next);
+         const start = (current - 1) * Math.floor(allData.length / 10) * 10;
+         const end = (current - 1) * Math.floor(allData.length / 10) * 10 + 10;
+         const temp = allData.slice(start, end);
+         while (temp.length < 10) temp.push({});
+         setData(temp);
+      },
+      [current]
+   );
+
    const [isEdit, setIsEdit] = useState(false);
 
-   return (
-      <div className="viewclassdata">
-         <Title text="عرض الشعبة" />
-         <img src="Images/addtest.jpg" alt="" className="bg" />
-         <div className="content">
-            <div className="frm">
-               <div>
-                  <label>اسم الشعبة :</label>
-                  <br />
-                  <TextInput
-                     defaultValue={name}
-                     inputHook={setName}
-                     editable={isEdit}
-                     enterHook={() => { }}
-                     hint="مثال: تاسع أولى"
-                  />
-                  <br />
-                  <label>{"العدد الأقصى للطلاب : " + maxNum}</label>
-                  <br />
-                  <TextInput
-                     type="number"
-                     editable={isEdit}
-                     defaultValue={maxNum}
-                     inputHook={setMaxNum}
-                     hint="أقصى عدد للطلاب"
-                  />
-                  <br />
-                  <label>{"الصف الذي تتبع له : " + gradeName}</label>
-               </div>
-            </div>
-            <div className='btns'>
-               <ButtonWithIcon
-                  text={isEdit ? "تأكيد التعديلات" : "تعديل"}
-                  className="modify"
-                  src="Icons/subject.svg"
-                  hook={
-                     () => {
-                        if (isEdit) {
-                           handler.editClass(
-                              id,
-                              name,
-                              maxNum,
-                              () => {
-                                 setIsEdit(false);
+   const columns = useMemo(
+      () => [
+         {
+            accessorKey: "id",
+            header: "المعرف",
+            Cell: ({ renderedCellValue }) => (
+               <Box
+                  sx={{
+                     display: "flex",
+                     alignItems: "center",
+                     gap: "1rem"
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            )
+         },
+         {
+            accessorKey: "type",
+            header: "النوع",
+            Cell: ({ renderedCellValue }) => (
+               <Box
+                  sx={{
+                     display: "flex",
+                     alignItems: "center",
+                     gap: "1rem"
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            )
+         },
+         {
+            accessorKey: "name",
+            header: "اسم",
+            Cell: ({ renderedCellValue }) => (
+               <Box
+                  sx={{
+                     display: "flex",
+                     alignItems: "center",
+                     gap: "1rem"
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            )
+         },
+         {
+            accessorFn: e => e.type,
+            key: "goTo",
+            header: "الانتقال لصفحة المدرس",
+            Cell: ({ renderedCellValue, row }) => {
+               const id = row.getAllCells().find(e => e.id.indexOf("id") != -1)?.renderValue();
+               return (
+                  id && <Box
+                     sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "1rem"
+                     }}
+                  >
+                     <span>
+                        {
+                           <ListOfButtons
+                              data={
+                                 [
+                                    {
+                                       name: "ذهاب",
+                                       event: () =>
+                                          renderedCellValue === "class" ?
+                                             navigate(handler.VIEWCLASSDATA + id)
+                                             : (
+                                                renderedCellValue === "subject" ?
+                                                   navigate(handler.VIEWSUBJECTDATA + id)
+                                                   : (
+                                                      (renderedCellValue === "teacher" || renderedCellValue === "supervisor") ?
+                                                         navigate(handler.VIEWEMPLOYEEDATA + id)
+                                                         : ""
+                                                   )
+                                             )
+                                    }
+                                 ]
                               }
-                           );
-                        } else {
-                           setIsEdit(true);
+                           />
                         }
+                     </span>
+                  </Box>
+               );
+            }
+         }
+      ],
+      [data]
+   );
+
+   return (
+      <Container fluid>
+         <Row className="mt-2">
+            <Col xs='2'>
+               <Form className="text-start">
+                  <Form.Label>عرض الشعبة</Form.Label>
+                  <ListOfButtons
+                     data={
+                        [
+                           {
+                              name: isEdit ? "تأكيد التعديلات" : "تعديل",
+                              event: () => {
+                                 if (!isEdit) {
+                                    setIsEdit(true);
+                                 } else {
+                                    handler.editClass(
+                                       id,
+                                       name,
+                                       maxNum,
+                                       () => {
+                                          setIsEdit(false);
+                                       }
+                                    );
+                                 }
+                              }
+                           }
+                        ]
                      }
-                  }
+                  />
+                  <InputWithLabel
+                     id="name"
+                     text="اسم الشعبة"
+                     hint="مثال: الأولى"
+                     disabled={!isEdit}
+                     value={name}
+                     hook={setName}
+                  />
+                  <InputWithLabel
+                     id="maxNum"
+                     type="number"
+                     text="العدد الأقصى للطلاب"
+                     hint="عدد الطلاب"
+                     disabled={!isEdit}
+                     value={maxNum}
+                     hook={setMaxNum}
+                  />
+                  <InputWithLabel
+                     id="grade"
+                     text="الصف الذي تتبع له"
+                     hint="اسم الصف"
+                     disabled={true}
+                     value={gradeName}
+                  />
+               </Form>
+            </Col>
+            <Col xs='10'>
+               <MaterialReactTable
+                  muiSelectCheckboxProps={{
+                     sx: {
+                        float: "inline-start"
+                     }
+                  }}
+                  muiTableBodyProps={{
+                     sx: {
+                        '& tr.Mui-selected': {
+                           backgroundColor: '#AFAFAF',
+                        },
+                        '& tr:nth-of-type(odd)': {
+                           backgroundColor: '#f5f5f5',
+                        },
+                     },
+                  }}
+                  columns={columns}
+                  data={data}
+                  initialState={{ density: 'compact' }}
+                  enableRowSelection={false}
+                  enableMultiRowSelection={false}
+                  enableSorting={false}
+                  enablePinning={false}
+                  enableDensityToggle={false}
+                  enablePagination={false}
+                  enableFilters={false}
+                  enableTopToolbar={false}
+                  enableBottomToolbar={false}
+                  enableHiding={false}
+                  enableColumnActions={false}
                />
-               {/*<br />
-               <ButtonWithIcon
-                  text="حذف"
-                  className="modify"
-                  src="Icons/delete.svg"
-                  hook={() => { }}
-               />*/}
-            </div>
-         </div>
-      </div>
+            </Col>
+         </Row>
+         <Navigation current={current} next={next} previous={previous} setCurrent={setCurrent} />
+      </Container>
    );
 }
 

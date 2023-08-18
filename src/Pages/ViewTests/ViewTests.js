@@ -86,7 +86,7 @@ function ViewTests() {
             header: 'المعرّف',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  onClick={() => row.toggleSelected()}
+                  
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -102,7 +102,7 @@ function ViewTests() {
             header: 'العنوان',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  onClick={() => row.toggleSelected()}
+                  
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -118,7 +118,7 @@ function ViewTests() {
             header: 'النوع',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  onClick={() => row.toggleSelected()}
+                  
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -147,7 +147,7 @@ function ViewTests() {
                };
                return (
                   <Box
-                     onClick={() => row.toggleSelected()}
+                     
                      sx={{
                         display: 'flex',
                         alignItems: 'center',
@@ -176,7 +176,7 @@ function ViewTests() {
                }
                return (
                   <Box
-                     onClick={() => row.toggleSelected()}
+                     
                      sx={{
                         display: 'flex',
                         alignItems: 'center',
@@ -205,7 +205,7 @@ function ViewTests() {
                };
                return (
                   <Box
-                     onClick={() => row.toggleSelected()}
+                     
                      sx={{
                         display: 'flex',
                         alignItems: 'center',
@@ -222,7 +222,7 @@ function ViewTests() {
             header: 'التاريخ',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  onClick={() => row.toggleSelected()}
+                  
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -239,7 +239,7 @@ function ViewTests() {
             Cell: ({ renderedCellValue, row }) =>
             (
                <Box
-                  onClick={() => row.toggleSelected()}
+                  
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -256,7 +256,7 @@ function ViewTests() {
             Cell: ({ renderedCellValue, row }) => {
                return (
                   <Box
-                     onClick={() => row.toggleSelected()}
+                     
                      sx={{
                         display: 'flex',
                         alignItems: 'center',
@@ -298,7 +298,7 @@ function ViewTests() {
                   <InputWithLabel
                      id="search"
                      value={tempSearch}
-                     text="عوامل التصفية :"
+                     text="عوامل التصفية"
                      hint="بحث"
                      hook={setTempSearch}
                      ehook={setSearch}
@@ -390,6 +390,8 @@ function ViewTests() {
                   enableFilters={false}
                   enableTopToolbar={false}
                   enableBottomToolbar={false}
+                  enableHiding={false}
+                  enableColumnActions={false}
                   enableMultiRowSelection={false}
                />
             </Col>

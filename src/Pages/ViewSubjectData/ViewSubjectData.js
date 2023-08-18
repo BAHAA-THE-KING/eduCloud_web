@@ -1,4 +1,4 @@
-import { ListOfButtons, InputWithLabel } from "../../components";
+import { ListOfButtons, InputWithLabel, Navigation } from "../../components";
 import { useEffect, useMemo, useState } from "react";
 import * as handler from '../../handlers';
 import { useNavigate, useParams } from "react-router-dom";
@@ -16,7 +16,14 @@ function ViewSubjectData() {
    let [passMark, setPassMark] = useState("");
    let [notes, setNotes] = useState("");
    let [gradeName, setGradeName] = useState("");
-   let [teachers, setTeachers] = useState([]);
+
+   const [isEdit, setIsEdit] = useState(false);
+
+   const [current, setCurrent] = useState(0);
+   const [next, setNext] = useState(null);
+   const [previous, setPrevious] = useState(null);
+   const [data, setData] = useState([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]);
+   const [allData, setAllData] = useState([]);
 
    useEffect(
       function () {
@@ -34,14 +41,27 @@ function ViewSubjectData() {
                      temp.push({ ...n, classId: k.id, className: k.name });
                   }
                }
-               setTeachers(temp);
+               setAllData(temp);
+               setCurrent(1);
             }
          )
       },
       []
    );
 
-   const [isEdit, setIsEdit] = useState(false);
+   useEffect(
+      () => {
+         setPrevious(current - 1);
+         const next = current * 10 >= allData.length ? 0 : current + 1;
+         setNext(next);
+         const start = (current - 1) * Math.floor(allData.length / 10) * 10;
+         const end = (current - 1) * Math.floor(allData.length / 10) * 10 + 10;
+         const temp = allData.slice(start, end);
+         while (temp.length < 10) temp.push({});
+         setData(temp);
+      },
+      [current]
+   );
 
    const columns = useMemo(
       () => [
@@ -123,32 +143,37 @@ function ViewSubjectData() {
          {
             accessorKey: "id",
             key: "goTo",
-            header: "الكنية المدرس",
-            Cell: ({ renderedCellValue }) => (
-               <Box
-                  sx={{
-                     display: "flex",
-                     alignItems: "center",
-                     gap: "1rem"
-                  }}
-               >
-                  <span>
-                     <ListOfButtons
-                        data={
-                           [
-                              {
-                                 name: "الانتقال لصفحة المدرس",
-                                 event: () => navigate(handler.VIEWEMPLOYEEDATA + renderedCellValue)
+            header: "الانتقال لصفحة المدرس",
+            Cell: ({ renderedCellValue, row }) => {
+               const id = row.getAllCells().find(e => e.id.indexOf("id") != -1)?.renderValue();
+               return (
+                  <Box
+                     sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "1rem"
+                     }}
+                  >
+                     <span>
+                        {
+                           id && <ListOfButtons
+                              data={
+                                 [
+                                    {
+                                       name: "ذهاب",
+                                       event: () => navigate(handler.VIEWEMPLOYEEDATA + renderedCellValue)
+                                    }
+                                 ]
                               }
-                           ]
+                           />
                         }
-                     />
-                  </span>
-               </Box>
-            )
+                     </span>
+                  </Box>
+               );
+            }
          }
       ],
-      [teachers]
+      [data]
    );
 
    return (
@@ -190,7 +215,13 @@ function ViewSubjectData() {
                      value={name}
                      hook={setName}
                   />
-                  <Form.Label>{"الصف الذي تتبع له : " + gradeName}</Form.Label>
+                  <InputWithLabel
+                     id="grade"
+                     text="الصف الذي تتبع له"
+                     hint="اسم الصف"
+                     disabled={true}
+                     value={gradeName}
+                  />
                   <InputWithLabel
                      id="maxMark"
                      type="number"
@@ -238,7 +269,7 @@ function ViewSubjectData() {
                      },
                   }}
                   columns={columns}
-                  data={teachers}
+                  data={data}
                   initialState={{ density: 'compact' }}
                   enableRowSelection={false}
                   enableMultiRowSelection={false}
@@ -249,9 +280,12 @@ function ViewSubjectData() {
                   enableFilters={false}
                   enableTopToolbar={false}
                   enableBottomToolbar={false}
+                  enableHiding={false}
+                  enableColumnActions={false}
                />
             </Col>
          </Row>
+         <Navigation current={current} next={next} previous={previous} setCurrent={setCurrent} />
       </Container>
    );
 }

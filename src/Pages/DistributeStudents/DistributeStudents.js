@@ -4,13 +4,15 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Button, Col, Container, Dropdown, Form, Row } from 'react-bootstrap';
 import { MaterialReactTable } from 'material-react-table';
 import { Box } from '@mui/material';
-import { Navigation } from '../../components';
+import { Multiple, Navigation } from '../../components';
 
 function DistributeStudents() {
    const extData = useLocation().state;
    const navigate = useNavigate();
 
-   console.log(extData);
+   const allData = extData.students;
+   const classes = extData.classes;
+   const grade = extData.grade;
 
    const [search, setSearch] = useState("");
    const [tempSearch, setTempSearch] = useState("");
@@ -18,9 +20,6 @@ function DistributeStudents() {
    const [next, setNext] = useState(null);
    const [previous, setPrevious] = useState(null);
    const [data, setData] = useState([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]);
-   const [allData, setAllData] = useState(extData.students);
-   const [classes, setClasses] = useState(extData.classes);
-   const [grade, setGrade] = useState(extData.grade);
    const [selection, setSelection] = useState(extData.selection);
 
    useEffect(
@@ -151,27 +150,15 @@ function DistributeStudents() {
                      <span>
                         {
                            renderedCellValue &&
-                           <Dropdown>
-                              <Dropdown.Toggle>
-                                 {classes.find(e => e.id == selection[renderedCellValue])?.name ?? "اختر الشعبة "}
-                              </Dropdown.Toggle>
-                              <Dropdown.Menu>
-                                 {
-                                    classes.map(
-                                       e =>
-                                          <Dropdown.Item
-                                             onClick={
-                                                () => {
-                                                   setSelection({ ...selection, [renderedCellValue]: e.id });
-                                                }
-                                             }
-                                          >
-                                             {e.name}
-                                          </Dropdown.Item>
-                                    )
-                                 }
-                              </Dropdown.Menu>
-                           </Dropdown>
+                           <Multiple
+                              id={"class" + renderedCellValue}
+                              text="الشعبة"
+                              noLabel={true}
+                              options={classes}
+                              value={selection[renderedCellValue]}
+                              hook={sclass => setSelection({ ...selection, [renderedCellValue]: sclass })}
+                              noNull={true}
+                           />
                         }
                      </span>
                   </Box>
@@ -270,6 +257,8 @@ function DistributeStudents() {
                   enableFilters={false}
                   enableTopToolbar={false}
                   enableBottomToolbar={false}
+                  enableHiding={false}
+                  enableColumnActions={false}
                />
             </Col>
          </Row>

@@ -162,8 +162,6 @@ function ViewMarks() {
                            test,
                            temp1,
                            () => {
-                              console.log(allData);
-                              console.log(temp);
                               setAllData(temp);
                            }
                         );

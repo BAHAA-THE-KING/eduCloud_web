@@ -1,9 +1,8 @@
-import "./ViewTestFormData.css";
-
-import { TextInput, Title, ButtonWithIcon } from "../../components";
+import { InputWithLabel, ListOfButtons } from "../../components";
 import { useEffect, useState } from "react";
 import * as handler from '../../handlers';
 import { useParams } from "react-router-dom";
+import { Col, Container, Form, Row } from "react-bootstrap";
 
 function ViewTestFormData() {
    const { id } = useParams();
@@ -23,47 +22,58 @@ function ViewTestFormData() {
    const [isEdit, setIsEdit] = useState(false);
 
    return (
-      <div className="viewtestformdata">
-         <Title text="عرض النموذج" />
-         <img src="Images/addtest.jpg" alt="" className="bg" />
-         <div className="content">
-            <div className="frm">
-               <div>
-                  <label><b>اسم النموذج :</b></label>
-                  <TextInput editable={isEdit} defaultValue={name} inputHook={setName} enterHook={() => { }} hint="الاسم" />
-               </div>
-            </div>
-            <div className='btns'>
-               <ButtonWithIcon
-                  text={isEdit ? "تأكيد التعديلات" : "تعديل"}
-                  className="modify"
-                  src="Icons/subject.svg"
-                  hook={
-                     () => {
-                        if (isEdit) {
-                           handler.editTestForm(
-                              id,
-                              name,
-                              () => {
-                                 setIsEdit(false);
+      <Container fluid>
+         <img
+            src="Images/addtest.jpg"
+            alt=""
+            style={{
+               width: "60%",
+               height: "CALC(100% - 73px)",
+               position: "fixed",
+               bottom: "0",
+               left: "0",
+               transform: "translateX(-30%)",
+               clipPath: "ellipse(60% 50% at 30% 50%)"
+            }}
+         />
+         <Row className="mt-2">
+            <Col xs='2'>
+               <Form className="text-start">
+                  <Form.Label>عرض النموذج</Form.Label>
+                  <ListOfButtons
+                     data={
+                        [
+                           {
+                              name: isEdit ? "تأكيد التعديلات" : "تعديل",
+                              event: () => {
+                                 if (!isEdit) {
+                                    setIsEdit(true);
+                                 } else {
+                                    handler.editTestForm(
+                                       id,
+                                       name,
+                                       () => {
+                                          setIsEdit(false);
+                                       }
+                                    );
+                                 }
                               }
-                           );
-                        } else {
-                           setIsEdit(true);
-                        }
+                           }
+                        ]
                      }
-                  }
-               />
-               {/*<br />
-               <ButtonWithIcon
-                  text="حذف"
-                  className="modify"
-                  src="Icons/delete.svg"
-                  hook={() => { }}
-               />*/}
-            </div>
-         </div>
-      </div>
+                  />
+                  <InputWithLabel
+                     id="name"
+                     text="اسم النموذج"
+                     hint="اسم النموذج"
+                     disabled={!isEdit}
+                     value={name}
+                     hook={setName}
+                  />
+               </Form>
+            </Col>
+         </Row>
+      </Container>
    );
 }
 

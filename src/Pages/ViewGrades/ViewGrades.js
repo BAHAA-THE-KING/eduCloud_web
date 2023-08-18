@@ -47,7 +47,7 @@ function ViewGrades() {
             header: 'المعرّف',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  onClick={() => row.toggleSelected()}
+                  
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -63,7 +63,7 @@ function ViewGrades() {
             header: 'الاسم',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  onClick={() => row.toggleSelected()}
+                  
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -134,6 +134,8 @@ function ViewGrades() {
                   enableFilters={false}
                   enableTopToolbar={false}
                   enableBottomToolbar={false}
+                  enableHiding={false}
+                  enableColumnActions={false}
                   enableMultiRowSelection={false}
                />
             </Col>

@@ -76,56 +76,43 @@ function SelectStudents() {
       [current, search, searchGrade]
    );
 
-   useEffect(
-      () => {
-         if (selected.filter(e => typeof (e) !== "object").length != 1) return;
-         setSelected(selected.map(
-            e => {
-               if (typeof (e) !== "object") {
-                  return data.filter(ee => ee.id == e)[0];
-               }
-               return e;
-            }
-         ));
-      },
-      [selected]
-   );
-
    const columns = useMemo(
       () => [
          {
-            accessorKey: "accepted",
+            accessorFn: e => e.id,
+            key: "accepted",
             header: 'قبول',
-            Cell: ({ renderedCellValue, row }) => (
-               <Box
-                  sx={{
-                     display: 'flex',
-                     alignItems: 'center',
-                     gap: '1rem',
-                  }}
-               >
-                  <span>
-                     <Form.Check
-                        type="checkbox"
-                        className='ms-3'
-                        style={{ scale: "1.5" }}
-                        disabled={!row.getAllCells().find(e => e.id.indexOf("id") != -1)?.renderValue()}
-                        checked={
-                           renderedCellValue ||
-                           (!!selected.find(e => e.id == row.getAllCells().find(e => e.id.indexOf("id") != -1)?.renderValue()))
-                        }
-                        onChange={e => {
-                           const id = row.getAllCells().find(e => e.id.indexOf("id") != -1).renderValue();
-                           if (e.target.checked) {
-                              setSelected([...selected, id]);
-                           } else {
-                              setSelected(selected.filter(e => e.id != id));
+            Cell: ({ renderedCellValue }) => {
+               return (
+                  <Box
+                     sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '1rem',
+                     }}
+                  >
+                     <span>
+                        <Form.Check
+                           type="checkbox"
+                           className='ms-3'
+                           style={{ scale: "1.5" }}
+                           disabled={!renderedCellValue}
+                           checked={!!selected.find(e => e.id == renderedCellValue)}
+                           onChange={
+                              e => {
+                                 if (e.target.checked) {
+                                    const temp = data.filter(ee => ee.id == renderedCellValue)[0];
+                                    setSelected([...selected, temp]);
+                                 } else {
+                                    setSelected(selected.filter(e => e.id != renderedCellValue));
+                                 }
+                              }
                            }
-                        }}
-                     />
-                  </span>
-               </Box>
-            ),
+                        />
+                     </span>
+                  </Box>
+               )
+            },
          },
          {
             accessorKey: "id",
@@ -381,6 +368,8 @@ function SelectStudents() {
                   enableFilters={false}
                   enableTopToolbar={false}
                   enableBottomToolbar={false}
+                  enableHiding={false}
+                  enableColumnActions={false}
                />
             </Col>
          </Row>

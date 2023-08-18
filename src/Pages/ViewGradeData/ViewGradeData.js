@@ -1,20 +1,29 @@
-import "./ViewGradeData.css";
-
-import { TextInput, Title, ButtonWithIcon } from "../../components";
-import { useEffect, useState } from "react";
+import { TextInput, Title, ButtonWithIcon, InputWithLabel, ListOfButtons, Navigation } from "../../components";
+import { useEffect, useMemo, useState } from "react";
 import * as handler from '../../handlers';
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { Form, Col, Container, Row } from "react-bootstrap";
+import { MaterialReactTable } from "material-react-table";
+import { Box } from "@mui/material";
 
 function ViewGradeData() {
+   const navigate = useNavigate();
+
    const { id } = useParams();
 
    let [name, setName] = useState("");
+   let [subjects, setSubjects] = useState([]);
+   let [classes, setClasses] = useState([]);
 
    useEffect(
       function () {
          handler.getGradeData(
             id,
-            data => setName(data.name)
+            data => {
+               setName(data.name);
+               setClasses(data.g_classes);
+               setSubjects(data.subjects);
+            }
          )
       },
       []
@@ -22,48 +31,194 @@ function ViewGradeData() {
 
    const [isEdit, setIsEdit] = useState(false);
 
-   return (
-      <div className="viewgradedata">
-         <Title text="عرض الصف" />
-         <img src="Images/addtest.jpg" alt="" className="bg" />
-         <div className="content">
-            <div className="frm">
-               <div>
-                  <label><b>اسم الصف :</b></label>
-                  <TextInput editable={isEdit} defaultValue={name} inputHook={setName} enterHook={() => { }} hint="الاسم" />
-               </div>
-            </div>
-            <div className='btns'>
-               <ButtonWithIcon
-                  text={isEdit ? "تأكيد التعديلات" : "تعديل"}
-                  className="modify"
-                  src="Icons/subject.svg"
-                  hook={
-                     () => {
-                        if (isEdit) {
-                           handler.editGrade(
-                              id,
-                              name,
-                              () => {
-                                 setIsEdit(false);
+   const [current, setCurrent] = useState(0);
+   const [next, setNext] = useState(null);
+   const [previous, setPrevious] = useState(null);
+   const [data, setData] = useState([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]);
+   const [allData, setAllData] = useState([]);
+
+   useEffect(
+      () => {
+         setPrevious(current - 1);
+         const next = current * 10 >= allData.length ? 0 : current + 1;
+         setNext(next);
+         const start = (current - 1) * Math.floor(allData.length / 10) * 10;
+         const end = (current - 1) * Math.floor(allData.length / 10) * 10 + 10;
+         const temp = allData.slice(start, end);
+         while (temp.length < 10) temp.push({});
+         setData(temp);
+      },
+      [current]
+   );
+
+   const columns = useMemo(
+      () => [
+         {
+            accessorKey: "id",
+            header: "المعرف",
+            Cell: ({ renderedCellValue }) => (
+               <Box
+                  sx={{
+                     display: "flex",
+                     alignItems: "center",
+                     gap: "1rem"
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            )
+         },
+         {
+            accessorKey: "type",
+            header: "النوع",
+            Cell: ({ renderedCellValue }) => (
+               <Box
+                  sx={{
+                     display: "flex",
+                     alignItems: "center",
+                     gap: "1rem"
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            )
+         },
+         {
+            accessorKey: "name",
+            header: "اسم",
+            Cell: ({ renderedCellValue }) => (
+               <Box
+                  sx={{
+                     display: "flex",
+                     alignItems: "center",
+                     gap: "1rem"
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            )
+         },
+         {
+            accessorKey: "type",
+            key: "goTo",
+            header: "الانتقال لصفحة المدرس",
+            Cell: ({ renderedCellValue, row }) => {
+               const id = row.getAllCells().find(e => e.id.indexOf("id") != -1)?.renderValue();
+               return (
+                  id && <Box
+                     sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "1rem"
+                     }}
+                  >
+                     <span>
+                        {
+                           <ListOfButtons
+                              data={
+                                 [
+                                    {
+                                       name: "ذهاب",
+                                       event: () =>
+                                          renderedCellValue === "class" ?
+                                             navigate(handler.VIEWCLASSDATA + id)
+                                             : (
+                                                renderedCellValue === "subject" ?
+                                                   navigate(handler.VIEWSUBJECTDATA + id)
+                                                   : (
+                                                      (renderedCellValue === "teacher" || renderedCellValue === "supervisor") ?
+                                                         navigate(handler.VIEWEMPLOYEEDATA + id)
+                                                         : ""
+                                                   )
+                                             )
+                                    }
+                                 ]
                               }
-                           );
-                        } else {
-                           setIsEdit(true);
+                           />
                         }
+                     </span>
+                  </Box>
+               );
+            }
+         }
+      ],
+      [data]
+   );
+
+   return (
+      <Container fluid>
+         <Row className="mt-2">
+            <Col xs='2'>
+               <Form className='text-start'>
+                  <Form.Label>عرض الصف</Form.Label>
+                  <ListOfButtons
+                     data={
+                        [
+                           {
+                              name: isEdit ? "تأكيد التعديلات" : "تعديل",
+                              event: () => {
+                                 if (!isEdit) {
+                                    setIsEdit(true);
+                                 } else {
+                                    handler.editGrade(
+                                       id,
+                                       name,
+                                       () => {
+                                          setIsEdit(false);
+                                       }
+                                    );
+                                 }
+                              }
+                           }
+                        ]
                      }
-                  }
+                  />
+                  <InputWithLabel
+                     id="name"
+                     text="اسم الصف"
+                     hint="مثال: التاسع"
+                     disabled={!isEdit}
+                     value={name}
+                     hook={setName}
+                  />
+               </Form>
+            </Col>
+            <Col xs='10'>
+               <MaterialReactTable
+                  muiSelectCheckboxProps={{
+                     sx: {
+                        float: "inline-start"
+                     }
+                  }}
+                  muiTableBodyProps={{
+                     sx: {
+                        '& tr.Mui-selected': {
+                           backgroundColor: '#AFAFAF',
+                        },
+                        '& tr:nth-of-type(odd)': {
+                           backgroundColor: '#f5f5f5',
+                        },
+                     },
+                  }}
+                  columns={columns}
+                  data={data}
+                  initialState={{ density: 'compact' }}
+                  enableRowSelection={false}
+                  enableMultiRowSelection={false}
+                  enableSorting={false}
+                  enablePinning={false}
+                  enableDensityToggle={false}
+                  enablePagination={false}
+                  enableFilters={false}
+                  enableTopToolbar={false}
+                  enableBottomToolbar={false}
+                  enableHiding={false}
+                  enableColumnActions={false}
                />
-               {/*<br />
-               <ButtonWithIcon
-                  text="حذف"
-                  className="modify"
-                  src="Icons/delete.svg"
-                  hook={() => { }}
-               />*/}
-            </div>
-         </div>
-      </div>
+            </Col>
+         </Row>
+         <Navigation current={current} next={next} previous={previous} setCurrent={setCurrent} />
+      </Container>
    );
 }
 

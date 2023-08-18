@@ -64,7 +64,7 @@ function ViewClasses() {
             header: 'المعرّف',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  onClick={() => row.toggleSelected()}
+
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -80,7 +80,7 @@ function ViewClasses() {
             header: 'الاسم',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  onClick={() => row.toggleSelected()}
+
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -96,7 +96,7 @@ function ViewClasses() {
             header: 'العدد الأقصى للطلاب',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  onClick={() => row.toggleSelected()}
+
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -113,7 +113,7 @@ function ViewClasses() {
             header: 'الصف',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  onClick={() => row.toggleSelected()}
+
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -125,12 +125,12 @@ function ViewClasses() {
             ),
          },
          {
-            accessorKey: "grade",
-            id: "gradeId",
+            accessorFn: e => e.grade,
+            key: "gradeId",
             header: 'معرف الصف',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  onClick={() => row.toggleSelected()}
+
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -193,6 +193,8 @@ function ViewClasses() {
                   enableFilters={false}
                   enableTopToolbar={false}
                   enableBottomToolbar={false}
+                  enableHiding={false}
+                  enableColumnActions={false}
                   enableMultiRowSelection={false}
                />
             </Col>
