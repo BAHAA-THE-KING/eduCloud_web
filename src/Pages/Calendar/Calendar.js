@@ -1,6 +1,6 @@
 import "./Calendar.css";
 
-import { Title, TextInput, Button, MultipletButton, InputWithLabel, Multiple } from "../../components";
+import { Title, TextInput, Button, MultipletButton, InputWithLabel, Multiple, ListOfButtons } from "../../components";
 import { useEffect, useState } from "react";
 import * as handler from '../../handlers';
 import { Col, Container, Form, Row } from "react-bootstrap";
@@ -10,16 +10,12 @@ function Calendar() {
    const [grade, setGrade] = useState("");
    const [subject, setSubject] = useState("");
 
-   const [gradeName, setGradeName] = useState("");
-   const [subjectName, setSubjectName] = useState("");
-
    const [grades, setGrades] = useState([]);
    const [subjects, setSubjects] = useState([]);
 
-   const [isEdit, setIsEdit] = useState(false);
-   const [isAdd, setIsAdd] = useState(false);
+   const [selected, setSelected] = useState();
+   const [theNew, setTheNew] = useState(false);
 
-   const [id, setId] = useState(null);
    const [title, setTitle] = useState("");
    const [date, setDate] = useState("");
    const [isTest, setIsTest] = useState(false);
@@ -64,11 +60,11 @@ function Calendar() {
    );
 
    return (
-      <Container fluid>
-         <Row>
-            <Col>
-               <Form>
-                  <Title text="إضافة خطة دراسية" />
+      <Container fluid className="h-75">
+         <Row className="mt-2 h-100">
+            <Col xs='2'>
+               <Form className="text-start">
+                  <Title text="الخطة دراسية" />
                   <Multiple
                      id="grade"
                      text="الصف"
@@ -76,24 +72,163 @@ function Calendar() {
                      value={grade}
                      hook={setGrade}
                   />
-                  <label>{"الصف : " + gradeName}</label>
-                  <MultipletButton
-                     editable={!isEdit}
-                     open={true}
-                     options={grades}
-                     dataHook={setGrade}
-                     textHook={setGradeName}
-                  />
-                  <label>{"المادة : " + subjectName}</label>
-                  <MultipletButton
-                     editable={!isEdit}
-                     open={true}
-                     text={"اختر المادة"}
+                  <Multiple
+                     id="subject"
+                     text="المادة"
                      options={subjects}
-                     dataHook={setSubject}
-                     textHook={setSubjectName}
+                     value={subject}
+                     hook={setSubject}
                   />
+                  <InputWithLabel
+                     id="name"
+                     disabled={!theNew && !selected}
+                     text="اسم التقدم"
+                     hint="الاسم"
+                     value={title}
+                     hook={setTitle}
+                  />
+                  <InputWithLabel
+                     id="date"
+                     type="date"
+                     disabled={!theNew && !selected}
+                     text="تاريخ التقدم"
+                     hint="التاريخ"
+                     value={date}
+                     hook={setDate}
+                  />
+                  <InputWithLabel
+                     id="isTest"
+                     type="checkbox"
+                     disabled={!theNew && !selected}
+                     text="هل هو سبر"
+                     hint="نوع"
+                     value={isTest}
+                     hook={setIsTest}
+                  />
+                  <ListOfButtons
+                     data={
+                        [
+                           {
+                              name: "إدخال",
+                              event: e => {
+                                 e.preventDefault();
+                                 if (theNew) {
+                                    handler.addCalendar(
+                                       subject,
+                                       title,
+                                       date,
+                                       isTest,
+                                       () => {
+                                          setSelected();
+                                          setTheNew(false);
+                                       }
+                                    );
+                                 } else if (selected) {
+                                    handler.editCalendar(
+                                       selected,
+                                       title,
+                                       date,
+                                       isTest,
+                                       () => {
+                                          setSelected();
+                                          setTheNew(false);
+                                       }
+                                    );
+                                 }
+                              },
+                           }
+                        ]
+                     }
+                  />
+               </Form>
+            </Col>
+            <Col xs='10'>
+               <div
+                  className="h-100"
+                  style={{
+                     width: "100%",
+                     display: "flex",
+                     flexFlow: "nowrap row",
+                     justifyContent: "flex-start",
+                     alignItems: "center",
+                     overflowX: "scroll",
+                     overflowY: "hidden"
+                  }}
+               >
                   {
+                     data.map(
+                        e =>
+                           <>
+                              <div
+                                 style={{
+                                    width: "50px",
+                                    height: "50px",
+                                    backgroundColor: "pink",
+                                    padding: "50px",
+                                    borderRadius: "50%",
+                                    border: "3px #0000AA solid",
+                                    textAlign: "center",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    cursor: "pointer"
+                                 }}
+                                 onClick={
+                                    () => {
+                                       setSelected(e.id);
+                                       setTitle(e.title);
+                                       setDate(e.date);
+                                       setIsTest(e.is_test);
+                                    }
+                                 }
+                              >
+                                 <span>
+                                    {e.title}
+                                 </span>
+                              </div>
+                              <div
+                                 style={{
+                                    width: "70px",
+                                    height: "10px",
+                                    backgroundColor: "#0000AA"
+                                 }}
+                              >
+                              </div>
+                           </>
+                     )
+                  }
+                  {
+                     subject && <div
+                        style={{
+                           width: "50px",
+                           height: "50px",
+                           backgroundColor: "#CCC",
+                           padding: "50px",
+                           borderRadius: "50%",
+                           border: "3px #0000AA solid",
+                           textAlign: "center",
+                           display: "flex",
+                           alignItems: "center",
+                           justifyContent: "center",
+                           cursor: "pointer"
+                        }}
+                        onClick={
+                           () => {
+                              setSelected();
+                              setTitle("");
+                              setDate("");
+                              setIsTest("");
+                              setTheNew(true);
+                           }
+                        }
+                     >
+                        <span>
+                           +
+                        </span>
+                     </div>
+                  }
+               </div>
+               {/*{
                      data.map(
                         e => {
                            if (e.id === id) {
@@ -151,86 +286,7 @@ function Calendar() {
                            )
                         }
                      )
-                  }
-                  <Button
-                     text={isEdit ? "إدخال التعديلات" : "تعديل"}
-                     hook={
-                        e => {
-                           e.preventDefault();
-                           if (!isEdit) {
-                              setIsEdit(true);
-                           } else {
-                              handler.editCalendar(
-                                 id,
-                                 title,
-                                 date,
-                                 isTest,
-                                 () => {
-                                    setData(
-                                       data.map(
-                                          e => {
-                                             if (e.id === id)
-                                                return {
-                                                   id,
-                                                   title,
-                                                   date,
-                                                   is_test: isTest
-                                                };
-                                             return e;
-                                          }
-                                       )
-                                    );
-                                    setId(null);
-                                    setTitle("");
-                                    setDate("");
-                                    setIsTest(false);
-                                    setIsEdit(false);
-                                 }
-                              );
-                           }
-                        }
-                     }
-                  />
-
-                  <Button
-                     text="+"
-                     className="add"
-                     hook={
-                        e => {
-                           e.preventDefault();
-                           if (!isAdd) {
-                              setIsAdd(true);
-                              setData(
-                                 [
-                                    ...data,
-                                    {
-                                       "id": null,
-                                       "title": "",
-                                       "is_test": false,
-                                       "date": "",
-                                    }
-                                 ]
-                              );
-                           } else {
-                              handler.addCalendar(
-                                 subject,
-                                 title,
-                                 date,
-                                 isTest,
-                                 item => {
-                                    setData([...data, item]);
-                                    setId(null);
-                                    setTitle("");
-                                    setDate("");
-                                    setIsTest(false);
-                                    setIsAdd(false);
-                                 }
-                              );
-                           }
-                        }
-                     }
-                  />
-               </Form>
+                  }*/}
             </Col>
          </Row>
       </Container>

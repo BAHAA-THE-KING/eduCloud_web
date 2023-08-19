@@ -254,8 +254,8 @@ function AddStudent() {
                   <InputWithLabel
                      id="notes"
                      type="switch"
-                     text="السبر ترشيحي"
-                     hint="السبر ترشيحي"
+                     text="هل سيخضع لسبر ترشيحي"
+                     hint="هل سيخضع لسبر ترشيحي"
                      value={type}
                      hook={setType}
                   />

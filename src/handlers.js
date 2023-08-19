@@ -43,6 +43,7 @@ const ACCEPTSTUDENTS = "/student/accept";
 const SELECTSTUDENTS = "/student/select";
 const DISTRIBUTESTUDENTS = "/student/distribute";
 
+//const host = "https://edb8-178-171-178-129.ngrok-free.app/V1.0";
 const host = "http://localhost:8000/V1.0";
 //const host = "https://bdh.point-dev.nl/V1.0";
 
@@ -1580,13 +1581,15 @@ function addCalendar(subject, title, date, is_test, func) {
    };
 
    const body = JSON.stringify(
-      {
-         "title": title,
-         "is_test": +is_test,
-         "subject_id": subject,
-         "grade_id": 1,
-         "date": date
-      }
+      [
+         {
+            "title": title,
+            "is_test": +is_test,
+            "subject_id": subject,
+            "grade_id": 1,
+            "date": date
+         }
+      ]
    );
 
    fetch(url, { method, headers, body })
@@ -2120,13 +2123,15 @@ function editCalendar(id, title, date, is_test, func) {
       "Authorization": "Bearer " + getToken()
    };
    const body = JSON.stringify(
-      {
-         "title": title,
-         "date": date,
-         "is_test": is_test,
-         "subject_id": 1,
-         "grade_id": 1
-      }
+      [
+         {
+            "title": title,
+            "date": date,
+            "is_test": is_test,
+            "subject_id": 1,
+            "grade_id": 1
+         }
+      ]
    );
 
    fetch(url, { method, headers, body })
