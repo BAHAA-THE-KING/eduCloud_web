@@ -1,8 +1,9 @@
 import "./Calendar.css";
 
-import { Title, TextInput, Button, MultipletButton } from "../../components";
+import { Title, TextInput, Button, MultipletButton, InputWithLabel, Multiple } from "../../components";
 import { useEffect, useState } from "react";
 import * as handler from '../../handlers';
+import { Col, Container, Form, Row } from "react-bootstrap";
 
 function Calendar() {
    const [data, setData] = useState([]);
@@ -63,184 +64,176 @@ function Calendar() {
    );
 
    return (
-      <div className="calendar">
-         <Title text="إضافة خطة دراسية" />
-         <img src="Images/calendar.jpg" alt="" className="bg" />
-         <div className="content">
-            <form>
-               <label>{"الصف : " + gradeName}</label>
-               <br />
-               <br />
-               <MultipletButton
-                  editable={!isEdit}
-                  open={true}
-                  text={"اختر الصف"}
-                  options={grades}
-                  dataHook={setGrade}
-                  textHook={setGradeName}
-               />
-               <br />
-               <label>{"المادة : " + subjectName}</label>
-               <br />
-               <br />
-               <MultipletButton
-                  editable={!isEdit}
-                  open={true}
-                  text={"اختر المادة"}
-                  options={subjects}
-                  dataHook={setSubject}
-                  textHook={setSubjectName}
-               />
-               <br />
-               {
-                  data.map(
-                     e => {
-                        if (e.id === id) {
-                           e.title = title;
-                           e.date = date;
-                           e.is_test = isTest;
-                        }
-                        return (
-                           <>
-                              <br />
-                              <br />
-                              <label>{"العنوان : " + e.title}</label>
-                              <br />
-                              <TextInput
-                                 defaultValue={e.title}
-                                 inputHook={
-                                    title => {
-                                       setTitle(title);
-                                       setDate(e.date);
-                                       setIsTest(e.is_test);
-                                       setId(e.id);
-                                    }
-                                 }
-                                 editable={isEdit}
-                                 enterHook={() => { }}
-                                 hint="مثال: درس التوابع الخطية"
-                              />
-                              <br />
-                              <label>{"تاربخ الانتهاء : "}</label>
-                              <br />
-                              <TextInput
-                                 type="date"
-                                 defaultValue={e.date}
-                                 inputHook={
-                                    date => {
-                                       setTitle(e.title);
-                                       setDate(date);
-                                       setIsTest(e.is_test);
-                                       setId(e.id);
-                                    }
-                                 }
-                                 hint="موعد نهاية الدرس"
-                                 editable={isEdit}
-                              />
-                              <br />
-                              <label>{"هل هي اختبار ؟" + (e.is_test ? "نعم" : "لا")}</label>
-                              <br />
-                              <TextInput
-                                 type="checkbox"
-                                 defaultValue={!!e.is_test}
-                                 inputHook={
-                                    isTest => {
-                                       setTitle(e.title);
-                                       setDate(e.date);
-                                       setIsTest(isTest);
-                                       setId(e.id);
-                                    }
-                                 }
-                                 editable={isEdit}
-                              />
-                              <br />
-                           </>
-                        )
-                     }
-                  )
-               }
-               <br />
-               <Button
-                  text={isEdit ? "إدخال التعديلات" : "تعديل"}
-                  hook={
-                     e => {
-                        e.preventDefault();
-                        if (!isEdit) {
-                           setIsEdit(true);
-                        } else {
-                           handler.editCalendar(
-                              id,
-                              title,
-                              date,
-                              isTest,
-                              () => {
-                                 setData(
-                                    data.map(
-                                       e => {
-                                          if (e.id === id)
-                                             return {
-                                                id,
-                                                title,
-                                                date,
-                                                is_test: isTest
-                                             };
-                                          return e;
+      <Container fluid>
+         <Row>
+            <Col>
+               <Form>
+                  <Title text="إضافة خطة دراسية" />
+                  <Multiple
+                     id="grade"
+                     text="الصف"
+                     options={grades}
+                     value={grade}
+                     hook={setGrade}
+                  />
+                  <label>{"الصف : " + gradeName}</label>
+                  <MultipletButton
+                     editable={!isEdit}
+                     open={true}
+                     options={grades}
+                     dataHook={setGrade}
+                     textHook={setGradeName}
+                  />
+                  <label>{"المادة : " + subjectName}</label>
+                  <MultipletButton
+                     editable={!isEdit}
+                     open={true}
+                     text={"اختر المادة"}
+                     options={subjects}
+                     dataHook={setSubject}
+                     textHook={setSubjectName}
+                  />
+                  {
+                     data.map(
+                        e => {
+                           if (e.id === id) {
+                              e.title = title;
+                              e.date = date;
+                              e.is_test = isTest;
+                           }
+                           return (
+                              <>
+                                 <label>{"العنوان : " + e.title}</label>
+                                 <TextInput
+                                    defaultValue={e.title}
+                                    inputHook={
+                                       title => {
+                                          setTitle(title);
+                                          setDate(e.date);
+                                          setIsTest(e.is_test);
+                                          setId(e.id);
                                        }
-                                    )
-                                 );
-                                 setId(null);
-                                 setTitle("");
-                                 setDate("");
-                                 setIsTest(false);
-                                 setIsEdit(false);
-                              }
-                           );
+                                    }
+                                    editable={isEdit}
+                                    enterHook={() => { }}
+                                    hint="مثال: درس التوابع الخطية"
+                                 />
+                                 <label>{"تاربخ الانتهاء : "}</label>
+                                 <TextInput
+                                    type="date"
+                                    defaultValue={e.date}
+                                    inputHook={
+                                       date => {
+                                          setTitle(e.title);
+                                          setDate(date);
+                                          setIsTest(e.is_test);
+                                          setId(e.id);
+                                       }
+                                    }
+                                    hint="موعد نهاية الدرس"
+                                    editable={isEdit}
+                                 />
+                                 <label>{"هل هي اختبار ؟" + (e.is_test ? "نعم" : "لا")}</label>
+                                 <TextInput
+                                    type="checkbox"
+                                    defaultValue={!!e.is_test}
+                                    inputHook={
+                                       isTest => {
+                                          setTitle(e.title);
+                                          setDate(e.date);
+                                          setIsTest(isTest);
+                                          setId(e.id);
+                                       }
+                                    }
+                                    editable={isEdit}
+                                 />
+                              </>
+                           )
                         }
-                     }
+                     )
                   }
-               />
-
-               <Button
-                  text="+"
-                  className="add"
-                  hook={
-                     e => {
-                        e.preventDefault();
-                        if (!isAdd) {
-                           setIsAdd(true);
-                           setData(
-                              [
-                                 ...data,
-                                 {
-                                    "id": null,
-                                    "title": "",
-                                    "is_test": false,
-                                    "date": "",
+                  <Button
+                     text={isEdit ? "إدخال التعديلات" : "تعديل"}
+                     hook={
+                        e => {
+                           e.preventDefault();
+                           if (!isEdit) {
+                              setIsEdit(true);
+                           } else {
+                              handler.editCalendar(
+                                 id,
+                                 title,
+                                 date,
+                                 isTest,
+                                 () => {
+                                    setData(
+                                       data.map(
+                                          e => {
+                                             if (e.id === id)
+                                                return {
+                                                   id,
+                                                   title,
+                                                   date,
+                                                   is_test: isTest
+                                                };
+                                             return e;
+                                          }
+                                       )
+                                    );
+                                    setId(null);
+                                    setTitle("");
+                                    setDate("");
+                                    setIsTest(false);
+                                    setIsEdit(false);
                                  }
-                              ]
-                           );
-                        } else {
-                           handler.addCalendar(
-                              subject,
-                              title,
-                              date,
-                              isTest,
-                              item => {
-                                 setData([...data, item]);
-                                 setId(null);
-                                 setTitle("");
-                                 setDate("");
-                                 setIsTest(false);
-                                 setIsAdd(false);
-                              }
-                           );
+                              );
+                           }
                         }
                      }
-                  }
-               />
-            </form>
-         </div>
-      </div>
+                  />
+
+                  <Button
+                     text="+"
+                     className="add"
+                     hook={
+                        e => {
+                           e.preventDefault();
+                           if (!isAdd) {
+                              setIsAdd(true);
+                              setData(
+                                 [
+                                    ...data,
+                                    {
+                                       "id": null,
+                                       "title": "",
+                                       "is_test": false,
+                                       "date": "",
+                                    }
+                                 ]
+                              );
+                           } else {
+                              handler.addCalendar(
+                                 subject,
+                                 title,
+                                 date,
+                                 isTest,
+                                 item => {
+                                    setData([...data, item]);
+                                    setId(null);
+                                    setTitle("");
+                                    setDate("");
+                                    setIsTest(false);
+                                    setIsAdd(false);
+                                 }
+                              );
+                           }
+                        }
+                     }
+                  />
+               </Form>
+            </Col>
+         </Row>
+      </Container>
    );
 }
 

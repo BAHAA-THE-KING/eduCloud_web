@@ -168,12 +168,18 @@ function ViewStudentData() {
                                     setIsEdit(true);
                                  } else {
                                     setIsEdit(false);
-                                    //handlers;
                                  }
                               }
                            }
                         ]
                      }
+                  />
+                  <Multiple
+                     id="subject"
+                     text="المادة للعرض"
+                     options={subjects}
+                     value={subject}
+                     hook={setSubject}
                   />
                   <InputWithLabel
                      id="name"
@@ -371,13 +377,6 @@ function ViewStudentData() {
                      hint="ملاحظات"
                      value={notes}
                      hook={setNotes}
-                  />
-                  <Multiple
-                     id="subject"
-                     text="المادة"
-                     options={subjects}
-                     value={subject}
-                     hook={setSubject}
                   />
                </Form>
             </Col>
