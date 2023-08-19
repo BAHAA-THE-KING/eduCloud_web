@@ -19,7 +19,7 @@ function ViewTests() {
 
    const [searchGrade, setSearchGrade] = useState("");
 
-   const [current, setCurrent] = useState(0);
+   const [current, setCurrent] = useState(1);
    const [next, setNext] = useState(null);
    const [previous, setPrevious] = useState(null);
    const [data, setData] = useState([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]);
@@ -189,7 +189,7 @@ function ViewTests() {
          {
             accessorKey: "subject_id",
             header: 'المادة',
-            Cell: ({ renderedCellValue, row }) => {
+            Cell: ({ renderedCellValue }) => {
                let subject;
                for (const k in allClasses) {
                   if (subject) break;
@@ -203,7 +203,6 @@ function ViewTests() {
                };
                return (
                   <Box
-
                      sx={{
                         display: 'flex',
                         alignItems: 'center',
@@ -218,9 +217,8 @@ function ViewTests() {
          {
             accessorKey: "date",
             header: 'التاريخ',
-            Cell: ({ renderedCellValue, row }) => (
+            Cell: ({ renderedCellValue }) => (
                <Box
-
                   sx={{
                      display: 'flex',
                      alignItems: 'center',

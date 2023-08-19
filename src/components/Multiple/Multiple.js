@@ -1,6 +1,6 @@
 import { Col, Dropdown, Form, Row } from "react-bootstrap";
 
-function Multiple({ id, text, options, multiple, value, hook, noLabel, noNull }) {
+function Multiple({ id, text, options, multiple, value, hook, noLabel, noNull, noChoose }) {
    const myOptions = [...options];
    if (!noNull) myOptions.push({ id: "", name: <b>إلغاء</b> });
 
@@ -14,10 +14,10 @@ function Multiple({ id, text, options, multiple, value, hook, noLabel, noNull })
                      (
                         options.filter(e => value.indexOf(e.id) !== -1).length ?
                            options.filter(e => value.indexOf(e.id) !== -1).map(e => e.name).join(", ")
-                           : "اختر " + text
+                           : ((!noChoose ? "اختر " : "") + text)
                      )
                      : (
-                        options.find(e => e.id == value)?.name ?? "اختر " + text
+                        options.find(e => e.id == value)?.name ?? ((!noChoose ? "اختر " : "") + text)
                      )
                }
             </Dropdown.Toggle>
