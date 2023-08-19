@@ -19,10 +19,9 @@ function ViewTests() {
 
    const [searchGrade, setSearchGrade] = useState("");
 
-   const [current, setCurrent] = useState(1);
+   const [current, setCurrent] = useState(0);
    const [next, setNext] = useState(null);
    const [previous, setPrevious] = useState(null);
-
    const [data, setData] = useState([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]);
 
    const [grades, setGrades] = useState([]);
@@ -49,6 +48,7 @@ function ViewTests() {
       },
       []
    );
+
    useEffect(
       () => {
          if (search === "") {
@@ -77,8 +77,6 @@ function ViewTests() {
       [current, search, searchClass, searchType, searchSubject, searchStartDate, searchEndDate]
    );
 
-
-
    const columns = useMemo(
       () => [
          {
@@ -86,7 +84,7 @@ function ViewTests() {
             header: 'المعرّف',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  
+
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -102,7 +100,7 @@ function ViewTests() {
             header: 'العنوان',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  
+
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -118,7 +116,7 @@ function ViewTests() {
             header: 'النوع',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  
+
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -147,7 +145,7 @@ function ViewTests() {
                };
                return (
                   <Box
-                     
+
                      sx={{
                         display: 'flex',
                         alignItems: 'center',
@@ -176,7 +174,7 @@ function ViewTests() {
                }
                return (
                   <Box
-                     
+
                      sx={{
                         display: 'flex',
                         alignItems: 'center',
@@ -205,7 +203,7 @@ function ViewTests() {
                };
                return (
                   <Box
-                     
+
                      sx={{
                         display: 'flex',
                         alignItems: 'center',
@@ -222,7 +220,7 @@ function ViewTests() {
             header: 'التاريخ',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  
+
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -239,7 +237,7 @@ function ViewTests() {
             Cell: ({ renderedCellValue, row }) =>
             (
                <Box
-                  
+
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -256,7 +254,7 @@ function ViewTests() {
             Cell: ({ renderedCellValue, row }) => {
                return (
                   <Box
-                     
+
                      sx={{
                         display: 'flex',
                         alignItems: 'center',
@@ -290,7 +288,11 @@ function ViewTests() {
                      {
                         name: "عرض أنواع الاختبارات",
                         event: () => navigate(handlers.VIEWTESTFORMS)
-                     }
+                     },
+                     {
+                        name: "عرض اختبارات القدرات",
+                        event: () => navigate(handlers.VIEWABILITYTESTFORMS)
+                     },
                   ]
                }
                />

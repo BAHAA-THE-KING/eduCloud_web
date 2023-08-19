@@ -34,6 +34,7 @@ const VIEWSUBJECTS = "/subject";
 const VIEWSUBJECTDATA = "/subject/view/";
 
 const ADDABILITYTESTFORM = "/ability-test-form/add";
+const VIEWABILITYTESTFORMS = "/ability-test-form";
 
 const CALENDAR = "/calendar";
 
@@ -797,6 +798,46 @@ function getRemainingStudents(test, func) {
       );
 }
 
+function getAbilityTests(subject, func) {
+   const path = "/supervisor/getAbilityTestsOf/";
+
+   const url = host + path + subject;
+
+   const method = "GET";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   fetch(url, { method, headers })
+      .then(
+         e => {
+            if (e.status >= 500) {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               return;
+            }
+            return e.json();
+         }
+      )
+      .then(
+         e => {
+            if (e["message"] === "Unauthenticated.") {
+               goTo(LOGIN);
+            } else if (e.message === "Success!") {
+               func(e.data);
+            }
+         }
+      )
+      .catch(
+         err => {
+            alert("An Error Occured.");
+            console.log(err);
+         }
+      );
+}
+
 function getStudentData(id, func) {
    const path = "/general/viewStudent/";
 
@@ -1472,7 +1513,7 @@ function addSubject(name, grade, maxMark, passMark, notes, func) {
 }
 
 function addAbilityTestForm(subject, name, isEntry, sections, func) {
-   const path = "/principal/addAbilityTestForm/" + subject;
+   const path = "/supervisor/addAbilityTestForm/" + subject;
 
    const url = host + path;
 
@@ -2217,7 +2258,7 @@ function removeEmployeeRole(id, roles, func) {
       );
 }
 
-export { goTo, HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEES, ADDSTUDENT, VIEWEMPLOYEEDATA, ADDTESTFORM, VIEWTESTFORMS, VIEWTESTFORMDATA, VIEWSTUDENTS, VIEWSTUDENTDATA, ADDTEST, VIEWTESTS, VIEWTESTDATA, ADDGRADE, VIEWGRADES, VIEWGRADEDATA, ADDCLASS, VIEWCLASSES, VIEWCLASSDATA, ADDSUBJECT, VIEWSUBJECTS, VIEWSUBJECTDATA, ADDABILITYTESTFORM, CALENDAR, ACCEPTSTUDENTS, VIEWMARKS, SELECTSTUDENTS, DISTRIBUTESTUDENTS };
+export { goTo, HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEES, ADDSTUDENT, VIEWEMPLOYEEDATA, ADDTESTFORM, VIEWTESTFORMS, VIEWTESTFORMDATA, VIEWSTUDENTS, VIEWSTUDENTDATA, ADDTEST, VIEWTESTS, VIEWTESTDATA, ADDGRADE, VIEWGRADES, VIEWGRADEDATA, ADDCLASS, VIEWCLASSES, VIEWCLASSDATA, ADDSUBJECT, VIEWSUBJECTS, VIEWSUBJECTDATA, ADDABILITYTESTFORM, CALENDAR, ACCEPTSTUDENTS, VIEWMARKS, SELECTSTUDENTS, DISTRIBUTESTUDENTS, VIEWABILITYTESTFORMS };
 export { logIn, getRoles, getSubjects };
 export { addEmployee, addTeacher, addSupervisor, addEmployeeRole, getEmployees, getEmployeeData, regeneratePassword, editEmployee, removeEmployeeRole };
 export { addTestForm, getTestForms, getTestFormData, editTestForm };
@@ -2226,7 +2267,7 @@ export { addStudent, addAbsents, getStudents, getStudentData };
 export { addGrade, getGrades, getGradeData, editGrade };
 export { addClass, getClassData, editClass };
 export { addSubject, getSubjectData, editSubject };
-export { addAbilityTestForm };
+export { addAbilityTestForm, getAbilityTests };
 export { addCalendar, getBaseCalendar, editCalendar };
 export { getCandidateToOfficial, addCandidateToOfficial, addStudentsToClasses, addStudentsToClassesAutomatically };
 export { addMarks, getMarks, getRemainingStudents, editMark };

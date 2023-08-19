@@ -1,72 +1,97 @@
-import "./AddAbilityTestForm.css";
-
-import { Title, TextInput, Button, MultipletButton } from "../../components";
+import { Title, InputWithLabel, Multiple, ListOfButtons } from "../../components";
 import { useEffect, useState } from "react";
 import * as handler from './../../handlers';
+import { Col, Container, Form, Row } from "react-bootstrap";
 
 function AddAbilityTestForm() {
    const [subject, setSubject] = useState("");
    const [name, setName] = useState("");
    const [isEntry, setIsEntry] = useState(false);
    const [sections, setSections] = useState([]);
+
    const [subjects, setSubjects] = useState([]);
-   const [subjectName, setSubjectName] = useState("");
+   const [grade, setGrade] = useState("");
+   const [grades, setGrades] = useState([]);
 
    useEffect(
       () => {
          handler.getSubjects(
             data => {
-               const temp = [];
-               for (const k of data) {
-                  for (const n of k.subjects) {
-                     temp.push(
-                        {
-                           id: n.id,
-                           name: n.name + " للصف " + k.name,
-                        }
-                     );
-                  }
-               }
-               setSubjects(temp);
+               setGrades(data);
             }
          );
       },
       []
    );
 
+   useEffect(
+      () => {
+         setSubjects(grades.find(e => e.id === grade)?.subjects ?? []);
+      },
+      [grade]
+   );
+
    return (
-      <div className="addabilitytestform">
-         <Title text="إنشاء نموذج لاختبار القدرات" />
-         <img src="Images/addtest.jpg" alt="" className="bg" />
-         <div className="content">
-            <form onSubmit={e => e.preventDefault()}>
-               <label>اسم النموذج :</label>
-               <br />
-               <TextInput defaultValue={name} inputHook={setName} editable={true} enterHook={() => { }} hint="الاسم" />
-               <br />
-               <label>هل هو اختبار قبول ؟</label>
-               <br />
-               <TextInput type="checkbox" defaultValue={isEntry} inputHook={e => setIsEntry(Boolean(e))} editable={true} enterHook={() => { }} hint="سبر قبول" />
-               <label>{"المادة :" + subjectName}</label>
-               <br />
-               <br />
-               <MultipletButton open={true} text="اختر المادة" options={subjects} dataHook={setSubject} textHook={setSubjectName} />
-               <br />
-               <label>الأقسام :</label>
-               <br />
-               <br />
-               {
-                  sections.map(
-                     (e, i) =>
-                        <>
-                           <img src="Icons/deleteRed.svg" onClick={() => setSections([...sections].filter((ee, ii) => ii != i))} />
-                           <label>{"القسم :"}</label>
-                           <br />
-                           <TextInput
-                              defaultValue={e.name}
-                              hint="اسم القسم"
-                              inputHook={
-                                 value =>
+      <Container fluid>
+         <img
+            src="Images/addtest.jpg"
+            alt=""
+            style={{
+               width: "60%",
+               height: "CALC(100% - 73px)",
+               position: "fixed",
+               bottom: "0",
+               left: "0",
+               transform: "translateX(-30%)",
+               clipPath: "ellipse(60% 50% at 30% 50%)"
+            }}
+         />
+         <Row className="content">
+            <Col>
+               <Form className="w-25 text-start border p-5 ps-4 pt-0">
+                  <Title text="إنشاء نموذج لاختبار القدرات" />
+                  <InputWithLabel
+                     id="name"
+                     text="اسم النموذج"
+                     hint="الاسم"
+                     value={name}
+                     hook={setName}
+                  />
+                  <InputWithLabel
+                     id="type"
+                     type="checkbox"
+                     text="هل هو اختبار قبول"
+                     hint="النوع"
+                     value={isEntry}
+                     hook={setIsEntry}
+                  />
+                  <Multiple
+                     id="grade"
+                     text="الصف"
+                     options={grades}
+                     value={grade}
+                     hook={setGrade}
+                  />
+                  <Multiple
+                     id="subject"
+                     text="المادة"
+                     options={subjects}
+                     value={subject}
+                     hook={setSubject}
+                  />
+                  <Form.Label>الأقسام :</Form.Label>
+                  <br />
+                  {
+                     sections.map(
+                        (e, i) =>
+                           <>
+                              <img src="Icons/deleteRed.svg" onClick={() => setSections([...sections].filter((ee, ii) => ii != i))} />
+                              <InputWithLabel
+                                 id={"part " + i}
+                                 text="القسم"
+                                 hint="القسم"
+                                 value={e.name}
+                                 hook={value =>
                                     setSections(
                                        [...sections]
                                           .map(
@@ -75,17 +100,14 @@ function AddAbilityTestForm() {
                                                 return ee;
                                              }
                                           )
-                                    )
-                              }
-                           />
-                           <br />
-                           <label>{"العلامة الكلية :"}</label>
-                           <br />
-                           <TextInput
-                              defaultValue={e.max_mark}
-                              hint="علامة القسم"
-                              inputHook={
-                                 value =>
+                                    )}
+                              />
+                              <InputWithLabel
+                                 id={"maxMark " + i}
+                                 text="العلامة الكلية"
+                                 hint="العلامة الكلية"
+                                 value={e.max_mark}
+                                 hook={value =>
                                     setSections(
                                        [...sections]
                                           .map(
@@ -94,17 +116,14 @@ function AddAbilityTestForm() {
                                                 return ee;
                                              }
                                           )
-                                    )
-                              }
-                           />
-                           <br />
-                           <label>{"علامة النجاح :"}</label>
-                           <br />
-                           <TextInput
-                              defaultValue={e.min_mark}
-                              hint="علامة النجاح في القسم"
-                              inputHook={
-                                 value =>
+                                    )}
+                              />
+                              <InputWithLabel
+                                 id={"passMark " + i}
+                                 text="علامة النجاح"
+                                 hint="علامة النجاح"
+                                 value={e.min_mark}
+                                 hook={value =>
                                     setSections(
                                        [...sections]
                                           .map(
@@ -113,41 +132,45 @@ function AddAbilityTestForm() {
                                                 return ee;
                                              }
                                           )
-                                    )
-                              }
-                           />
-                           <br />
-                        </>
-                  )
-               }
-               <br />
-               <button className="addbtn" onClick={() => setSections([...sections, { "name": "", "min_mark": "", "max_mark": "" }])} >
-                  {"أضف قسماً"}
-               </button>
-               <br />
-               <br />
-               <br />
-               <Button
-                  text="إدخال"
-                  hook={
-                     e => {
-                        e.preventDefault();
-                        handler.addAbilityTestForm(
-                           subject,
-                           name,
-                           isEntry,
-                           sections,
-                           () => {
-                              //setName("");
-                              //setSections([]);
-                           }
-                        );
-                     }
+                                    )}
+                              />
+                           </>
+                     )
                   }
-               />
-            </form>
-         </div>
-      </div>
+                  <ListOfButtons
+                     data={
+                        [
+                           {
+                              name: "أضف قسماً",
+                              event: e => {
+                                 e.preventDefault();
+                                 setSections([...sections, { "name": "", "min_mark": "", "max_mark": "" }]);
+                              }
+                           },
+                           {
+                              name: "إدخال",
+                              event: e => {
+                                 e.preventDefault();
+                                 handler.addAbilityTestForm(
+                                    subject,
+                                    name,
+                                    isEntry,
+                                    sections,
+                                    () => {
+                                       alert("asdasdasd");
+                                       //setName("");
+                                       //setSections([]);
+                                    }
+                                 );
+                              }
+                           },
+                        ]
+                     }
+                  />
+               </Form>
+            </Col>
+         </Row>
+      </Container>
    );
 }
 

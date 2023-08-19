@@ -43,6 +43,7 @@ function ViewClasses() {
          ),
       []
    );
+   
    useEffect(
       () => {
          setPrevious(current - 1);
