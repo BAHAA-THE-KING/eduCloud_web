@@ -186,7 +186,7 @@ function ViewAbilityTestForms() {
                      },
                      {
                         name: "عرض صفحة الاختبار",
-                        event: () => navigate(handlers.VIEWTESTDATA + data[Object.keys(selected)[0]].id),
+                        event: () => navigate(handlers.VIEWABILITYTESTFORMDATA + data[Object.keys(selected)[0]].id),
                         disabled: !Object.keys(selected).length
                      },
                      {

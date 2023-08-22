@@ -1,10 +1,11 @@
-import { InputWithLabel, ListOfButtons, Multiple, Navigation } from '../../components';
+import { InputWithLabel, ListOfButtons, Multiple } from '../../components';
 import { useEffect, useMemo, useState } from 'react';
 import * as handlers from "../../handlers";
 import { useNavigate } from 'react-router-dom';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
 import { MaterialReactTable } from 'material-react-table';
 import { Box } from '@mui/material';
+import { ViewInterface } from '../../Interfaces';
 
 function ViewEmployees() {
    const navigate = useNavigate();
@@ -156,22 +157,24 @@ function ViewEmployees() {
    );
 
    return (
-      <Container fluid>
-         <Row className='mt-2'>
-            <Col xs='2'>
-               <ListOfButtons data={
-                  [
-                     {
-                        name: "إضافة موظف",
-                        event: () => navigate(handlers.ADDEMPLOYEE)
-                     },
-                     {
-                        name: "عرض صفحة الموظف",
-                        event: () => navigate(handlers.VIEWEMPLOYEEDATA + data[Object.keys(selected)[0]].id),
-                        disabled: !Object.keys(selected).length
-                     }
-                  ]
-               } />
+      <ViewInterface
+         control={
+            <>
+               <ListOfButtons
+                  data={
+                     [
+                        {
+                           name: "إضافة موظف",
+                           event: () => navigate(handlers.ADDEMPLOYEE)
+                        },
+                        {
+                           name: "عرض صفحة الموظف",
+                           event: () => navigate(handlers.VIEWEMPLOYEEDATA + data[Object.keys(selected)[0]].id),
+                           disabled: !Object.keys(selected).length
+                        }
+                     ]
+                  }
+               />
                <Row className='text-start'>
                   <InputWithLabel
                      id="search"
@@ -189,45 +192,48 @@ function ViewEmployees() {
                      hook={setSearchRole}
                   />
                </Row>
-            </Col>
-            <Col xs='10'>
-               <MaterialReactTable
-                  muiSelectCheckboxProps={{
-                     sx: {
-                        float: "inline-start"
-                     }
-                  }}
-                  muiTableBodyProps={{
-                     sx: {
-                        '& tr.Mui-selected': {
-                           backgroundColor: '#AFAFAF',
-                        },
-                        '& tr:nth-of-type(odd)': {
-                           backgroundColor: '#f5f5f5',
-                        },
+            </>
+         }
+         view={
+            <MaterialReactTable
+               muiSelectCheckboxProps={{
+                  sx: {
+                     float: "inline-start"
+                  }
+               }}
+               muiTableBodyProps={{
+                  sx: {
+                     '& tr.Mui-selected': {
+                        backgroundColor: '#AFAFAF',
                      },
-                  }}
-                  columns={columns}
-                  data={data}
-                  initialState={{ density: 'compact' }}
-                  state={{ rowSelection: selected }}
-                  enableRowSelection={(row) => row.original.id}
-                  onRowSelectionChange={setSelected}
-                  enableSorting={false}
-                  enablePinning={false}
-                  enableDensityToggle={false}
-                  enablePagination={false}
-                  enableFilters={false}
-                  enableTopToolbar={false}
-                  enableBottomToolbar={false}
-                  enableHiding={false}
-                  enableColumnActions={false}
-                  enableMultiRowSelection={false}
-               />
-            </Col>
-         </Row>
-         <Navigation current={current} next={next} previous={previous} setCurrent={setCurrent} />
-      </Container>
+                     '& tr:nth-of-type(odd)': {
+                        backgroundColor: '#f5f5f5',
+                     },
+                  },
+               }}
+               columns={columns}
+               data={data}
+               initialState={{ density: 'compact' }}
+               state={{ rowSelection: selected }}
+               enableRowSelection={(row) => row.original.id}
+               onRowSelectionChange={setSelected}
+               enableSorting={false}
+               enablePinning={false}
+               enableDensityToggle={false}
+               enablePagination={false}
+               enableFilters={false}
+               enableTopToolbar={false}
+               enableBottomToolbar={false}
+               enableHiding={false}
+               enableColumnActions={false}
+               enableMultiRowSelection={false}
+            />
+         }
+         current={current}
+         next={next}
+         previous={previous}
+         setCurrent={setCurrent}
+      />
    )
 };
 

@@ -1,10 +1,10 @@
-import { ListOfButtons, Navigation } from '../../components';
+import { ListOfButtons } from '../../components';
 import { useEffect, useMemo, useState } from 'react';
 import * as handlers from "../../handlers";
 import { useNavigate } from 'react-router-dom';
-import { Col, Container, Row } from 'react-bootstrap';
 import { MaterialReactTable } from 'material-react-table';
 import { Box } from '@mui/material';
+import { ViewInterface } from "../../Interfaces";
 
 function ViewSubjects() {
    const navigate = useNavigate();
@@ -66,7 +66,7 @@ function ViewSubjects() {
             header: 'المعرّف',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  
+
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -82,7 +82,7 @@ function ViewSubjects() {
             header: 'الاسم',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  
+
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -98,7 +98,7 @@ function ViewSubjects() {
             header: 'العلامة الكلية',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  
+
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -114,7 +114,7 @@ function ViewSubjects() {
             header: 'علامة النجاح',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  
+
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -130,7 +130,7 @@ function ViewSubjects() {
             header: 'ملاحظات',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  
+
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -147,7 +147,7 @@ function ViewSubjects() {
             header: 'الصف',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  
+
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -164,7 +164,7 @@ function ViewSubjects() {
             header: 'معرف الصف',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-                  
+
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -180,10 +180,10 @@ function ViewSubjects() {
    );
 
    return (
-      <Container fluid>
-         <Row className='mt-2'>
-            <Col xs='2'>
-               <ListOfButtons data={
+      <ViewInterface
+         control={
+            <ListOfButtons
+               data={
                   [
                      {
                         name: "إضافة مادة دراسية",
@@ -195,46 +195,50 @@ function ViewSubjects() {
                         disabled: !Object.keys(selected).length
                      }
                   ]
-               } />
-            </Col>
-            <Col xs='10'>
-               <MaterialReactTable
-                  muiSelectCheckboxProps={{
-                     sx: {
-                        float: "inline-start"
-                     }
-                  }}
-                  muiTableBodyProps={{
-                     sx: {
-                        '& tr.Mui-selected': {
-                           backgroundColor: '#AFAFAF',
-                        },
-                        '& tr:nth-of-type(odd)': {
-                           backgroundColor: '#f5f5f5',
-                        },
+               }
+            />
+         }
+         view={
+            <MaterialReactTable
+               muiSelectCheckboxProps={{
+                  sx: {
+                     float: "inline-start"
+                  }
+               }}
+               muiTableBodyProps={{
+                  sx: {
+                     '& tr.Mui-selected': {
+                        backgroundColor: '#AFAFAF',
                      },
-                  }}
-                  columns={columns}
-                  data={data}
-                  initialState={{ density: 'compact' }}
-                  state={{ rowSelection: selected }}
-                  enableRowSelection={(row) => row.original.id}
-                  onRowSelectionChange={setSelected}
-                  enableSorting={false}
-                  enablePinning={false}
-                  enableDensityToggle={false}
-                  enablePagination={false}
-                  enableFilters={false}
-                  enableTopToolbar={false}
-                  enableBottomToolbar={false}
-                  enableHiding={false}
-                  enableColumnActions={false}
-                  enableMultiRowSelection={false}
-               />
-            </Col>
-         </Row>
-         <Navigation current={current} next={next} previous={previous} setCurrent={setCurrent} />
-      </Container>
+                     '& tr:nth-of-type(odd)': {
+                        backgroundColor: '#f5f5f5',
+                     },
+                  },
+               }}
+               columns={columns}
+               data={data}
+               initialState={{ density: 'compact' }}
+               state={{ rowSelection: selected }}
+               enableRowSelection={(row) => row.original.id}
+               onRowSelectionChange={setSelected}
+               enableSorting={false}
+               enablePinning={false}
+               enableDensityToggle={false}
+               enablePagination={false}
+               enableFilters={false}
+               enableTopToolbar={false}
+               enableBottomToolbar={false}
+               enableHiding={false}
+               enableColumnActions={false}
+               enableMultiRowSelection={false}
+            />
+         }
+         current={current}
+         next={next}
+         previous={previous}
+         setCurrent={setCurrent}
+      />
+
    )
 };
 

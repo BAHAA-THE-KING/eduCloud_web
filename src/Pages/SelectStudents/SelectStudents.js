@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Col, Container, Form, Row } from 'react-bootstrap';
 import { MaterialReactTable } from 'material-react-table';
 import { Box } from '@mui/material';
+import { ViewInterface } from '../../Interfaces';
 
 function SelectStudents() {
    const navigate = useNavigate();
@@ -240,9 +241,9 @@ function SelectStudents() {
    );
 
    return (
-      <Container fluid>
-         <Row className='mt-2'>
-            <Col xs='2'>
+      <ViewInterface
+         control={
+            <>
                <ListOfButtons data={
                   [
                      {
@@ -339,42 +340,45 @@ function SelectStudents() {
                      hook={setSelectedClasses}
                   />
                </Row>
-            </Col>
-            <Col xs='10'>
-               <MaterialReactTable
-                  muiSelectCheckboxProps={{
-                     sx: {
-                        float: "inline-start"
-                     }
-                  }}
-                  muiTableBodyProps={{
-                     sx: {
-                        '& tr.Mui-selected': {
-                           backgroundColor: '#AFAFAF',
-                        },
-                        '& tr:nth-of-type(odd)': {
-                           backgroundColor: '#f5f5f5',
-                        },
+            </>
+         }
+         view={
+            <MaterialReactTable
+               muiSelectCheckboxProps={{
+                  sx: {
+                     float: "inline-start"
+                  }
+               }}
+               muiTableBodyProps={{
+                  sx: {
+                     '& tr.Mui-selected': {
+                        backgroundColor: '#AFAFAF',
                      },
-                  }}
-                  columns={columns}
-                  data={data}
-                  initialState={{ density: 'compact' }}
-                  enableRowSelection={false}
-                  enableSorting={false}
-                  enablePinning={false}
-                  enableDensityToggle={false}
-                  enablePagination={false}
-                  enableFilters={false}
-                  enableTopToolbar={false}
-                  enableBottomToolbar={false}
-                  enableHiding={false}
-                  enableColumnActions={false}
-               />
-            </Col>
-         </Row>
-         <Navigation current={current} next={next} previous={previous} setCurrent={setCurrent} />
-      </Container>
+                     '& tr:nth-of-type(odd)': {
+                        backgroundColor: '#f5f5f5',
+                     },
+                  },
+               }}
+               columns={columns}
+               data={data}
+               initialState={{ density: 'compact' }}
+               enableRowSelection={false}
+               enableSorting={false}
+               enablePinning={false}
+               enableDensityToggle={false}
+               enablePagination={false}
+               enableFilters={false}
+               enableTopToolbar={false}
+               enableBottomToolbar={false}
+               enableHiding={false}
+               enableColumnActions={false}
+            />
+         }
+         current={current}
+         next={next}
+         previous={previous}
+         setCurrent={setCurrent}
+      />
    )
 };
 

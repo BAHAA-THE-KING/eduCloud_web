@@ -1,11 +1,11 @@
-import { ListOfButtons, Navigation } from '../../components';
+import { ListOfButtons } from '../../components';
 import { useEffect, useMemo, useState } from 'react';
 import * as handlers from "../../handlers";
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Col, Container, Form, Row } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import { MaterialReactTable } from 'material-react-table';
 import { Box } from '@mui/material';
-
+import { ViewInterface } from '../../Interfaces';
 
 function AddSupervisorData() {
    const navigate = useNavigate();
@@ -162,9 +162,9 @@ function AddSupervisorData() {
    );
 
    return (
-      <Container fluid>
-         <Row className='mt-2'>
-            <Col xs='2'>
+      <ViewInterface
+         control={
+            <>
                <Form.Label>إنشاء حساب للموجه {empData.first_name}</Form.Label>
                <ListOfButtons data={
                   [
@@ -184,43 +184,46 @@ function AddSupervisorData() {
                      }
                   ]
                } />
-            </Col>
-            <Col xs='10'>
-               <MaterialReactTable
-                  muiSelectCheckboxProps={{
-                     sx: {
-                        float: "inline-start"
-                     }
-                  }}
-                  muiTableBodyProps={{
-                     sx: {
-                        '& tr.Mui-selected': {
-                           backgroundColor: '#AFAFAF',
-                        },
-                        '& tr:nth-of-type(odd)': {
-                           backgroundColor: '#f5f5f5',
-                        },
+            </>
+         }
+         view={
+            <MaterialReactTable
+               muiSelectCheckboxProps={{
+                  sx: {
+                     float: "inline-start"
+                  }
+               }}
+               muiTableBodyProps={{
+                  sx: {
+                     '& tr.Mui-selected': {
+                        backgroundColor: '#AFAFAF',
                      },
-                  }}
-                  columns={columns}
-                  data={data}
-                  initialState={{ density: 'compact' }}
-                  enableRowSelection={false}
-                  enableMultiRowSelection={false}
-                  enableSorting={false}
-                  enablePinning={false}
-                  enableDensityToggle={false}
-                  enablePagination={false}
-                  enableFilters={false}
-                  enableTopToolbar={false}
-                  enableBottomToolbar={false}
-                  enableHiding={false}
-                  enableColumnActions={false}
-               />
-            </Col>
-         </Row>
-         <Navigation current={current} next={next} previous={previous} setCurrent={setCurrent} />
-      </Container>
+                     '& tr:nth-of-type(odd)': {
+                        backgroundColor: '#f5f5f5',
+                     },
+                  },
+               }}
+               columns={columns}
+               data={data}
+               initialState={{ density: 'compact' }}
+               enableRowSelection={false}
+               enableMultiRowSelection={false}
+               enableSorting={false}
+               enablePinning={false}
+               enableDensityToggle={false}
+               enablePagination={false}
+               enableFilters={false}
+               enableTopToolbar={false}
+               enableBottomToolbar={false}
+               enableHiding={false}
+               enableColumnActions={false}
+            />
+         }
+         current={current}
+         next={next}
+         previous={previous}
+         setCurrent={setCurrent}
+      />
    )
 };
 

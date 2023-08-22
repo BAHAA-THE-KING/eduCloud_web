@@ -1,11 +1,11 @@
-import { InputWithLabel, ListOfButtons, Multiple, Navigation } from '../../components';
+import { InputWithLabel, ListOfButtons, Multiple } from '../../components';
 import React, { useEffect, useMemo, useState } from 'react';
 import * as handlers from "../../handlers";
 import { useNavigate } from 'react-router-dom';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
 import { MaterialReactTable } from 'material-react-table';
 import { Box } from '@mui/material';
-
+import { ViewInterface } from '../../Interfaces';
 
 function ViewStudents() {
    const navigate = useNavigate();
@@ -283,9 +283,9 @@ function ViewStudents() {
    );
 
    return (
-      <Container fluid>
-         <Row className='mt-2'>
-            <Col xs='2'>
+      <ViewInterface
+         control={
+            <>
                <ListOfButtons
                   data={
                      [
@@ -350,43 +350,46 @@ function ViewStudents() {
                      hook={setSearchClass}
                   />
                </Row>
-            </Col>
-            <Col xs='10'>
-               <MaterialReactTable
-                  muiSelectCheckboxProps={{
-                     sx: {
-                        float: "inline-start"
-                     }
-                  }}
-                  muiTableBodyProps={{
-                     sx: {
-                        '& tr.Mui-selected': {
-                           backgroundColor: '#AFAFAF',
-                        },
-                        '& tr:nth-of-type(odd)': {
-                           backgroundColor: '#f5f5f5',
-                        },
+            </>
+         }
+         view={
+            <MaterialReactTable
+               muiSelectCheckboxProps={{
+                  sx: {
+                     float: "inline-start"
+                  }
+               }}
+               muiTableBodyProps={{
+                  sx: {
+                     '& tr.Mui-selected': {
+                        backgroundColor: '#AFAFAF',
                      },
-                  }}
-                  columns={columns}
-                  data={data}
-                  initialState={{ density: 'compact' }}
-                  enableRowSelection={false}
-                  enableSorting={false}
-                  enablePinning={false}
-                  enableDensityToggle={false}
-                  enablePagination={false}
-                  enableFilters={false}
-                  enableTopToolbar={false}
-                  enableBottomToolbar={false}
-                  enableHiding={false}
-                  enableColumnActions={false}
-                  enableMultiRowSelection={false}
-               />
-            </Col>
-         </Row>
-         <Navigation current={current} next={next} previous={previous} setCurrent={setCurrent} />
-      </Container>
+                     '& tr:nth-of-type(odd)': {
+                        backgroundColor: '#f5f5f5',
+                     },
+                  },
+               }}
+               columns={columns}
+               data={data}
+               initialState={{ density: 'compact' }}
+               enableRowSelection={false}
+               enableSorting={false}
+               enablePinning={false}
+               enableDensityToggle={false}
+               enablePagination={false}
+               enableFilters={false}
+               enableTopToolbar={false}
+               enableBottomToolbar={false}
+               enableHiding={false}
+               enableColumnActions={false}
+               enableMultiRowSelection={false}
+            />
+         }
+         current={current}
+         next={next}
+         previous={previous}
+         setCurrent={setCurrent}
+      />
    );
 };
 

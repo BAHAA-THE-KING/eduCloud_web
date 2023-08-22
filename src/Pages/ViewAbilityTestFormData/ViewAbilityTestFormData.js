@@ -137,12 +137,118 @@ function ViewAbilityTestFormData() {
    );
 
    const columns = useMemo(
-      () => {
-         const columns = [
-            {
-               accessorKey: "id",
-               header: "المعرّف",
-               Cell: ({ renderedCellValue }) => (
+      () => [
+         {
+            accessorKey: "id",
+            header: "المعرّف",
+            Cell: ({ renderedCellValue }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            )
+         },
+         {
+            accessorKey: "grade_id",
+            header: "الصف",
+            Cell: ({ renderedCellValue }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{grades.find(e => e.id == renderedCellValue)?.name}</span>
+               </Box>
+            )
+         },
+         {
+            accessorKey: "g_class_id",
+            header: "الشعبة",
+            Cell: ({ renderedCellValue }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{allClasses.find(e => e.id == renderedCellValue)?.name}</span>
+               </Box>
+            )
+         },
+         {
+            accessorKey: "first_name",
+            header: "الاسم",
+            Cell: ({ renderedCellValue }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            )
+         },
+         {
+            accessorKey: "last_name",
+            header: "الكنية",
+            Cell: ({ renderedCellValue }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            )
+         },
+         {
+            accessorKey: "father_name",
+            header: "اسم الأب",
+            Cell: ({ renderedCellValue }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            )
+         },
+         {
+            accessorKey: "mother_name",
+            header: "اسم الأم",
+            Cell: ({ renderedCellValue }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            )
+         },
+         {
+            accessorFn: asdasdasdasd => asdasdasdasd?.id,
+            key: "mark",
+            header: "العلامة",
+            Cell: ({ renderedCellValue }) => {
+               return (
                   <Box
                      sx={{
                         display: 'flex',
@@ -150,130 +256,21 @@ function ViewAbilityTestFormData() {
                         gap: '1rem',
                      }}
                   >
-                     <span>{renderedCellValue}</span>
+                     <span>
+                        <InputWithLabel
+                           id={"mark" + renderedCellValue}
+                           type="number"
+                           noLabel={true}
+                           disabled={!isEdit || !renderedCellValue}
+                           value={marks[renderedCellValue] ?? ""}
+                           hook={mark => setMarks({ ...marks, [renderedCellValue]: mark })}
+                        />
+                     </span>
                   </Box>
-               )
-            },
-            {
-               accessorKey: "grade_id",
-               header: "الصف",
-               Cell: ({ renderedCellValue }) => (
-                  <Box
-                     sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '1rem',
-                     }}
-                  >
-                     <span>{grades.find(e => e.id == renderedCellValue)?.name}</span>
-                  </Box>
-               )
-            },
-            {
-               accessorKey: "g_class_id",
-               header: "الشعبة",
-               Cell: ({ renderedCellValue }) => (
-                  <Box
-                     sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '1rem',
-                     }}
-                  >
-                     <span>{allClasses.find(e => e.id == renderedCellValue)?.name}</span>
-                  </Box>
-               )
-            },
-            {
-               accessorKey: "first_name",
-               header: "الاسم",
-               Cell: ({ renderedCellValue }) => (
-                  <Box
-                     sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '1rem',
-                     }}
-                  >
-                     <span>{renderedCellValue}</span>
-                  </Box>
-               )
-            },
-            {
-               accessorKey: "last_name",
-               header: "الكنية",
-               Cell: ({ renderedCellValue }) => (
-                  <Box
-                     sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '1rem',
-                     }}
-                  >
-                     <span>{renderedCellValue}</span>
-                  </Box>
-               )
-            },
-            {
-               accessorKey: "father_name",
-               header: "اسم الأب",
-               Cell: ({ renderedCellValue }) => (
-                  <Box
-                     sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '1rem',
-                     }}
-                  >
-                     <span>{renderedCellValue}</span>
-                  </Box>
-               )
-            },
-            {
-               accessorKey: "mother_name",
-               header: "اسم الأم",
-               Cell: ({ renderedCellValue }) => (
-                  <Box
-                     sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '1rem',
-                     }}
-                  >
-                     <span>{renderedCellValue}</span>
-                  </Box>
-               )
-            },
-            {
-               accessorFn: asdasdasdasd => asdasdasdasd?.id,
-               key: "mark",
-               header: "العلامة",
-               Cell: ({ renderedCellValue }) => {
-                  return (
-                     <Box
-                        sx={{
-                           display: 'flex',
-                           alignItems: 'center',
-                           gap: '1rem',
-                        }}
-                     >
-                        <span>
-                           <InputWithLabel
-                              id={"mark" + renderedCellValue}
-                              type="number"
-                              noLabel={true}
-                              disabled={!isEdit || !renderedCellValue}
-                              value={marks[renderedCellValue] ?? ""}
-                              hook={mark => setMarks({ ...marks, [renderedCellValue]: mark })}
-                           />
-                        </span>
-                     </Box>
-                  );
-               }
-            },
-         ];
-         return columns;
-      },
+               );
+            }
+         },
+      ],
       [data, all, marks, isEdit]
    );
 

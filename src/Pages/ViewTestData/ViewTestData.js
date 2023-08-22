@@ -1,10 +1,11 @@
-import { ListOfButtons, InputWithLabel, Multiple, Navigation } from "../../components";
+import { ListOfButtons, InputWithLabel, Multiple } from "../../components";
 import { useMemo, useEffect, useState } from "react";
 import * as handlers from './../../handlers';
 import { useNavigate, useParams } from "react-router-dom";
-import { Col, Container, Form, Row } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import { MaterialReactTable } from "material-react-table";
 import { Box } from "@mui/material";
+import { ViewInterface } from "../../Interfaces";
 
 function ViewTestData() {
    const navigate = useNavigate();
@@ -211,138 +212,139 @@ function ViewTestData() {
    );
 
    return (
-      <Container fluid>
-         <Row className="mt-2">
-            <Col xs='2'>
-               <Form className='text-start'>
-                  <Form.Label>عرض اختبار</Form.Label>
-                  <ListOfButtons
-                     data={
-                        [
-                           {
-                              name: isEdit ? "تأكيد التعديلات" : "تعديل",
-                              event: () => {
-                                 if (!isEdit) {
-                                    setIsEdit(true);
-                                 } else {
-                                    handlers.editTest(
-                                       id,
-                                       title,
-                                       passMark,
-                                       maxMark,
-                                       type,
-                                       date,
-                                       () => {
-                                          setIsEdit(false);
-                                       }
-                                    );
-                                 }
+      <ViewInterface
+         control={
+            <Form className='text-start'>
+               <Form.Label>عرض اختبار</Form.Label>
+               <ListOfButtons
+                  data={
+                     [
+                        {
+                           name: isEdit ? "تأكيد التعديلات" : "تعديل",
+                           event: () => {
+                              if (!isEdit) {
+                                 setIsEdit(true);
+                              } else {
+                                 handlers.editTest(
+                                    id,
+                                    title,
+                                    passMark,
+                                    maxMark,
+                                    type,
+                                    date,
+                                    () => {
+                                       setIsEdit(false);
+                                    }
+                                 );
                               }
                            }
-                        ]
-                     }
-                  />
-                  <InputWithLabel
-                     id="name"
-                     text="اسم الاختبار"
-                     hint="اسم الاختبار"
-                     disabled={!isEdit}
-                     value={title}
-                     hook={setTitle}
-                  />
-                  <InputWithLabel
-                     id="grade"
-                     text="الصف"
-                     hint="تابع للصف"
-                     disabled={true}
-                     value={gradeName}
-                  />
-                  <InputWithLabel
-                     id="class"
-                     text="الشعبة"
-                     hint="تابع للشعبة"
-                     disabled={true}
-                     value={theClassName}
-                  />
-                  <InputWithLabel
-                     id="subject"
-                     text="المادة"
-                     hint="تابع للمادة"
-                     disabled={true}
-                     value={subjectName}
-                  />
-                  <InputWithLabel
-                     id="maxMark"
-                     type="number"
-                     text="العلامة العليا"
-                     hint="العلامة العليا"
-                     disabled={!isEdit}
-                     value={maxMark}
-                     hook={setMaxMark}
-                  />
-                  <InputWithLabel
-                     id="passMark"
-                     type="number"
-                     text="علامة النجاح"
-                     hint="علامة النجاح"
-                     disabled={!isEdit}
-                     value={passMark}
-                     hook={setPassMark}
-                  />
-                  <InputWithLabel
-                     id="passMark"
-                     type="date"
-                     text="موعد الاختبار"
-                     hint="التاريخ"
-                     disabled={!isEdit}
-                     value={date}
-                     hook={setDate}
-                  />
-                  <Multiple
-                     id="type"
-                     text="نوع الاختبار"
-                     options={types}
-                     value={type}
-                     hook={setType}
-                  />
-               </Form>
-            </Col>
-            <Col xs='10'>
-               <MaterialReactTable
-                  muiSelectCheckboxProps={{
-                     sx: {
-                        float: "inline-start"
-                     }
-                  }}
-                  muiTableBodyProps={{
-                     sx: {
-                        '& tr.Mui-selected': {
-                           backgroundColor: '#AFAFAF',
-                        },
-                        '& tr:nth-of-type(odd)': {
-                           backgroundColor: '#f5f5f5',
-                        },
-                     },
-                  }}
-                  columns={columns}
-                  data={data}
-                  initialState={{ density: 'compact' }}
-                  enableRowSelection={false}
-                  enableMultiRowSelection={false}
-                  enableSorting={false}
-                  enablePinning={false}
-                  enableDensityToggle={false}
-                  enablePagination={false}
-                  enableFilters={false}
-                  enableTopToolbar={false}
-                  enableBottomToolbar={false}
-                  enableHiding={false}
-                  enableColumnActions={false}
+                        }
+                     ]
+                  }
                />
-            </Col>
-         </Row>
-         <Navigation current={current} next={next} previous={previous} setCurrent={setCurrent} />
-      </Container>
+               <InputWithLabel
+                  id="name"
+                  text="اسم الاختبار"
+                  hint="اسم الاختبار"
+                  disabled={!isEdit}
+                  value={title}
+                  hook={setTitle}
+               />
+               <InputWithLabel
+                  id="grade"
+                  text="الصف"
+                  hint="تابع للصف"
+                  disabled={true}
+                  value={gradeName}
+               />
+               <InputWithLabel
+                  id="class"
+                  text="الشعبة"
+                  hint="تابع للشعبة"
+                  disabled={true}
+                  value={theClassName}
+               />
+               <InputWithLabel
+                  id="subject"
+                  text="المادة"
+                  hint="تابع للمادة"
+                  disabled={true}
+                  value={subjectName}
+               />
+               <InputWithLabel
+                  id="maxMark"
+                  type="number"
+                  text="العلامة العليا"
+                  hint="العلامة العليا"
+                  disabled={!isEdit}
+                  value={maxMark}
+                  hook={setMaxMark}
+               />
+               <InputWithLabel
+                  id="passMark"
+                  type="number"
+                  text="علامة النجاح"
+                  hint="علامة النجاح"
+                  disabled={!isEdit}
+                  value={passMark}
+                  hook={setPassMark}
+               />
+               <InputWithLabel
+                  id="passMark"
+                  type="date"
+                  text="موعد الاختبار"
+                  hint="التاريخ"
+                  disabled={!isEdit}
+                  value={date}
+                  hook={setDate}
+               />
+               <Multiple
+                  id="type"
+                  text="نوع الاختبار"
+                  options={types}
+                  value={type}
+                  hook={setType}
+               />
+            </Form>
+         }
+         view={
+            <MaterialReactTable
+               muiSelectCheckboxProps={{
+                  sx: {
+                     float: "inline-start"
+                  }
+               }}
+               muiTableBodyProps={{
+                  sx: {
+                     '& tr.Mui-selected': {
+                        backgroundColor: '#AFAFAF',
+                     },
+                     '& tr:nth-of-type(odd)': {
+                        backgroundColor: '#f5f5f5',
+                     },
+                  },
+               }}
+               columns={columns}
+               data={data}
+               initialState={{ density: 'compact' }}
+               enableRowSelection={false}
+               enableMultiRowSelection={false}
+               enableSorting={false}
+               enablePinning={false}
+               enableDensityToggle={false}
+               enablePagination={false}
+               enableFilters={false}
+               enableTopToolbar={false}
+               enableBottomToolbar={false}
+               enableHiding={false}
+               enableColumnActions={false}
+            />
+         }
+         current={current}
+         next={next}
+         previous={previous}
+         setCurrent={setCurrent}
+      />
    );
 }
 

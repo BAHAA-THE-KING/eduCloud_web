@@ -1,10 +1,10 @@
-import { ListOfButtons, Navigation } from '../../components';
+import { ListOfButtons } from '../../components';
 import { useEffect, useMemo, useState } from 'react';
 import * as handlers from "../../handlers";
 import { useNavigate } from 'react-router-dom';
-import { Col, Container, Row } from 'react-bootstrap';
 import { MaterialReactTable } from 'material-react-table';
 import { Box } from '@mui/material';
+import { ViewInterface } from '../../Interfaces';
 
 function ViewTestForms() {
    const navigate = useNavigate();
@@ -46,9 +46,8 @@ function ViewTestForms() {
          {
             accessorKey: "id",
             header: 'المعرّف',
-            Cell: ({ renderedCellValue, row }) => (
+            Cell: ({ renderedCellValue }) => (
                <Box
-                  
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -62,9 +61,8 @@ function ViewTestForms() {
          {
             accessorKey: "name",
             header: 'الاسم',
-            Cell: ({ renderedCellValue, row }) => (
+            Cell: ({ renderedCellValue }) => (
                <Box
-                  
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -80,10 +78,10 @@ function ViewTestForms() {
    );
 
    return (
-      <Container fluid>
-         <Row className='mt-2'>
-            <Col xs='2'>
-               <ListOfButtons data={
+      <ViewInterface
+         control={
+            <ListOfButtons
+               data={
                   [
                      {
                         name: "إضافة نموذج اختبار",
@@ -95,46 +93,50 @@ function ViewTestForms() {
                         disabled: !Object.keys(selected).length
                      }
                   ]
-               } />
-            </Col>
-            <Col xs='10'>
-               <MaterialReactTable
-                  muiSelectCheckboxProps={{
-                     sx: {
-                        float: "inline-start"
-                     }
-                  }}
-                  muiTableBodyProps={{
-                     sx: {
-                        '& tr.Mui-selected': {
-                           backgroundColor: '#AFAFAF',
-                        },
-                        '& tr:nth-of-type(odd)': {
-                           backgroundColor: '#f5f5f5',
-                        },
+               }
+            />
+         }
+         view={
+            <MaterialReactTable
+               muiSelectCheckboxProps={{
+                  sx: {
+                     float: "inline-start"
+                  }
+               }}
+               muiTableBodyProps={{
+                  sx: {
+                     '& tr.Mui-selected': {
+                        backgroundColor: '#AFAFAF',
                      },
-                  }}
-                  columns={columns}
-                  data={data}
-                  initialState={{ density: 'compact' }}
-                  state={{ rowSelection: selected }}
-                  enableRowSelection={(row) => row.original.id}
-                  onRowSelectionChange={setSelected}
-                  enableSorting={false}
-                  enablePinning={false}
-                  enableDensityToggle={false}
-                  enablePagination={false}
-                  enableFilters={false}
-                  enableTopToolbar={false}
-                  enableBottomToolbar={false}
-                  enableHiding={false}
-                  enableColumnActions={false}
-                  enableMultiRowSelection={false}
-               />
-            </Col>
-         </Row>
-         <Navigation current={current} next={next} previous={previous} setCurrent={setCurrent} />
-      </Container>
+                     '& tr:nth-of-type(odd)': {
+                        backgroundColor: '#f5f5f5',
+                     },
+                  },
+               }}
+               columns={columns}
+               data={data}
+               initialState={{ density: 'compact' }}
+               state={{ rowSelection: selected }}
+               enableRowSelection={(row) => row.original.id}
+               onRowSelectionChange={setSelected}
+               enableSorting={false}
+               enablePinning={false}
+               enableDensityToggle={false}
+               enablePagination={false}
+               enableFilters={false}
+               enableTopToolbar={false}
+               enableBottomToolbar={false}
+               enableHiding={false}
+               enableColumnActions={false}
+               enableMultiRowSelection={false}
+            />
+         }
+         current={current}
+         next={next}
+         previous={previous}
+         setCurrent={setCurrent}
+      />
+
    )
 };
 

@@ -1,10 +1,11 @@
-import { InputWithLabel, ListOfButtons, Multiple, Navigation } from '../../components';
+import { InputWithLabel, ListOfButtons, Multiple } from '../../components';
 import React, { useEffect, useMemo, useState } from 'react';
 import * as handlers from "../../handlers";
 import { useNavigate } from 'react-router-dom';
-import { Col, Container, Form, Row } from 'react-bootstrap';
+import { Form, Row } from 'react-bootstrap';
 import { MaterialReactTable } from 'material-react-table';
 import { Box } from '@mui/material';
+import { ViewInterface } from '../../Interfaces';
 
 function ViewMarks() {
    const navigate = useNavigate();
@@ -137,12 +138,118 @@ function ViewMarks() {
    );
 
    const columns = useMemo(
-      () => {
-         const columns = [
-            {
-               accessorKey: "id",
-               header: "المعرّف",
-               Cell: ({ renderedCellValue }) => (
+      () => [
+         {
+            accessorKey: "id",
+            header: "المعرّف",
+            Cell: ({ renderedCellValue }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            )
+         },
+         {
+            accessorKey: "grade_id",
+            header: "الصف",
+            Cell: ({ renderedCellValue }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{grades.find(e => e.id == renderedCellValue)?.name}</span>
+               </Box>
+            )
+         },
+         {
+            accessorKey: "g_class_id",
+            header: "الشعبة",
+            Cell: ({ renderedCellValue }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{allClasses.find(e => e.id == renderedCellValue)?.name}</span>
+               </Box>
+            )
+         },
+         {
+            accessorKey: "first_name",
+            header: "الاسم",
+            Cell: ({ renderedCellValue }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            )
+         },
+         {
+            accessorKey: "last_name",
+            header: "الكنية",
+            Cell: ({ renderedCellValue }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            )
+         },
+         {
+            accessorKey: "father_name",
+            header: "اسم الأب",
+            Cell: ({ renderedCellValue }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            )
+         },
+         {
+            accessorKey: "mother_name",
+            header: "اسم الأم",
+            Cell: ({ renderedCellValue }) => (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     gap: '1rem',
+                  }}
+               >
+                  <span>{renderedCellValue}</span>
+               </Box>
+            )
+         },
+         {
+            accessorFn: asdasdasdasd => asdasdasdasd?.id,
+            key: "mark",
+            header: "العلامة",
+            Cell: ({ renderedCellValue }) => {
+               return (
                   <Box
                      sx={{
                         display: 'flex',
@@ -150,137 +257,28 @@ function ViewMarks() {
                         gap: '1rem',
                      }}
                   >
-                     <span>{renderedCellValue}</span>
+                     <span>
+                        <InputWithLabel
+                           id={"mark" + renderedCellValue}
+                           type="number"
+                           noLabel={true}
+                           disabled={!isEdit || !renderedCellValue}
+                           value={marks[renderedCellValue] ?? ""}
+                           hook={mark => setMarks({ ...marks, [renderedCellValue]: mark })}
+                        />
+                     </span>
                   </Box>
-               )
-            },
-            {
-               accessorKey: "grade_id",
-               header: "الصف",
-               Cell: ({ renderedCellValue }) => (
-                  <Box
-                     sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '1rem',
-                     }}
-                  >
-                     <span>{grades.find(e => e.id == renderedCellValue)?.name}</span>
-                  </Box>
-               )
-            },
-            {
-               accessorKey: "g_class_id",
-               header: "الشعبة",
-               Cell: ({ renderedCellValue }) => (
-                  <Box
-                     sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '1rem',
-                     }}
-                  >
-                     <span>{allClasses.find(e => e.id == renderedCellValue)?.name}</span>
-                  </Box>
-               )
-            },
-            {
-               accessorKey: "first_name",
-               header: "الاسم",
-               Cell: ({ renderedCellValue }) => (
-                  <Box
-                     sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '1rem',
-                     }}
-                  >
-                     <span>{renderedCellValue}</span>
-                  </Box>
-               )
-            },
-            {
-               accessorKey: "last_name",
-               header: "الكنية",
-               Cell: ({ renderedCellValue }) => (
-                  <Box
-                     sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '1rem',
-                     }}
-                  >
-                     <span>{renderedCellValue}</span>
-                  </Box>
-               )
-            },
-            {
-               accessorKey: "father_name",
-               header: "اسم الأب",
-               Cell: ({ renderedCellValue }) => (
-                  <Box
-                     sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '1rem',
-                     }}
-                  >
-                     <span>{renderedCellValue}</span>
-                  </Box>
-               )
-            },
-            {
-               accessorKey: "mother_name",
-               header: "اسم الأم",
-               Cell: ({ renderedCellValue }) => (
-                  <Box
-                     sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '1rem',
-                     }}
-                  >
-                     <span>{renderedCellValue}</span>
-                  </Box>
-               )
-            },
-            {
-               accessorFn: asdasdasdasd => asdasdasdasd?.id,
-               key: "mark",
-               header: "العلامة",
-               Cell: ({ renderedCellValue }) => {
-                  return (
-                     <Box
-                        sx={{
-                           display: 'flex',
-                           alignItems: 'center',
-                           gap: '1rem',
-                        }}
-                     >
-                        <span>
-                           <InputWithLabel
-                              id={"mark" + renderedCellValue}
-                              type="number"
-                              noLabel={true}
-                              disabled={!isEdit || !renderedCellValue}
-                              value={marks[renderedCellValue] ?? ""}
-                              hook={mark => setMarks({ ...marks, [renderedCellValue]: mark })}
-                           />
-                        </span>
-                     </Box>
-                  );
-               }
-            },
-         ];
-         return columns;
-      },
+               );
+            }
+         },
+      ],
       [data, all, marks, isEdit]
    );
 
    return (
-      <Container fluid>
-         <Row className='mt-2'>
-            <Col xs='2'>
+      <ViewInterface
+         control={
+            <>
                <ListOfButtons
                   data={
                      [
@@ -348,44 +346,49 @@ function ViewMarks() {
                      options={tests}
                      value={test}
                      hook={setTest}
-                  /></Row>
-            </Col>
-            <Col xs='10'>
-               <MaterialReactTable
-                  muiSelectCheckboxProps={{
-                     sx: {
-                        float: "inline-start"
-                     }
-                  }}
-                  muiTableBodyProps={{
-                     sx: {
-                        '& tr.Mui-selected': {
-                           backgroundColor: '#AFAFAF',
-                        },
-                        '& tr:nth-of-type(odd)': {
-                           backgroundColor: '#f5f5f5',
-                        },
+                  />
+               </Row>
+            </>
+         }
+         view={
+            <MaterialReactTable
+               muiSelectCheckboxProps={{
+                  sx: {
+                     float: "inline-start"
+                  }
+               }}
+               muiTableBodyProps={{
+                  sx: {
+                     '& tr.Mui-selected': {
+                        backgroundColor: '#AFAFAF',
                      },
-                  }}
-                  columns={columns}
-                  data={data}
-                  initialState={{ density: 'compact' }}
-                  enableRowSelection={false}
-                  enableSorting={false}
-                  enablePinning={false}
-                  enableDensityToggle={false}
-                  enablePagination={false}
-                  enableFilters={false}
-                  enableTopToolbar={false}
-                  enableBottomToolbar={false}
-                  enableHiding={false}
-                  enableColumnActions={false}
-                  enableMultiRowSelection={false}
-               />
-            </Col>
-         </Row>
-         <Navigation current={current} next={next} previous={previous} setCurrent={setCurrent} />
-      </Container>
+                     '& tr:nth-of-type(odd)': {
+                        backgroundColor: '#f5f5f5',
+                     },
+                  },
+               }}
+               columns={columns}
+               data={data}
+               initialState={{ density: 'compact' }}
+               enableRowSelection={false}
+               enableSorting={false}
+               enablePinning={false}
+               enableDensityToggle={false}
+               enablePagination={false}
+               enableFilters={false}
+               enableTopToolbar={false}
+               enableBottomToolbar={false}
+               enableHiding={false}
+               enableColumnActions={false}
+               enableMultiRowSelection={false}
+            />
+         }
+         current={current}
+         next={next}
+         previous={previous}
+         setCurrent={setCurrent}
+      />
+
    );
 };
 

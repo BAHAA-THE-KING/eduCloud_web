@@ -1,11 +1,11 @@
-import { ListOfButtons, Multiple, Navigation } from '../../components';
+import { ListOfButtons, Multiple } from '../../components';
 import { useEffect, useMemo, useState } from 'react';
 import * as handlers from "../../handlers";
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Col, Container, Form, Row } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import { MaterialReactTable } from 'material-react-table';
 import { Box } from '@mui/material';
-
+import { ViewInterface } from '../../Interfaces';
 
 function AddTeacherData() {
    const navigate = useNavigate();
@@ -209,73 +209,78 @@ function AddTeacherData() {
    );
 
    return (
-      <Container fluid>
-         <Row className='mt-2'>
-            <Col xs='2'>
+      <ViewInterface
+         control={
+            <>
                <Form.Label>إنشاء حساب للاستاذ {empData.first_name}</Form.Label>
-               <ListOfButtons data={
-                  [
-                     {
-                        name: "إتمام",
-                        event: () => {
-                           const temp = [];
-                           for (const n of selected) {
-                              for (const k of n.subjects) {
-                                 temp.find(e => e.subject_id == k) ?
-                                    temp.find(e => e.subject_id == k).classes.push(n.id)
-                                    : temp.push({ subject_id: k, classes: [n.id] });
+               <ListOfButtons
+                  data={
+                     [
+                        {
+                           name: "إتمام",
+                           event: () => {
+                              const temp = [];
+                              for (const n of selected) {
+                                 for (const k of n.subjects) {
+                                    temp.find(e => e.subject_id == k) ?
+                                       temp.find(e => e.subject_id == k).classes.push(n.id)
+                                       : temp.push({ subject_id: k, classes: [n.id] });
+                                 }
                               }
+                              handlers.addTeacher(
+                                 empData.id,
+                                 temp,
+                                 () => {
+                                    nextNav.shift();
+                                    if (nextNav.length) navigate(nextNav[0], { empData, nextNav });
+                                    else navigate(handlers.HOME);
+                                 }
+                              );
                            }
-                           handlers.addTeacher(
-                              empData.id,
-                              temp,
-                              () => {
-                                 nextNav.shift();
-                                 if (nextNav.length) navigate(nextNav[0], { empData, nextNav });
-                                 else navigate(handlers.HOME);
-                              }
-                           );
                         }
-                     }
-                  ]
-               } />
-            </Col>
-            <Col xs='10'>
-               <MaterialReactTable
-                  muiSelectCheckboxProps={{
-                     sx: {
-                        float: "inline-start"
-                     }
-                  }}
-                  muiTableBodyProps={{
-                     sx: {
-                        '& tr.Mui-selected': {
-                           backgroundColor: '#AFAFAF',
-                        },
-                        '& tr:nth-of-type(odd)': {
-                           backgroundColor: '#f5f5f5',
-                        },
-                     },
-                  }}
-                  columns={columns}
-                  data={data}
-                  initialState={{ density: 'compact' }}
-                  enableRowSelection={false}
-                  enableMultiRowSelection={false}
-                  enableSorting={false}
-                  enablePinning={false}
-                  enableDensityToggle={false}
-                  enablePagination={false}
-                  enableFilters={false}
-                  enableTopToolbar={false}
-                  enableBottomToolbar={false}
-                  enableHiding={false}
-                  enableColumnActions={false}
+                     ]
+                  }
                />
-            </Col>
-         </Row>
-         <Navigation current={current} next={next} previous={previous} setCurrent={setCurrent} />
-      </Container>
+            </>
+         }
+         view={
+            <MaterialReactTable
+               muiSelectCheckboxProps={{
+                  sx: {
+                     float: "inline-start"
+                  }
+               }}
+               muiTableBodyProps={{
+                  sx: {
+                     '& tr.Mui-selected': {
+                        backgroundColor: '#AFAFAF',
+                     },
+                     '& tr:nth-of-type(odd)': {
+                        backgroundColor: '#f5f5f5',
+                     },
+                  },
+               }}
+               columns={columns}
+               data={data}
+               initialState={{ density: 'compact' }}
+               enableRowSelection={false}
+               enableMultiRowSelection={false}
+               enableSorting={false}
+               enablePinning={false}
+               enableDensityToggle={false}
+               enablePagination={false}
+               enableFilters={false}
+               enableTopToolbar={false}
+               enableBottomToolbar={false}
+               enableHiding={false}
+               enableColumnActions={false}
+            />
+         }
+         current={current}
+         next={next}
+         previous={previous}
+         setCurrent={setCurrent}
+      />
    )
 };
 

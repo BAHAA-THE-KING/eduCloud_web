@@ -1,10 +1,11 @@
-import { InputWithLabel, ListOfButtons, Navigation } from "../../components";
+import { InputWithLabel, ListOfButtons } from "../../components";
 import { useEffect, useMemo, useState } from "react";
 import * as handler from '../../handlers';
 import { useNavigate, useParams } from "react-router-dom";
-import { Col, Container, Form, Row } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import { MaterialReactTable } from "material-react-table";
 import { Box } from "@mui/material";
+import { ViewInterface } from '../../Interfaces';
 
 function ViewClassData() {
 
@@ -161,96 +162,97 @@ function ViewClassData() {
    );
 
    return (
-      <Container fluid>
-         <Row className="mt-2">
-            <Col xs='2'>
-               <Form className="text-start">
-                  <Form.Label>عرض الشعبة</Form.Label>
-                  <ListOfButtons
-                     data={
-                        [
-                           {
-                              name: isEdit ? "تأكيد التعديلات" : "تعديل",
-                              event: () => {
-                                 if (!isEdit) {
-                                    setIsEdit(true);
-                                 } else {
-                                    handler.editClass(
-                                       id,
-                                       name,
-                                       maxNum,
-                                       () => {
-                                          setIsEdit(false);
-                                       }
-                                    );
-                                 }
+      <ViewInterface
+         control={
+            <Form className="text-start">
+               <Form.Label>عرض الشعبة</Form.Label>
+               <ListOfButtons
+                  data={
+                     [
+                        {
+                           name: isEdit ? "تأكيد التعديلات" : "تعديل",
+                           event: () => {
+                              if (!isEdit) {
+                                 setIsEdit(true);
+                              } else {
+                                 handler.editClass(
+                                    id,
+                                    name,
+                                    maxNum,
+                                    () => {
+                                       setIsEdit(false);
+                                    }
+                                 );
                               }
                            }
-                        ]
-                     }
-                  />
-                  <InputWithLabel
-                     id="name"
-                     text="اسم الشعبة"
-                     hint="مثال: الأولى"
-                     disabled={!isEdit}
-                     value={name}
-                     hook={setName}
-                  />
-                  <InputWithLabel
-                     id="maxNum"
-                     type="number"
-                     text="العدد الأقصى للطلاب"
-                     hint="عدد الطلاب"
-                     disabled={!isEdit}
-                     value={maxNum}
-                     hook={setMaxNum}
-                  />
-                  <InputWithLabel
-                     id="grade"
-                     text="الصف الذي تتبع له"
-                     hint="اسم الصف"
-                     disabled={true}
-                     value={gradeName}
-                  />
-               </Form>
-            </Col>
-            <Col xs='10'>
-               <MaterialReactTable
-                  muiSelectCheckboxProps={{
-                     sx: {
-                        float: "inline-start"
-                     }
-                  }}
-                  muiTableBodyProps={{
-                     sx: {
-                        '& tr.Mui-selected': {
-                           backgroundColor: '#AFAFAF',
-                        },
-                        '& tr:nth-of-type(odd)': {
-                           backgroundColor: '#f5f5f5',
-                        },
-                     },
-                  }}
-                  columns={columns}
-                  data={data}
-                  initialState={{ density: 'compact' }}
-                  enableRowSelection={false}
-                  enableMultiRowSelection={false}
-                  enableSorting={false}
-                  enablePinning={false}
-                  enableDensityToggle={false}
-                  enablePagination={false}
-                  enableFilters={false}
-                  enableTopToolbar={false}
-                  enableBottomToolbar={false}
-                  enableHiding={false}
-                  enableColumnActions={false}
+                        }
+                     ]
+                  }
                />
-            </Col>
-         </Row>
-         <Navigation current={current} next={next} previous={previous} setCurrent={setCurrent} />
-      </Container>
+               <InputWithLabel
+                  id="name"
+                  text="اسم الشعبة"
+                  hint="مثال: الأولى"
+                  disabled={!isEdit}
+                  value={name}
+                  hook={setName}
+               />
+               <InputWithLabel
+                  id="maxNum"
+                  type="number"
+                  text="العدد الأقصى للطلاب"
+                  hint="عدد الطلاب"
+                  disabled={!isEdit}
+                  value={maxNum}
+                  hook={setMaxNum}
+               />
+               <InputWithLabel
+                  id="grade"
+                  text="الصف الذي تتبع له"
+                  hint="اسم الصف"
+                  disabled={true}
+                  value={gradeName}
+               />
+            </Form>
+         }
+         view={
+            <MaterialReactTable
+               muiSelectCheckboxProps={{
+                  sx: {
+                     float: "inline-start"
+                  }
+               }}
+               muiTableBodyProps={{
+                  sx: {
+                     '& tr.Mui-selected': {
+                        backgroundColor: '#AFAFAF',
+                     },
+                     '& tr:nth-of-type(odd)': {
+                        backgroundColor: '#f5f5f5',
+                     },
+                  },
+               }}
+               columns={columns}
+               data={data}
+               initialState={{ density: 'compact' }}
+               enableRowSelection={false}
+               enableMultiRowSelection={false}
+               enableSorting={false}
+               enablePinning={false}
+               enableDensityToggle={false}
+               enablePagination={false}
+               enableFilters={false}
+               enableTopToolbar={false}
+               enableBottomToolbar={false}
+               enableHiding={false}
+               enableColumnActions={false}
+            />
+         }
+         current={current}
+         next={next}
+         previous={previous}
+         setCurrent={setCurrent}
+      />
    );
 }
 

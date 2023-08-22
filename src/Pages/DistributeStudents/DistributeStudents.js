@@ -1,10 +1,11 @@
 import * as handlers from '../../handlers';
 import { useState, useMemo, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Button, Col, Container, Dropdown, Form, Row } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
 import { MaterialReactTable } from 'material-react-table';
 import { Box } from '@mui/material';
-import { Multiple, Navigation } from '../../components';
+import { InputWithLabel, ListOfButtons, Multiple } from '../../components';
+import { ViewInterface } from '../../Interfaces';
 
 function DistributeStudents() {
    const extData = useLocation().state;
@@ -170,15 +171,16 @@ function DistributeStudents() {
    );
 
    return (
-      <Container fluid>
-         <Row className='mt-2'>
-            <Col xs='2'>
-               <Row>
-                  <Col xs='9'>
-                     <Button
-                        className='w-100'
-                        onClick={
-                           () => {
+      <ViewInterface
+         control={
+            <>
+               <ListOfButtons
+                  data={
+                     [
+                        {
+                           name: "متابعة",
+                           event: e => {
+                              e.preventDefault();
                               const temp = {};
                               Object.entries(selection)
                                  .map(
@@ -204,66 +206,59 @@ function DistributeStudents() {
                                     navigate(handlers.HOME)
                                  }
                               );
-
-                           }
+                           },
                         }
-                     >
-                        متابعة
-                     </Button>
-                  </Col>
-               </Row>
-               <Row className='text-start'>
-                  <Form.Label htmlFor='searchInput'>عوامل التصفية :</Form.Label>
-                  <Form.Control
-                     id="searchInput"
-                     value={tempSearch}
-                     placeholder="البحث"
-                     onChange={e => setTempSearch(e.target.value)}
-                     onKeyDown={
-                        e => {
-                           if (e.key === 'Enter') {
-                              setSearch(e.target.value);
-                           }
-                        }
-                     }
-                  >
-                  </Form.Control>
-               </Row>
-            </Col>
-            <Col xs='10'>
-               <MaterialReactTable
-                  muiSelectCheckboxProps={{
-                     sx: {
-                        float: "inline-start"
-                     }
-                  }}
-                  muiTableBodyProps={{
-                     sx: {
-                        '& tr.Mui-selected': {
-                           backgroundColor: '#AFAFAF',
-                        },
-                        '& tr:nth-of-type(odd)': {
-                           backgroundColor: '#f5f5f5',
-                        },
-                     },
-                  }}
-                  columns={columns}
-                  data={data}
-                  initialState={{ density: 'compact' }}
-                  enableSorting={false}
-                  enablePinning={false}
-                  enableDensityToggle={false}
-                  enablePagination={false}
-                  enableFilters={false}
-                  enableTopToolbar={false}
-                  enableBottomToolbar={false}
-                  enableHiding={false}
-                  enableColumnActions={false}
+                     ]
+                  }
                />
-            </Col>
-         </Row>
-         <Navigation current={current} next={next} previous={previous} setCurrent={setCurrent} />
-      </Container>
+               <Row className='text-start'>
+                  <InputWithLabel
+                     id="name"
+                     text="عوامل التصفية"
+                     hint="البحث"
+                     value={tempSearch}
+                     hook={setTempSearch}
+                     ehook={setSearch}
+                  />
+               </Row>
+            </>
+         }
+         view={
+            <MaterialReactTable
+               muiSelectCheckboxProps={{
+                  sx: {
+                     float: "inline-start"
+                  }
+               }}
+               muiTableBodyProps={{
+                  sx: {
+                     '& tr.Mui-selected': {
+                        backgroundColor: '#AFAFAF',
+                     },
+                     '& tr:nth-of-type(odd)': {
+                        backgroundColor: '#f5f5f5',
+                     },
+                  },
+               }}
+               columns={columns}
+               data={data}
+               initialState={{ density: 'compact' }}
+               enableSorting={false}
+               enablePinning={false}
+               enableDensityToggle={false}
+               enablePagination={false}
+               enableFilters={false}
+               enableTopToolbar={false}
+               enableBottomToolbar={false}
+               enableHiding={false}
+               enableColumnActions={false}
+            />
+         }
+         current={current}
+         next={next}
+         previous={previous}
+         setCurrent={setCurrent}
+      />
    )
 };
 

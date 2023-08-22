@@ -43,9 +43,8 @@ const ACCEPTSTUDENTS = "/student/accept";
 const SELECTSTUDENTS = "/student/select";
 const DISTRIBUTESTUDENTS = "/student/distribute";
 
-//const host = "https://edb8-178-171-178-129.ngrok-free.app/V1.0";
-const host = "http://localhost:8000/V1.0";
-//const host = "https://bdh.point-dev.nl/V1.0";
+//const host = "http://localhost:8000/V1.0";
+const host = "https://bdh.point-dev.nl/V1.0";
 
 function getToken() {
    return JSON.parse(localStorage.getItem("auth")).token;
