@@ -3,6 +3,7 @@ import { Col, Dropdown, Form, Row } from "react-bootstrap";
 function Multiple({ id, text, options, multiple, value, hook, noLabel, noNull, noChoose }) {
    const myOptions = [...options];
    if (!noNull) myOptions.push({ id: "", name: <b>إلغاء</b> });
+   console.log(id, value);
 
    return (
       <>
@@ -13,7 +14,7 @@ function Multiple({ id, text, options, multiple, value, hook, noLabel, noNull, n
                   multiple ?
                      (
                         options.filter(e => value.indexOf(e.id) !== -1).length ?
-                           options.filter(e => value.indexOf(e.id) !== -1).map(e => e.name).join(", ")
+                           options.filter(e => value.indexOf(e.id) !== -1).map(e => <>{e.name}<br /></>)
                            : ((!noChoose ? "اختر " : "") + text)
                      )
                      : (

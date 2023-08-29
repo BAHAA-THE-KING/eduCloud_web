@@ -10,15 +10,14 @@ import { ViewInterface } from "../../Interfaces";
 function ViewTests() {
    const navigate = useNavigate();
 
-   const [search, setSearch] = useState("%");
-   const [tempSearch, setTempSearch] = useState("");
-   const [searchClass, setSearchClass] = useState("");
-   const [searchSubject, setSearchSubject] = useState("");
+   const [controller, setController] = useState(new AbortController());
+   const [search, setSearch] = useState("");
+   const [searchGrade, setSearchGrade] = useState("");
+   const [searchClasses, setSearchClasses] = useState([]);
+   const [searchSubjects, setSearchSubjects] = useState([]);
    const [searchStartDate, setSearchStartDate] = useState("");
    const [searchEndDate, setSearchEndDate] = useState("");
-   const [searchType, setSearchType] = useState("");
-
-   const [searchGrade, setSearchGrade] = useState("");
+   const [searchTypes, setSearchTypes] = useState([]);
 
    const [current, setCurrent] = useState(1);
    const [next, setNext] = useState(null);
@@ -27,23 +26,23 @@ function ViewTests() {
 
    const [grades, setGrades] = useState([]);
    const [allClasses, setAllClasses] = useState([]);
+   const [allSubjects, setAllSubjects] = useState([]);
    const [classes, setClasses] = useState([]);
    const [subjects, setSubjects] = useState([]);
-   const [types, setSearchTypes] = useState([]);
-
-   const [selected, setSelected] = useState({});
+   const [types, setTypes] = useState([]);
 
    useEffect(
       () => {
          handlers.getSubjects(
             res => {
-               setGrades(res.map(e => { return { id: e.id, name: e.name }; }));
-               setAllClasses(res);
+               setGrades(res);
+               setAllClasses(res.map(e => e.g_classes).flat());
+               setAllSubjects(res.map(e => e.subjects).flat());
             }
          );
          handlers.getTestForms(
             res => {
-               setSearchTypes(res);
+               setTypes(res);
             }
          );
       },
@@ -52,16 +51,28 @@ function ViewTests() {
 
    useEffect(
       () => {
-         if (search === "") {
-            setSearch("%");
-            return;
-         }
+         setSearchClasses([]);
+         setSearchSubjects([]);
+         const temp = allClasses.filter(e => e.grade_id === searchGrade);
+         setClasses(temp);
+         const temp2 = allSubjects.filter(e => e.grade_id === searchGrade);
+         setSubjects(temp2);
+      },
+      [searchGrade]
+   );
+
+   useEffect(
+      () => {
+         controller.abort();
+         const newController = new AbortController();
+         setController(newController);
          handlers.getTests(
+            newController,
             current,
             search,
-            searchType,
-            searchSubject,
-            searchClass,
+            searchTypes,
+            searchSubjects,
+            searchClasses,
             searchStartDate,
             searchEndDate,
             res => {
@@ -75,49 +86,58 @@ function ViewTests() {
             }
          );
       },
-      [current, search, searchClass, searchType, searchSubject, searchStartDate, searchEndDate]
+      [current, search, searchClasses, searchTypes, searchSubjects, searchStartDate, searchEndDate]
    );
+
+   function clickHook(id) {
+      navigate(handlers.VIEWTESTDATA + id);
+   }
 
    const columns = useMemo(
       () => [
          {
             accessorKey: "id",
             header: 'المعرّف',
-            Cell: ({ renderedCellValue, row }) => (
-               <Box
-
-                  sx={{
-                     display: 'flex',
-                     alignItems: 'center',
-                     gap: '1rem',
-                  }}
-               >
-                  <span>{renderedCellValue}</span>
-               </Box>
-            ),
+            Cell: ({ renderedCellValue, row }) => {
+               row.myId = renderedCellValue;
+               return (
+                  <Box
+                     onDoubleClick={() => clickHook(row.myId)}
+                     sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '1rem',
+                     }}
+                  >
+                     <span>{renderedCellValue}</span>
+                  </Box>
+               );
+            },
          },
          {
             accessorKey: "title",
             header: 'العنوان',
-            Cell: ({ renderedCellValue, row }) => (
-               <Box
-
-                  sx={{
-                     display: 'flex',
-                     alignItems: 'center',
-                     gap: '1rem',
-                  }}
-               >
-                  <span>{renderedCellValue}</span>
-               </Box>
-            ),
+            Cell: ({ renderedCellValue, row }) => {
+               return (
+                  <Box
+                     onDoubleClick={() => clickHook(row.myId)}
+                     sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '1rem',
+                     }}
+                  >
+                     <span>{renderedCellValue}</span>
+                  </Box>
+               );
+            },
          },
          {
             accessorKey: "type_id",
             header: 'النوع',
             Cell: ({ renderedCellValue, row }) => (
                <Box
-
+                  onDoubleClick={() => clickHook(row.myId)}
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -133,20 +153,11 @@ function ViewTests() {
             id: "grade",
             header: 'الصف',
             Cell: ({ renderedCellValue, row }) => {
-               let grade;
-               for (const k in allClasses) {
-                  if (grade) break;
-                  const e = allClasses[k];
-                  for (const n of e.g_classes) {
-                     if (n.id == renderedCellValue) {
-                        grade = e.name
-                        break;
-                     }
-                  }
-               };
+               const grade_id = allClasses.find(e => e.id === renderedCellValue)?.grade_id;
+               const grade = grades.find(e => e.id === grade_id)?.name;
                return (
                   <Box
-
+                     onDoubleClick={() => clickHook(row.myId)}
                      sx={{
                         display: 'flex',
                         alignItems: 'center',
@@ -162,20 +173,10 @@ function ViewTests() {
             accessorKey: "g_class_id",
             header: 'الشعبة',
             Cell: ({ renderedCellValue, row }) => {
-               let theClass;
-               for (const k in allClasses) {
-                  if (theClass) break;
-                  const e = allClasses[k].g_classes;
-                  for (const n of e) {
-                     if (n.id == renderedCellValue) {
-                        theClass = n.name
-                        break;
-                     }
-                  }
-               }
+               const theClass = allClasses.find(e => e.id === renderedCellValue)?.name;
                return (
                   <Box
-
+                     onDoubleClick={() => clickHook(row.myId)}
                      sx={{
                         display: 'flex',
                         alignItems: 'center',
@@ -190,20 +191,12 @@ function ViewTests() {
          {
             accessorKey: "subject_id",
             header: 'المادة',
-            Cell: ({ renderedCellValue }) => {
-               let subject;
-               for (const k in allClasses) {
-                  if (subject) break;
-                  const e = allClasses[k].subjects;
-                  for (const n of e) {
-                     if (n.id == renderedCellValue) {
-                        subject = n.name;
-                        break;
-                     }
-                  }
-               };
+            Cell: ({ renderedCellValue, row }) => {
+               const grade_id = allSubjects.find(e => e.id === renderedCellValue)?.grade_id;
+               const subject = grades.find(e => e.id === grade_id)?.name;
                return (
                   <Box
+                     onDoubleClick={() => clickHook(row.myId)}
                      sx={{
                         display: 'flex',
                         alignItems: 'center',
@@ -218,8 +211,9 @@ function ViewTests() {
          {
             accessorKey: "date",
             header: 'التاريخ',
-            Cell: ({ renderedCellValue }) => (
+            Cell: ({ renderedCellValue, row }) => (
                <Box
+                  onDoubleClick={() => clickHook(row.myId)}
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -236,7 +230,7 @@ function ViewTests() {
             Cell: ({ renderedCellValue, row }) =>
             (
                <Box
-
+                  onDoubleClick={() => clickHook(row.myId)}
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
@@ -253,7 +247,7 @@ function ViewTests() {
             Cell: ({ renderedCellValue, row }) => {
                return (
                   <Box
-
+                     onDoubleClick={() => clickHook(row.myId)}
                      sx={{
                         display: 'flex',
                         alignItems: 'center',
@@ -280,13 +274,12 @@ function ViewTests() {
                         event: () => navigate(handlers.ADDTEST)
                      },
                      {
-                        name: "عرض صفحة اختبار",
-                        event: () => navigate(handlers.VIEWTESTDATA + data[Object.keys(selected)[0]].id),
-                        disabled: !Object.keys(selected).length
-                     },
-                     {
                         name: "عرض أنواع الاختبارات",
                         event: () => navigate(handlers.VIEWTESTFORMS)
+                     },
+                     {
+                        name: "تحليل الاختبارات",
+                        event: () => navigate(handlers.ANALYZETESTS)
                      },
                      {
                         name: "عرض اختبارات القدرات",
@@ -298,10 +291,10 @@ function ViewTests() {
                <Row className='text-start'>
                   <InputWithLabel
                      id="search"
-                     value={tempSearch}
+                     value={search}
                      text="عوامل التصفية"
                      hint="بحث"
-                     hook={setTempSearch}
+                     hook={setSearch}
                      ehook={setSearch}
                   />
                   <InputWithLabel
@@ -321,54 +314,41 @@ function ViewTests() {
                      hook={setSearchEndDate}
                   />
                   <Multiple
-                     id='type'
+                     id='types'
+                     multiple={true}
                      text='النوع'
                      options={types}
-                     value={searchType}
-                     hook={setSearchType}
+                     value={searchTypes}
+                     hook={setSearchTypes}
                   />
                   <Multiple
                      id='grade'
                      text='الصف'
                      options={grades}
                      value={searchGrade}
-                     hook={
-                        gradeId => {
-                           setSearchGrade(gradeId);
-                           setSearchClass("");
-                           setSearchSubject("");
-                           if (!gradeId) return;
-                           const temp = allClasses.filter(e => e.id === gradeId)[0].g_classes;
-                           setClasses(temp);
-                           const temp2 = allClasses.filter(e => e.id === gradeId)[0].subjects;
-                           setSubjects(temp2);
-                        }
-                     }
+                     hook={setSearchGrade}
                   />
                   <Multiple
-                     id='theclass'
+                     id='classes'
+                     multiple={true}
                      text='الشعبة'
                      options={classes}
-                     value={searchClass}
-                     hook={setSearchClass}
+                     value={searchClasses}
+                     hook={setSearchClasses}
                   />
                   <Multiple
-                     id='subject'
+                     id='subjects'
+                     multiple={true}
                      text='المادة'
                      options={subjects}
-                     value={searchSubject}
-                     hook={setSearchSubject}
+                     value={searchSubjects}
+                     hook={setSearchSubjects}
                   />
                </Row>
             </>
          }
          view={
             <MaterialReactTable
-               muiSelectCheckboxProps={{
-                  sx: {
-                     float: "inline-start"
-                  }
-               }}
                muiTableBodyProps={{
                   sx: {
                      '& tr.Mui-selected': {
@@ -382,9 +362,8 @@ function ViewTests() {
                columns={columns}
                data={data}
                initialState={{ density: 'compact' }}
-               state={{ rowSelection: selected }}
-               enableRowSelection={(row) => row.original.id}
-               onRowSelectionChange={setSelected}
+               enableRowSelection={false}
+               enableMultiRowSelection={false}
                enableSorting={false}
                enablePinning={false}
                enableDensityToggle={false}
@@ -394,7 +373,6 @@ function ViewTests() {
                enableBottomToolbar={false}
                enableHiding={false}
                enableColumnActions={false}
-               enableMultiRowSelection={false}
             />
          }
          current={current}

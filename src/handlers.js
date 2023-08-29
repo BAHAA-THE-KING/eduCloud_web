@@ -20,6 +20,7 @@ const ADDTEST = "/test/add";
 const VIEWTESTS = "/test";
 const VIEWMARKS = "/test/marks";
 const VIEWTESTDATA = "/test/view/";
+const ANALYZETESTS = "/test/analyze";
 
 const ADDGRADE = "/grade/add";
 const VIEWGRADES = "/grade";
@@ -43,8 +44,8 @@ const ACCEPTSTUDENTS = "/student/accept";
 const SELECTSTUDENTS = "/student/select";
 const DISTRIBUTESTUDENTS = "/student/distribute";
 
-//const host = "http://localhost:8000/V1.0";
-const host = "https://bdh.point-dev.nl/V1.0";
+const host = "http://localhost:8000/V1.0";
+//const host = "https://bdh.point-dev.nl/V1.0";
 
 function getToken() {
    return JSON.parse(localStorage.getItem("auth")).token;
@@ -501,15 +502,15 @@ function getTestFormData(id, func) {
       );
 }
 
-function getTests(page, title, type, subject, theClass, startDate, endDate, func) {
+function getTests(controller, page, title, types, subjects, classes, startDate, endDate, func) {
    const path = "/supervisor/searchTests?";
 
    const params = [];
    if (!!page) params.push("page=" + page);
    if (!!title) params.push("title=" + title);
-   if (!!type) params.push("type_id=" + type);
-   if (!!subject) params.push("subject_id=" + subject);
-   if (!!theClass) params.push("g_class_id=" + theClass);
+   if (!!types.length) types.map((e, i) => params.push("type_ids[" + i + "]=" + e));
+   if (!!subjects.length) subjects.map((e, i) => params.push("subject_ids[" + i + "]=" + e));
+   if (!!classes.length) classes.map((e, i) => params.push("g_class_ids[" + i + "]=" + e));
    if (!!startDate) params.push("start_date=" + startDate);
    if (!!endDate) params.push("end_date=" + endDate);
 
@@ -523,7 +524,9 @@ function getTests(page, title, type, subject, theClass, startDate, endDate, func
       "Authorization": "Bearer " + getToken()
    };
 
-   fetch(url, { method, headers })
+   const signal = controller.signal;
+
+   fetch(url, { method, headers, signal })
       .then(
          e => {
             if (e.status >= 500) {
@@ -544,6 +547,7 @@ function getTests(page, title, type, subject, theClass, startDate, endDate, func
       )
       .catch(
          err => {
+            if (err.name === "AbortError") return;
             alert("An Error Occured.");
             console.log(err);
          }
@@ -2263,7 +2267,7 @@ function removeEmployeeRole(id, roles, func) {
       );
 }
 
-export { goTo, HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEES, ADDSTUDENT, VIEWEMPLOYEEDATA, ADDTESTFORM, VIEWTESTFORMS, VIEWTESTFORMDATA, VIEWSTUDENTS, VIEWSTUDENTDATA, ADDTEST, VIEWTESTS, VIEWTESTDATA, ADDGRADE, VIEWGRADES, VIEWGRADEDATA, ADDCLASS, VIEWCLASSES, VIEWCLASSDATA, ADDSUBJECT, VIEWSUBJECTS, VIEWSUBJECTDATA, ADDABILITYTESTFORM, CALENDAR, ACCEPTSTUDENTS, VIEWMARKS, SELECTSTUDENTS, DISTRIBUTESTUDENTS, VIEWABILITYTESTFORMS, VIEWABILITYTESTFORMDATA };
+export { goTo, HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEES, ADDSTUDENT, VIEWEMPLOYEEDATA, ADDTESTFORM, VIEWTESTFORMS, VIEWTESTFORMDATA, VIEWSTUDENTS, VIEWSTUDENTDATA, ADDTEST, VIEWTESTS, VIEWTESTDATA, ADDGRADE, VIEWGRADES, VIEWGRADEDATA, ADDCLASS, VIEWCLASSES, VIEWCLASSDATA, ADDSUBJECT, VIEWSUBJECTS, VIEWSUBJECTDATA, ADDABILITYTESTFORM, CALENDAR, ACCEPTSTUDENTS, VIEWMARKS, SELECTSTUDENTS, DISTRIBUTESTUDENTS, VIEWABILITYTESTFORMS, VIEWABILITYTESTFORMDATA, ANALYZETESTS };
 export { logIn, getRoles, getSubjects };
 export { addEmployee, addTeacher, addSupervisor, addEmployeeRole, getEmployees, getEmployeeData, regeneratePassword, editEmployee, removeEmployeeRole };
 export { addTestForm, getTestForms, getTestFormData, editTestForm };

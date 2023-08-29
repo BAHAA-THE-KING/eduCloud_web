@@ -8,7 +8,7 @@ const titles = [
    "الاختبارات",
    "الخطة الدراسية",
    "العلامات",
-   //"الملاحظات",
+   "الملاحظات",
    "الموظفون",
    "أمور إدارية",
    "الرسائل"
@@ -18,7 +18,7 @@ const names = [
    "tests",
    "calendar",
    "marks",
-   //"notes",
+   "notes",
    "employees",
    "managements",
    "smss"
@@ -29,7 +29,7 @@ const actions = [
    handlers.VIEWTESTS,
    handlers.CALENDAR,
    handlers.VIEWMARKS,
-   //"",
+   "",
    handlers.VIEWEMPLOYEES,
    handlers.VIEWGRADES,
    "",

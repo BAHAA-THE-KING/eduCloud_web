@@ -1,6 +1,6 @@
 import './TableTile.css';
 
-import { TextInput, Button } from '..';
+import { TextInput } from '..';
 
 function TableTile(props) {
    return (
