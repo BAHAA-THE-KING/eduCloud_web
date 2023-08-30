@@ -1,12 +1,11 @@
-import './Login.css';
-import { PasswordInput, TextInput, Logo } from '../../components';
+import { PasswordInput, TextInput } from '../components';
 import { useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDoorOpen } from '@fortawesome/free-solid-svg-icons';
-import {faUser} from '@fortawesome/free-solid-svg-icons';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 
-import * as handler from './../../handlers';
+import * as handlers from '../handlers';
 
 function Login() {
   const [name, setName] = useState("");
@@ -18,15 +17,15 @@ function Login() {
         <form>
           <div className="d-flex justify-content-center align-items-center mt-4">
             <span className='fs-3 text-light ms-2'>cloud</span>
-            <FontAwesomeIcon icon={faDoorOpen} className="fs-3 text-light"/>
+            <FontAwesomeIcon icon={faDoorOpen} className="fs-3 text-light" />
             <span className='fs-3 text-light me-2'>Edu</span>
           </div>
           <TextInput defaultValue={name} inputHook={setName} enterHook={() => { }} type="user name" hint="اسم المستخدم" />
           <PasswordInput hook={setPassword} />
-            <button onClick={e => { e.preventDefault(); handler.logIn(name, password); }}>
-              <div className='sbmt'>دخول</div> 
-              <FontAwesomeIcon icon={faUser} className="fs-5 icon"/>
-            </button>
+          <button onClick={e => { e.preventDefault(); handlers.logIn(name, password); }}>
+            <div className='sbmt'>دخول</div>
+            <FontAwesomeIcon icon={faUser} className="fs-5 icon" />
+          </button>
         </form>
       </div>
     </div>

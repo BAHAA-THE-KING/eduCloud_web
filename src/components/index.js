@@ -1,5 +1,5 @@
-import Logo from "./Logo/Logo";
 import PasswordInput from "./PasswordInput/PasswordInput";
 import TextInput from "./TextInput/TextInput";
+import myCard from "./Card";
 
-export { Logo, PasswordInput, TextInput };
+export { PasswordInput, TextInput, myCard as Card };
