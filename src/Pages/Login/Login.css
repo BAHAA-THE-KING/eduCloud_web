@@ -31,12 +31,15 @@
 
 .login form {
    width: 75%;
-   background-color: #061E45DD;
-   margin-top: 30px;
+   background-color: #2A1F60;
+   border-radius: 15px;
+   margin-top: 150px;
    padding: 0 0 100px 0;
    display: flex;
    flex-flow: column nowrap;
    align-items: center;
+   opacity: 0.9;
+   border: 1px solid white;
 }
 
 .login .hello {
@@ -57,12 +60,31 @@
    width: 300px !important;
 }
 
+/* .login .sbmt-holder {
+   background-color: white;
+} */
+
+.login button {
+   margin-top: 15px;
+   padding : 5px;
+   width: 150px;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   outline: none;
+   border: none;
+   border-radius: 3px;
+}
+
 .login .sbmt {
-   background-color: #c3E3EB;
-   cursor: pointer;
-   margin-top: 20px;
-   padding: 10px 15px;
+   color: #2A1F60;
+   font-weight: bold;
    font-size: 17px;
    border: 0 transparent none;
-   border-radius: 10px;
+   display: block;
+}
+
+.login .icon {
+   color: #2A1F60;
+   display: block;
 }

@@ -24,11 +24,6 @@ function TextInput(props) {
                      ) : null
             }
          />
-         <img
-            className="imgtext"
-            src={(props.type === "user name") ? "icons/person.svg" : "#"}
-            alt=""
-         />
       </div>
    );
 }
