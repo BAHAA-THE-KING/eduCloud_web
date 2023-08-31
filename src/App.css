@@ -100,3 +100,134 @@ a {
    color: #2A1F60;
    display: block;
 }
+
+
+/* start navbar */
+
+.side-navbar {
+   background-color: #2A1F60;
+   width: 100px;
+   height: 100vh;
+   width: 300px;
+   /* transition: .4s; */
+   padding-left: 10px;
+}
+.side-navbar-nx {
+   width: 85px !important;
+   padding-left: 0px !important;
+}
+.nav-upper .side-navbar-nx {
+
+}
+button {
+   background: none;
+   outline: none;
+   border: none;
+   margin: auto;
+}
+.side-navbar .burger {
+   cursor: pointer;
+   height: 71px;
+   width: 74px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-direction: column;
+   padding-left: 21px;
+}
+.side-navbar .burger span {
+   display: block;
+   margin-top: 5px;
+   background-color: white;
+   height: 4.5px;
+   width: 30px;
+   transition: .3s;
+}
+.side-navbar .burger span:hover {
+   color: #aa5b00 !important;
+}
+
+
+.burger-out span:nth-child(1) {
+   width: 35px;
+   transform: translate(-3px, 8px) rotate(45deg);
+   margin-bottom: 5.3px;
+}
+.burger-out span:nth-child(2) {
+   display: none;
+}
+.burger-out span:nth-child(3) {
+   width: 35px;
+   transform: translate(-3px, -8px) rotate(-45deg);
+}
+.nav-menu {
+   grid-template-rows: repeat(7, 1fr);
+	margin-top: 50px;
+   margin-right: 5px;
+}
+
+.menu-item,
+.logout {
+   height: 57px;
+   display: flex;
+   text-transform: uppercase;
+   margin: auto 20px;
+   border-radius: 10px;
+   margin-bottom: 15px;
+}
+.menu-item-NX {
+   padding-left: 10px;
+}
+.menu-item .icon,
+.logout-icon {
+   position: relative;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   z-index: 2;
+}
+.menu-item svg,
+.icon {
+   z-index: 2;
+}
+.menu-item .icon::before {
+   content: '';
+   position: absolute;
+   width: 5px;
+   height: 82%;
+   background-color: #FEB25B;
+   border-radius: 5px;
+   left: -28px;
+}
+.menu-item .icon::after,
+.logout-icon::after {
+   content: '';
+   position: absolute;
+   width: 50px;
+   height: 50px;
+   background-color: #FEB25B;
+   transform: translate(-50%,-50%);
+   left: 50%;
+   top: 50%;
+   z-index: -1;
+   border-radius: 50%;
+}
+.menu-item p,
+.logout p {
+   line-height: 3;
+   margin-left: 14px;
+   transition: .3s;
+}
+.menu-item p:hover {
+   color: #aa5b00 !important;
+}
+.space {
+   margin-top: 300px;
+}
+.logout-icon::after  {
+   background-color: #644be3  !important;
+}
+.logout p {
+   line-height: 3.3;
+}
+/* end navbar */

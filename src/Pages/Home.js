@@ -1,6 +1,7 @@
 import { Container, Row } from "react-bootstrap";
 import { Card } from "../components";
 import * as handlers from '../handlers';
+import SideNavbar from "../components/SideNavbar";
 
 const cards = [
    {
@@ -59,7 +60,9 @@ const cards = [
 
 function Home() {
    return (
-      <Container className="h-100 w-75">
+      <>
+      <SideNavbar />
+      {/* <Container className="h-100 w-75">
          <Row className="h-25 text-start">
             <div style={{
                position: "relative",
@@ -105,7 +108,8 @@ function Home() {
                )
             }
          </Row>
-      </Container>
+      </Container> */}
+      </>
    );
 }
 
