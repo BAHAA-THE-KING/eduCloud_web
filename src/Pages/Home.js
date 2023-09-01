@@ -1,7 +1,7 @@
 import { Container, Row } from "react-bootstrap";
 import { Card } from "../components";
 import * as handlers from '../handlers';
-import SideNavbar from "../components/SideNavbar";
+import { useState } from "react";
 
 const cards = [
    {
@@ -59,56 +59,59 @@ const cards = [
 ];
 
 function Home() {
+   const [active, setActive] = useState(null);
    return (
       <>
-      <SideNavbar />
-      {/* <Container className="h-100 w-75">
-         <Row className="h-25 text-start">
-            <div style={{
-               position: "relative",
-               insetBlockStart: "10%"
-            }}
+         <Container className="h-100 w-75">
+            <Row className="h-25 text-start">
+               <div style={{
+                  position: "relative",
+                  insetBlockStart: "10%"
+               }}
+               >
+                  <span style={{ color: "#281d61" }}>
+                     <h1>
+                        <b>
+                           Home Screen
+                        </b>
+                     </h1>
+                     <p>
+                        <span style={{ fontSize: "1.3rem" }}>
+                           You can see some categories here, enjoy our app.
+                        </span>
+                        <br />
+                        <span style={{ fontSize: "1rem" }}>
+                           You can use the drawer to get to the main topic.
+                        </span>
+                     </p>
+                  </span>
+               </div>
+            </Row>
+            <Row
+               className="w-100"
+               style={{
+                  display: "grid",
+                  gridTemplateColumns: "auto auto",
+                  rowGap: "50px",
+                  columnGap: "70px"
+               }}
             >
-               <span style={{ color: "#281d61" }}>
-                  <h1>
-                     <b>
-                        Home Screen
-                     </b>
-                  </h1>
-                  <p>
-                     <span style={{ fontSize: "1.3rem" }}>
-                        You can see some categories here, enjoy our app.
-                     </span>
-                     <br />
-                     <span style={{ fontSize: "1rem" }}>
-                        You can use the drawer to get to the main topic.
-                     </span>
-                  </p>
-               </span>
-            </div>
-         </Row>
-         <Row
-            className="w-100"
-            style={{
-               display: "grid",
-               gridTemplateColumns: "auto auto",
-               rowGap: "50px",
-               columnGap: "70px"
-            }}
-         >
-            {
-               cards.map(
-                  card =>
-                     <Card
-                        header={card.header}
-                        image={card.image}
-                        details={card.details}
-                        to={card.to}
-                     />
-               )
-            }
-         </Row>
-      </Container> */}
+               {
+                  cards.map(
+                     (card, index) =>
+                        <Card
+                           header={card.header}
+                           image={card.image}
+                           details={card.details}
+                           to={card.to}
+                           index={index}
+                           isActive={active === index}
+                           setActive={setActive}
+                        />
+                  )
+               }
+            </Row>
+         </Container>
       </>
    );
 }

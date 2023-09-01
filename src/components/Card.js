@@ -1,7 +1,7 @@
 import { Card, Image } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-function myCard({ header, image, details, to }) {
+function myCard({ header, image, details, to, index, isActive, setActive }) {
    return (
       <Link to={to}>
          <Card
@@ -9,10 +9,12 @@ function myCard({ header, image, details, to }) {
                width: "100%",
                maxWidth: "505px",
                height: "100%",
-               boxShadow: "1px 1px 5px gray",
-               // hover "5px 5px 5px gray"
+               boxShadow: isActive ? "10px 10px 5px #80808080" : "1px 1px 5px #808080",
+               transitionDuration: "0.2s",
             }}
-            className='text-start px-4 py-4'
+            className='text-start p-4'
+            onMouseEnter={() => setActive(index)}
+            onMouseLeave={() => setActive(null)}
          >
             <Card.Title
                style={{
