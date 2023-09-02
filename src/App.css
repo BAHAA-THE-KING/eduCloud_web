@@ -109,15 +109,12 @@ a {
    width: 100px;
    height: 100vh;
    width: 300px;
-   /* transition: .4s; */
+   transition: .2s;
    padding-left: 10px;
 }
 .side-navbar-nx {
    width: 85px !important;
    padding-left: 0px !important;
-}
-.nav-upper .side-navbar-nx {
-
 }
 button {
    background: none;
@@ -190,7 +187,7 @@ button {
 .icon {
    z-index: 2;
 }
-.menu-item .icon::before {
+.menu-item .icon::before.active {
    content: '';
    position: absolute;
    width: 5px;
@@ -199,8 +196,8 @@ button {
    border-radius: 5px;
    left: -28px;
 }
-.menu-item .icon::after,
-.logout-icon::after {
+.menu-item .icon::after.active,
+.logout-icon::after.active {
    content: '';
    position: absolute;
    width: 50px;
@@ -218,7 +215,8 @@ button {
    margin-left: 14px;
    transition: .3s;
 }
-.menu-item p:hover {
+.menu-item p:hover,
+.logout p:hover {
    color: #aa5b00 !important;
 }
 .space {

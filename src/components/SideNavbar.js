@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+
+// fonts 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
@@ -13,7 +15,7 @@ function SideNavbar() {
     {
       text: "Home screen",
       icon: faHome,
-      link: "#",
+      link: "/",
     },
     {
       text: "Study plan & calender",
