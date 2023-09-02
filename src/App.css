@@ -214,7 +214,7 @@ button {
 }
 .menu-item p,
 .logout p {
-   line-height: 3;
+   line-height: 4;
    margin-left: 14px;
    transition: .3s;
    font-size: 15px;
