@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 // fonts 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -20,12 +21,12 @@ function SideNavbar() {
     {
       text: "Study plan & calender",
       icon: faCalendar,
-      link: "#",
+      link: "/calendar",
     },
     {
       text: "Add student screen",
       icon: faUserInjured,
-      link: "#",
+      link: "/addstudent",
     },
   ];
 
@@ -36,18 +37,21 @@ function SideNavbar() {
           className={!isExpand ? "burger burger-in" : "burger burger-out"}
           onClick={() => setExpand(!isExpand)}
         >
-          <span> </span>
-          <span> </span>
-          <span> </span>
+          <span></span>
+          <span></span>
+          <span></span>
         </button>
           <div className="nav-menu ">
 					{menuItems.map((item) => (
-						<Link
-							className={isExpand ? "menu-item " : "menu-item menu-item-NX"}							
+						<NavLink           
+            key={item.text}
+            to={item.link}
+							className={isExpand ? "menu-item " : "menu-item menu-item-NX"}				
 						>
-							<div className="icon"><FontAwesomeIcon icon={item.icon} className="fs-3 text-light" /></div>
+							<div className="icon"              
+              ><FontAwesomeIcon icon={item.icon} className="fs-3 text-light" /></div>
 							{isExpand && <p className="text-light ps-3">{item.text}</p>}
-						</Link>
+						</NavLink>
 					))}
 				</div>
       </div>

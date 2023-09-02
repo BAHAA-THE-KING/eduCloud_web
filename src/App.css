@@ -116,6 +116,9 @@ a {
    width: 85px !important;
    padding-left: 0px !important;
 }
+.nav-upper .side-navbar-nx {
+
+}
 button {
    background: none;
    outline: none;
@@ -187,7 +190,7 @@ button {
 .icon {
    z-index: 2;
 }
-.menu-item .icon::before.active {
+.menu-item.active .icon::before {
    content: '';
    position: absolute;
    width: 5px;
@@ -196,8 +199,8 @@ button {
    border-radius: 5px;
    left: -28px;
 }
-.menu-item .icon::after.active,
-.logout-icon::after.active {
+.menu-item.active .icon::after,
+.logout-icon::after {
    content: '';
    position: absolute;
    width: 50px;
