@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
 import { faCalendar } from "@fortawesome/free-solid-svg-icons";
-import { faUserInjured } from "@fortawesome/free-solid-svg-icons";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 
 function SideNavbar() {
   const [isExpand, setExpand] = useState(false);
@@ -25,7 +25,7 @@ function SideNavbar() {
     },
     {
       text: "Add student screen",
-      icon: faUserInjured,
+      icon: faUser,
       link: "/addstudent",
     },
   ];

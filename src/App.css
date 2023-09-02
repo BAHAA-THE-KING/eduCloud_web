@@ -109,7 +109,7 @@ a {
    width: 100px;
    height: 100vh;
    width: 300px;
-   transition: .2s;
+   transition: .3s;
    padding-left: 10px;
 }
 .side-navbar-nx {
@@ -217,6 +217,9 @@ button {
    line-height: 3;
    margin-left: 14px;
    transition: .3s;
+   font-size: 15px;
+   font-weight: bold;
+
 }
 .menu-item p:hover,
 .logout p:hover {
