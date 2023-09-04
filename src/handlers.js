@@ -38,7 +38,13 @@ const ADDABILITYTESTFORM = "/ability-test-form/add";
 const VIEWABILITYTESTFORMS = "/ability-test-form";
 const VIEWABILITYTESTFORMDATA = "/ability-test-form/view/";
 
-const CALENDAR = "/calendar";
+const CALENDAR = {
+   main: "/calendar",
+   subjects: "/subject",
+   school: "/school",
+   class: "/class",
+   study: "/study",
+};
 
 const ACCEPTSTUDENTS = "/student/accept";
 const SELECTSTUDENTS = "/student/select";
@@ -49,6 +55,11 @@ const host = "http://localhost:8000/V1.0";
 
 function getToken() {
    return JSON.parse(localStorage.getItem("auth")).token;
+}
+
+function logOut() {
+   localStorage.removeItem("auth");
+   goTo(LOGIN);
 }
 
 function goTo(path) {
@@ -2268,7 +2279,7 @@ function removeEmployeeRole(id, roles, func) {
 }
 
 export { goTo, HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEES, ADDSTUDENT, VIEWEMPLOYEEDATA, ADDTESTFORM, VIEWTESTFORMS, VIEWTESTFORMDATA, VIEWSTUDENTS, VIEWSTUDENTDATA, ADDTEST, VIEWTESTS, VIEWTESTDATA, ADDGRADE, VIEWGRADES, VIEWGRADEDATA, ADDCLASS, VIEWCLASSES, VIEWCLASSDATA, ADDSUBJECT, VIEWSUBJECTS, VIEWSUBJECTDATA, ADDABILITYTESTFORM, CALENDAR, ACCEPTSTUDENTS, VIEWMARKS, SELECTSTUDENTS, DISTRIBUTESTUDENTS, VIEWABILITYTESTFORMS, VIEWABILITYTESTFORMDATA, ANALYZETESTS };
-export { logIn, getRoles, getSubjects };
+export { logIn, logOut, getRoles, getSubjects };
 export { addEmployee, addTeacher, addSupervisor, addEmployeeRole, getEmployees, getEmployeeData, regeneratePassword, editEmployee, removeEmployeeRole };
 export { addTestForm, getTestForms, getTestFormData, editTestForm };
 export { addTest, getTests, getTestData, editTest };

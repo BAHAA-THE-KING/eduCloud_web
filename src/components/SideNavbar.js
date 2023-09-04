@@ -5,6 +5,8 @@ import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
 import { faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { faUserInjured } from "@fortawesome/free-solid-svg-icons";
+import * as handlers from "../handlers";
+import Swal from "sweetalert2";
 
 function SideNavbar() {
   const [isExpand, setExpand] = useState(false);
@@ -13,12 +15,12 @@ function SideNavbar() {
     {
       text: "Home screen",
       icon: faHome,
-      link: "#",
+      link: handlers.HOME,
     },
     {
       text: "Study plan & calender",
       icon: faCalendar,
-      link: "#",
+      link: handlers.CALENDAR.main + handlers.CALENDAR.school,
     },
     {
       text: "Add student screen",
@@ -38,25 +40,42 @@ function SideNavbar() {
           <span> </span>
           <span> </span>
         </button>
-          <div className="nav-menu ">
-					{menuItems.map((item) => (
-						<Link
-							className={isExpand ? "menu-item " : "menu-item menu-item-NX"}							
-						>
-							<div className="icon"><FontAwesomeIcon icon={item.icon} className="fs-3 text-light" /></div>
-							{isExpand && <p className="text-light ps-3">{item.text}</p>}
-						</Link>
-					))}
-				</div>
+        <div className="nav-menu ">
+          {menuItems.map((item) => (
+            <Link
+              className={isExpand ? "menu-item " : "menu-item menu-item-NX"}
+              to={item.link}
+            >
+              <div className="icon"><FontAwesomeIcon icon={item.icon} className="fs-3 text-light" /></div>
+              {isExpand && <p className="text-light ps-3">{item.text}</p>}
+            </Link>
+          ))}
+        </div>
       </div>
       <div className="nav-menu space">
-      <Link
-							className={isExpand ? "logout " : "logout menu-item-NX"}							
-						>
-							<div className="logout-icon"><FontAwesomeIcon icon={faArrowRightFromBracket} className="fs-3 text-light" /></div>
-							{isExpand && <p className="text-light ps-3">logout</p>}
-						</Link>
-        
+        <Link
+          className={isExpand ? "logout " : "logout menu-item-NX"}
+          onClick={
+            () => {
+              Swal.fire(
+                {
+                  title: "Are you sure you want to log out ?",
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Log out'
+                }
+              ).then(
+                result => result.isConfirmed && handlers.logOut()
+              );
+            }
+          }
+        >
+          <div className="logout-icon"><FontAwesomeIcon icon={faArrowRightFromBracket} className="fs-3 text-light" /></div>
+          {isExpand && <p className="text-light ps-3">logout</p>}
+        </Link>
+
       </div>
     </div>
   );

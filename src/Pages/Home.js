@@ -41,7 +41,7 @@ const cards = [
             {"(address, phone, parents situation, ...)."}
          </>,
       image: "Images/calender.png",
-      to: handlers.CALENDAR
+      to: handlers.CALENDAR.main + handlers.CALENDAR.school
    },
    {
       header: "About us",
@@ -107,6 +107,7 @@ function Home() {
                            index={index}
                            isActive={active === index}
                            setActive={setActive}
+                           key={card.to}
                         />
                   )
                }

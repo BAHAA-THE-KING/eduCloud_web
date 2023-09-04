@@ -1,13 +1,13 @@
 .App {
-  width: 100%;
-  height: 100vh;
-  text-align: center;
+   width: 100%;
+   height: 100vh;
+   text-align: center;
 }
 
 a {
-  color: unset !important;
-  font-style: unset !important;
-  text-decoration: unset !important;
+   color: unset !important;
+   font-style: unset !important;
+   text-decoration: unset !important;
 }
 
 .login {
@@ -78,7 +78,7 @@ a {
 
 .login button {
    margin-top: 15px;
-   padding : 5px;
+   padding: 5px;
    width: 150px;
    display: flex;
    justify-content: space-between;
@@ -112,19 +112,21 @@ a {
    /* transition: .4s; */
    padding-left: 10px;
 }
+
 .side-navbar-nx {
    width: 85px !important;
    padding-left: 0px !important;
 }
-.nav-upper .side-navbar-nx {
 
-}
+.nav-upper .side-navbar-nx {}
+
 button {
    background: none;
    outline: none;
    border: none;
    margin: auto;
 }
+
 .side-navbar .burger {
    cursor: pointer;
    height: 71px;
@@ -135,6 +137,7 @@ button {
    flex-direction: column;
    padding-left: 21px;
 }
+
 .side-navbar .burger span {
    display: block;
    margin-top: 5px;
@@ -143,6 +146,7 @@ button {
    width: 30px;
    transition: .3s;
 }
+
 .side-navbar .burger span:hover {
    color: #aa5b00 !important;
 }
@@ -153,16 +157,19 @@ button {
    transform: translate(-3px, 8px) rotate(45deg);
    margin-bottom: 5.3px;
 }
+
 .burger-out span:nth-child(2) {
    display: none;
 }
+
 .burger-out span:nth-child(3) {
    width: 35px;
    transform: translate(-3px, -8px) rotate(-45deg);
 }
+
 .nav-menu {
    grid-template-rows: repeat(7, 1fr);
-	margin-top: 50px;
+   margin-top: 50px;
    margin-right: 5px;
 }
 
@@ -175,9 +182,11 @@ button {
    border-radius: 10px;
    margin-bottom: 15px;
 }
+
 .menu-item-NX {
    padding-left: 10px;
 }
+
 .menu-item .icon,
 .logout-icon {
    position: relative;
@@ -186,10 +195,12 @@ button {
    align-items: center;
    z-index: 2;
 }
+
 .menu-item svg,
 .icon {
    z-index: 2;
 }
+
 .menu-item .icon::before {
    content: '';
    position: absolute;
@@ -199,6 +210,7 @@ button {
    border-radius: 5px;
    left: -28px;
 }
+
 .menu-item .icon::after,
 .logout-icon::after {
    content: '';
@@ -206,28 +218,34 @@ button {
    width: 50px;
    height: 50px;
    background-color: #FEB25B;
-   transform: translate(-50%,-50%);
+   transform: translate(-50%, -50%);
    left: 50%;
    top: 50%;
    z-index: -1;
    border-radius: 50%;
 }
+
 .menu-item p,
 .logout p {
    line-height: 3;
    margin-left: 14px;
    transition: .3s;
 }
+
 .menu-item p:hover {
    color: #aa5b00 !important;
 }
+
 .space {
    margin-top: 300px;
 }
-.logout-icon::after  {
-   background-color: #644be3  !important;
+
+.logout-icon::after {
+   background-color: #644be3 !important;
 }
+
 .logout p {
    line-height: 3.3;
 }
+
 /* end navbar */
