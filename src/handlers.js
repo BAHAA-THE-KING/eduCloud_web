@@ -2278,16 +2278,16 @@ function removeEmployeeRole(id, roles, func) {
       );
 }
 
-export { goTo, HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEES, ADDSTUDENT, VIEWEMPLOYEEDATA, ADDTESTFORM, VIEWTESTFORMS, VIEWTESTFORMDATA, VIEWSTUDENTS, VIEWSTUDENTDATA, ADDTEST, VIEWTESTS, VIEWTESTDATA, ADDGRADE, VIEWGRADES, VIEWGRADEDATA, ADDCLASS, VIEWCLASSES, VIEWCLASSDATA, ADDSUBJECT, VIEWSUBJECTS, VIEWSUBJECTDATA, ADDABILITYTESTFORM, CALENDAR, ACCEPTSTUDENTS, VIEWMARKS, SELECTSTUDENTS, DISTRIBUTESTUDENTS, VIEWABILITYTESTFORMS, VIEWABILITYTESTFORMDATA, ANALYZETESTS };
-export { logIn, logOut, getRoles, getSubjects };
-export { addEmployee, addTeacher, addSupervisor, addEmployeeRole, getEmployees, getEmployeeData, regeneratePassword, editEmployee, removeEmployeeRole };
-export { addTestForm, getTestForms, getTestFormData, editTestForm };
-export { addTest, getTests, getTestData, editTest };
-export { addStudent, addAbsents, getStudents, getStudentData };
-export { addGrade, getGrades, getGradeData, editGrade };
-export { addClass, getClassData, editClass };
-export { addSubject, getSubjectData, editSubject };
-export { addAbilityTestForm, getAbilityTests };
-export { addCalendar, getBaseCalendar, editCalendar };
-export { getCandidateToOfficial, addCandidateToOfficial, addStudentsToClasses, addStudentsToClassesAutomatically };
-export { addMarks, getMarks, getRemainingStudents, editMark };
+export  { goTo, HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEES, ADDSTUDENT, VIEWEMPLOYEEDATA, ADDTESTFORM, VIEWTESTFORMS, VIEWTESTFORMDATA, VIEWSTUDENTS, VIEWSTUDENTDATA, ADDTEST, VIEWTESTS, VIEWTESTDATA, ADDGRADE, VIEWGRADES, VIEWGRADEDATA, ADDCLASS, VIEWCLASSES, VIEWCLASSDATA, ADDSUBJECT, VIEWSUBJECTS, VIEWSUBJECTDATA, ADDABILITYTESTFORM, CALENDAR, ACCEPTSTUDENTS, VIEWMARKS, SELECTSTUDENTS, DISTRIBUTESTUDENTS, VIEWABILITYTESTFORMS, VIEWABILITYTESTFORMDATA, ANALYZETESTS };
+export  { logIn, logOut, getRoles, getSubjects };
+export  { addEmployee, addTeacher, addSupervisor, addEmployeeRole, getEmployees, getEmployeeData, regeneratePassword, editEmployee, removeEmployeeRole };
+export  { addTestForm, getTestForms, getTestFormData, editTestForm };
+export  { addTest, getTests, getTestData, editTest };
+export  { addStudent, addAbsents, getStudents, getStudentData };
+export  { addGrade, getGrades, getGradeData, editGrade };
+export  { addClass, getClassData, editClass };
+export  { addSubject, getSubjectData, editSubject };
+export  { addAbilityTestForm, getAbilityTests };
+export  { addCalendar, getBaseCalendar, editCalendar };
+export  { getCandidateToOfficial, addCandidateToOfficial, addStudentsToClasses, addStudentsToClassesAutomatically };
+export  { addMarks, getMarks, getRemainingStudents, editMark };
