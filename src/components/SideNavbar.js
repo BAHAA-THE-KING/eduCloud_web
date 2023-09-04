@@ -1,10 +1,17 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+
+//import routes from handler.js
+import { ADDSTUDENT } from "../handlers.js";
+
+
+// fonts from fontawsome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
 import { faCalendar } from "@fortawesome/free-solid-svg-icons";
-import { faUserInjured } from "@fortawesome/free-solid-svg-icons";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 import * as handlers from "../handlers";
 import Swal from "sweetalert2";
 
@@ -24,8 +31,8 @@ function SideNavbar() {
     },
     {
       text: "Add student screen",
-      icon: faUserInjured,
-      link: "#",
+      icon: faUser,
+      link: ADDSTUDENT,
     },
   ];
 
@@ -36,19 +43,22 @@ function SideNavbar() {
           className={!isExpand ? "burger burger-in" : "burger burger-out"}
           onClick={() => setExpand(!isExpand)}
         >
-          <span> </span>
-          <span> </span>
-          <span> </span>
+          <span></span>
+          <span></span>
+          <span></span>
         </button>
         <div className="nav-menu ">
           {menuItems.map((item) => (
-            <Link
-              className={isExpand ? "menu-item " : "menu-item menu-item-NX"}
+            <NavLink
+              key={item.text}
               to={item.link}
+              className={isExpand ? "menu-item " : "menu-item menu-item-NX"}
             >
-              <div className="icon"><FontAwesomeIcon icon={item.icon} className="fs-3 text-light" /></div>
+              <div className="icon">
+                <FontAwesomeIcon icon={item.icon} className="fs-3 text-light" />
+              </div>
               {isExpand && <p className="text-light ps-3">{item.text}</p>}
-            </Link>
+            </NavLink>
           ))}
         </div>
       </div>

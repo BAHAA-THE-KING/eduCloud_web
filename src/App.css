@@ -1,3 +1,36 @@
+:root {
+   --mainRed: #FF0000;
+   --mainBlue: #71B4E7;
+   --mainLightPurple: #D9D2FF;
+   --mainGray: #BBBBBB;
+   --mainPurple: #2A1F60;
+}
+
+/* classes for colors */
+.text-red {
+   color: var(--mainRed) !important;
+}
+
+.text-blue {
+   color: var(--mainBlue) !important;
+}
+
+.text-light-purple {
+   color: var(--mainLightPurple) !important;
+}
+
+.text-gray {
+   color: var(--mainGray) !important;
+}
+
+.text-purple {
+   color: var(--mainPurple) !important;
+}
+
+.pointer {
+   cursor: pointer;
+}
+
 .App {
    width: 100%;
    height: 100vh;
@@ -109,7 +142,7 @@ a {
    width: 100px;
    height: 100vh;
    width: 300px;
-   /* transition: .4s; */
+   transition: .3s;
    padding-left: 10px;
 }
 
@@ -201,7 +234,7 @@ button {
    z-index: 2;
 }
 
-.menu-item .icon::before {
+.menu-item.active .icon::before {
    content: '';
    position: absolute;
    width: 5px;
@@ -211,7 +244,7 @@ button {
    left: -28px;
 }
 
-.menu-item .icon::after,
+.menu-item.active .icon::after,
 .logout-icon::after {
    content: '';
    position: absolute;
@@ -227,12 +260,16 @@ button {
 
 .menu-item p,
 .logout p {
-   line-height: 3;
+   line-height: 4;
    margin-left: 14px;
    transition: .3s;
+   font-size: 15px;
+   font-weight: bold;
+
 }
 
-.menu-item p:hover {
+.menu-item p:hover,
+.logout p:hover {
    color: #aa5b00 !important;
 }
 
@@ -249,3 +286,32 @@ button {
 }
 
 /* end navbar */
+
+
+/* start grades and classes */
+
+.grade {
+   max-width: 1219px !important;
+}
+
+.item {
+   height: fit-content;
+   padding: 15px;
+}
+
+.item.active {
+   background-color: var(--mainPurple);
+   color: white !important;
+   border-radius: 10px;
+}
+
+.add-grade-btn {
+   box-shadow: rgb(128, 128, 128) 1px 1px 5px;
+   width: 200px;
+   height: fit-content;
+   text-align: left;
+   padding: 5px 0 5px 16px;
+   margin-top: 42px;
+}
+
+/* end grades and classes */
