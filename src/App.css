@@ -268,7 +268,7 @@ button {
 /* start grades and classes */
 
 .grade {
-   max-width: 1219px;
+   max-width: 1219px !important;
 }
 .item {
    height: fit-content;
