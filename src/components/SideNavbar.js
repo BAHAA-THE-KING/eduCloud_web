@@ -2,7 +2,11 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 
-// fonts 
+//import routes from handler.js
+import {ADDSTUDENT} from "../handlers.js";
+
+
+// fonts from fontawsome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
@@ -26,7 +30,7 @@ function SideNavbar() {
     {
       text: "Add student screen",
       icon: faUser,
-      link: "/addstudent",
+      link: ADDSTUDENT,
     },
   ];
 
