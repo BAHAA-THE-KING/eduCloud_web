@@ -27,7 +27,7 @@ function SideNavbar() {
     {
       text: "Study plan & calender",
       icon: faCalendar,
-      link: handlers.CALENDAR.main + handlers.CALENDAR.school,
+      link: handlers.CALENDAR.main,
     },
     {
       text: "Add student screen",
