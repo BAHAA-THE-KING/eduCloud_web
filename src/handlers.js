@@ -64,7 +64,7 @@ function proccess(url, method, headers, body, signal, onSuccess, onError) {
             return e.json();
          }
       )
-      .then(onSuccess)
+      .then(({ data }) => onSuccess(data))
       .catch(
          err => {
             if (err === "Server Error") {
