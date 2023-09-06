@@ -8,10 +8,9 @@ import { HOME, CALENDAR, ADDSTUDENT, logOut } from "../handlers.js";
 
 // fonts from fontawsome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-import { faHome } from "@fortawesome/free-solid-svg-icons";
-import { faCalendar } from "@fortawesome/free-solid-svg-icons";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRightFromBracket, faHome, faCalendar, faUser } from "@fortawesome/free-solid-svg-icons";
+
+import * as handlers from "../handlers";
 import Swal from "sweetalert2";
 
 function SideNavbar() {

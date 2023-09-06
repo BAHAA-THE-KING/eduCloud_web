@@ -31,6 +31,26 @@
    color: var(--mainPurple) !important;
 }
 
+.bg-red {
+   color: var(--mainRed) !important;
+}
+
+.bg-blue {
+   color: var(--mainBlue) !important;
+}
+
+.bg-light-purple {
+   color: var(--mainLightPurple) !important;
+}
+
+.bg-gray {
+   color: var(--mainGray) !important;
+}
+
+.bg-purple {
+   color: var(--mainPurple) !important;
+}
+
 .pointer {
    cursor: pointer;
 }
@@ -294,29 +314,31 @@ button {
 }
 
 .logout p {
-   line-height: 3.3;
+   line-height: 3.3 !;
 }
 
 /* end navbar */
 
 
-/* start grades and classes */
+/* start class info*/
+.class-info {
+   background-color: var();
+}
+/* end class info*/
 
+/* start grades and classes */
 .grade {
    max-width: 1219px !important;
 }
-
 .item {
    height: fit-content;
    padding: 15px;
 }
-
 .item.active {
    background-color: var(--mainPurple);
    color: white !important;
-   border-radius: 10px;
+   border-radius: 20px;
 }
-
 .add-grade-btn {
    box-shadow: rgb(128, 128, 128) 1px 1px 5px;
    width: 200px;
@@ -325,5 +347,33 @@ button {
    padding: 5px 0 5px 16px;
    margin-top: 42px;
 }
-
+.grade-menu {
+   margin-top: 60px;
+}
+.grade-number {
+   border-bottom: 3px solid var(--mainGray);
+   margin-left: 100px;
+}
+.dropdown-menu {
+   position: absolute;
+   inset: 0px auto auto 0px;
+   margin: 0px;
+   transform: translate3d(0, 60px, 0px) !important;
+   width: 100%;
+   text-align: center !important;
+   background-color: #C0C0C0 !important;
+   padding-top: 25px !important;
+   transition: 10s !important;
+}
+.dropdown-menu .class {
+   background-color: white;
+   width: -moz-fit-content;
+   width: fit-content;
+   margin: auto;
+   padding: 5px 55px;
+   border-radius: 10px;
+   margin-bottom: 20px;
+   color: var(--mainPurple) !important;
+   font-size: 17px !important;
+}
 /* end grades and classes */
