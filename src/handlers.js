@@ -53,6 +53,41 @@ const DISTRIBUTESTUDENTS = "/student/distribute";
 const host = "http://localhost:8000/V1.0";
 //const host = "https://bdh.point-dev.nl/V1.0";
 
+function proccess(url, method, headers, body, signal, onSuccess, onError) {
+   fetch(url, { method, headers, body, signal })
+      .then(
+         e => {
+            if (e.status >= 500)
+               throw "Server Error";
+            else if (e.status !== 200)
+               throw e.json();
+            return e.json();
+         }
+      )
+      .then(onSuccess)
+      .catch(
+         err => {
+            if (err === "Server Error") {
+               onError("خطأ في السيرفر، تواصل مع المطور لحل المشكلة")
+            } else if (err instanceof Promise) {
+               err.then(
+                  error => {
+                     if (error === "Unauthenticated.") {
+                        goTo(LOGIN);
+                     } else {
+                        console.log(error);
+                        onError(error);
+                     }
+                  }
+               )
+            } else {
+               onError(err);
+            }
+            console.log(err);
+         }
+      );
+}
+
 function getToken() {
    return JSON.parse(localStorage.getItem("auth")).token;
 }
@@ -225,7 +260,7 @@ function getClassData(id, func) {
       );
 }
 
-function getSubjects(func) {
+function getClassesAndSubjects(controller, onSuccess, onError) {
    const path = "/general/getAllGradesWithClassesAndSubjects";
 
    const url = host + path;
@@ -238,31 +273,9 @@ function getSubjects(func) {
       "Authorization": "Bearer " + getToken()
    };
 
-   fetch(url, { method, headers })
-      .then(
-         e => {
-            if (e.status >= 500) {
-               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
-               return;
-            }
-            return e.json();
-         }
-      )
-      .then(
-         e => {
-            if (e["message"] === "Unauthenticated.") {
-               goTo(LOGIN);
-            } else if (e.message === "Success!") {
-               func(e.data);
-            }
-         }
-      )
-      .catch(
-         err => {
-            alert("An Error Occured.");
-            console.log(err);
-         }
-      );
+   const signal = controller.signal;
+
+   proccess(url, method, headers, null, signal, onSuccess, onError);
 }
 
 function getSubjectData(id, func) {
@@ -654,7 +667,7 @@ function getStudents(search, page, grade, theClass, hasClass, func) {
       );
 }
 
-function getBaseCalendar(subjectId, func) {
+function getBaseCalendar(subjectId) {
    const path = "/supervisor/getCalendarOfSubject/" + subjectId;
 
    const url = host + path;
@@ -667,31 +680,45 @@ function getBaseCalendar(subjectId, func) {
       "Authorization": "Bearer " + getToken()
    };
 
-   fetch(url, { method, headers })
+   return fetch(url, { method, headers })
       .then(
          e => {
             if (e.status >= 500) {
-               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
-               return;
+               throw "Server Error";
             }
             return e.json();
          }
       )
-      .then(
-         e => {
-            if (e["message"] === "Unauthenticated.") {
-               goTo(LOGIN);
-            } else if (e.message === "calendar retrieved successfully") {
-               func(e.data);
-            }
-         }
-      )
       .catch(
          err => {
-            alert("An Error Occured.");
-            console.log(err);
+            if (err === "Server Error") {
+               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة")
+            }
          }
       );
+}
+
+function getProgressCalendar(grades, subjects, classes, controller, onSuccess, onError) {
+   const path = "/supervisor/getProgressOfClass?";
+
+   const params = [];
+   if (!!grades.length) grades.map((e, i) => params.push("grade_ids[" + i + "]=" + e));
+   if (!!subjects.length) subjects.map((e, i) => params.push("subject_ids[" + i + "]=" + e));
+   if (!!classes.length) classes.map((e, i) => params.push("g_class_ids[" + i + "]=" + e));
+
+   const url = host + path + params.join("&");
+
+   const method = "GET";
+
+   const headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + getToken()
+   };
+
+   const signal = controller.signal;
+
+   proccess(url, method, headers, null, signal, onSuccess, onError);
 }
 
 function getCandidateToOfficial(grade, minNum, func) {
@@ -896,7 +923,7 @@ function getStudentData(id, func) {
       );
 }
 
-function logIn(name, password) {
+function logIn(name, password, controller, onSuccess, onError) {
    const path = "/auth/login";
 
    const url = host + path;
@@ -910,34 +937,9 @@ function logIn(name, password) {
 
    const body = JSON.stringify({ "user_name": name, "password": password });
 
-   fetch(url, { method, headers, body })
-      .then(
-         e => {
-            if (e.status >= 500) {
-               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
-               return;
-            }
-            return e.json();
-         }
-      )
-      .then(
-         e => {
-            if (e.message === "logged in successfully") {
-               localStorage.setItem("auth", JSON.stringify(e.data));
-               goTo(HOME);
-            } else if (e.message.indexOf("(") >= 0) {
-               alert(e.errors.user_name[0] + "\n" + e.errors.password[0]);
-            } else {
-               alert(e.message);
-            }
-         }
-      )
-      .catch(
-         err => {
-            alert("An Error Occured.");
-            console.log(err);
-         }
-      );
+   const signal = controller.signal;
+
+   proccess(url, method, headers, body, signal, onSuccess, onError);
 }
 
 function addEmployee(name, surname, roles, func) {
@@ -2278,16 +2280,16 @@ function removeEmployeeRole(id, roles, func) {
       );
 }
 
-export  { goTo, host ,HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEES, ADDSTUDENT, VIEWEMPLOYEEDATA, ADDTESTFORM, VIEWTESTFORMS, VIEWTESTFORMDATA, VIEWSTUDENTS, VIEWSTUDENTDATA, ADDTEST, VIEWTESTS, VIEWTESTDATA, ADDGRADE, VIEWGRADES, VIEWGRADEDATA, ADDCLASS, VIEWCLASSES, VIEWCLASSDATA, ADDSUBJECT, VIEWSUBJECTS, VIEWSUBJECTDATA, ADDABILITYTESTFORM, CALENDAR, ACCEPTSTUDENTS, VIEWMARKS, SELECTSTUDENTS, DISTRIBUTESTUDENTS, VIEWABILITYTESTFORMS, VIEWABILITYTESTFORMDATA, ANALYZETESTS };
-export  { logIn, logOut, getRoles, getSubjects };
-export  { addEmployee, addTeacher, addSupervisor, addEmployeeRole, getEmployees, getEmployeeData, regeneratePassword, editEmployee, removeEmployeeRole };
-export  { addTestForm, getTestForms, getTestFormData, editTestForm };
-export  { addTest, getTests, getTestData, editTest };
-export  { addStudent, addAbsents, getStudents, getStudentData };
-export  { addGrade, getGrades, getGradeData, editGrade };
-export  { addClass, getClassData, editClass };
-export  { addSubject, getSubjectData, editSubject };
-export  { addAbilityTestForm, getAbilityTests };
-export  { addCalendar, getBaseCalendar, editCalendar };
-export  { getCandidateToOfficial, addCandidateToOfficial, addStudentsToClasses, addStudentsToClassesAutomatically };
-export  { addMarks, getMarks, getRemainingStudents, editMark };
+export { goTo, HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEES, ADDSTUDENT, VIEWEMPLOYEEDATA, ADDTESTFORM, VIEWTESTFORMS, VIEWTESTFORMDATA, VIEWSTUDENTS, VIEWSTUDENTDATA, ADDTEST, VIEWTESTS, VIEWTESTDATA, ADDGRADE, VIEWGRADES, VIEWGRADEDATA, ADDCLASS, VIEWCLASSES, VIEWCLASSDATA, ADDSUBJECT, VIEWSUBJECTS, VIEWSUBJECTDATA, ADDABILITYTESTFORM, CALENDAR, ACCEPTSTUDENTS, VIEWMARKS, SELECTSTUDENTS, DISTRIBUTESTUDENTS, VIEWABILITYTESTFORMS, VIEWABILITYTESTFORMDATA, ANALYZETESTS };
+export { logIn, logOut, getRoles, getClassesAndSubjects };
+export { addEmployee, addTeacher, addSupervisor, addEmployeeRole, getEmployees, getEmployeeData, regeneratePassword, editEmployee, removeEmployeeRole };
+export { addTestForm, getTestForms, getTestFormData, editTestForm };
+export { addTest, getTests, getTestData, editTest };
+export { addStudent, addAbsents, getStudents, getStudentData };
+export { addGrade, getGrades, getGradeData, editGrade };
+export { addClass, getClassData, editClass };
+export { addSubject, getSubjectData, editSubject };
+export { addAbilityTestForm, getAbilityTests };
+export { addCalendar, getBaseCalendar, editCalendar, getProgressCalendar };
+export { getCandidateToOfficial, addCandidateToOfficial, addStudentsToClasses, addStudentsToClassesAutomatically };
+export { addMarks, getMarks, getRemainingStudents, editMark };

@@ -40,7 +40,7 @@ const cards = [
             <br />
             {"(address, phone, parents situation, ...)."}
          </>,
-      image: "Images/calender.png",
+      image: "Images/calendar.png",
       to: handlers.CALENDAR.main + handlers.CALENDAR.school
    },
    {
