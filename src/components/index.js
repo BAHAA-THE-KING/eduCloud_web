@@ -1,8 +1,8 @@
-import PasswordInput from "./PasswordInput/PasswordInput";
-import TextInput from "./TextInput/TextInput";
+import TextInput from "./TextInput";
 import myCard from "./Card";
 import SideNavbar from "./SideNavbar";
 import Cell from "./Cell";
 import CalendarHeader from "./CalendarHeader";
+import List from "./List";
 
-export { PasswordInput, TextInput, myCard as Card, SideNavbar, Cell, CalendarHeader };
+export { TextInput, myCard as Card, SideNavbar, Cell, CalendarHeader, List };

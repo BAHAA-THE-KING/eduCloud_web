@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 
 //import routes from handler.js
-import { ADDSTUDENT } from "../handlers.js";
+import { HOME, CALENDAR, ADDSTUDENT, logOut } from "../handlers.js";
 
 
 // fonts from fontawsome
@@ -12,7 +12,6 @@ import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
 import { faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import * as handlers from "../handlers";
 import Swal from "sweetalert2";
 
 function SideNavbar() {
@@ -22,12 +21,12 @@ function SideNavbar() {
     {
       text: "Home screen",
       icon: faHome,
-      link: handlers.HOME,
+      link: HOME,
     },
     {
-      text: "Study plan & calender",
+      text: "Study plan & calendar",
       icon: faCalendar,
-      link: handlers.CALENDAR.main,
+      link: CALENDAR.main,
     },
     {
       text: "Add student screen",
@@ -77,7 +76,7 @@ function SideNavbar() {
                   confirmButtonText: 'Log out'
                 }
               ).then(
-                result => result.isConfirmed && handlers.logOut()
+                result => result.isConfirmed && logOut()
               );
             }
           }

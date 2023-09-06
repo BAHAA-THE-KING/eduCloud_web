@@ -1,4 +1,4 @@
-import { PasswordInput, TextInput } from '../components';
+import { TextInput } from '../components';
 import { useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -20,8 +20,8 @@ function Login() {
             <FontAwesomeIcon icon={faDoorOpen} className="fs-3 text-light" />
             <span className='fs-3 text-light me-2'>Edu</span>
           </div>
-          <TextInput defaultValue={name} inputHook={setName} enterHook={() => { }} type="user name" hint="اسم المستخدم" />
-          <PasswordInput hook={setPassword} />
+          <TextInput defaultValue={name} inputHook={setName} enterHook={() => { }} type="text" hint="اسم المستخدم" />
+          <TextInput defaultValue={password} inputHook={setPassword} enterHook={() => { }} type="password" hint="كلمة المرور" />
           <button onClick={e => { e.preventDefault(); handlers.logIn(name, password); }}>
             <div className='sbmt'>دخول</div>
             <FontAwesomeIcon icon={faUser} className="fs-5 icon" />

@@ -36,6 +36,7 @@ function CalendarHeader() {
                sections.map(
                   section =>
                      <Link
+                        key={section.to}
                         to={section.to}
                         onClick={() => setPath(section.to)}
                         style={{

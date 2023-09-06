@@ -1,20 +1,25 @@
-function Cell({ active, odd, plans }) {
+function Cell({ plan, odd, active, setActive }) {
    return (
       <div
          style={{
-            width: "160px",
-            paddingLeft: "20px",
             height: "90px",
             paddingTop: "5px",
-            backgroundColor: active ? "#71B4E8" : (odd ? "#D9D2FE" : "#2A1F61"),
+            paddingLeft: "20px",
+            marginTop: "5px",
+            backgroundColor: active.toLocaleDateString("en-Gb") === plan.date.toLocaleDateString("en-Gb") ? "#71B4E8" : (odd ? "#D9D2FE" : "#2A1F61"),
             color: "white",
+            opacity: plan.date.getMonth() === active.getMonth() ? 1 : 0.5,
             display: "flex",
             flexFlow: "nowrap row"
-         }}>
+         }}
+         onClick={() => setActive(plan.date)}
+      >
          <span style={{ flex: "1" }}>
             <h4>
                <b>
-                  31
+                  {
+                     plan.date.toLocaleDateString("en-Gb").slice(0, 2)
+                  }
                </b>
             </h4>
          </span>
@@ -32,9 +37,12 @@ function Cell({ active, odd, plans }) {
                   marginTop: "15px"
                }}>
                {
-                  plans.map(
+                  plan.plans.map(
                      plan =>
-                        <li style={{ marginBottom: "5px" }} key={plan.text}>
+                        <li
+                           key={plan.text}
+                           style={{ marginBottom: "5px" }}
+                        >
                            <div style={{ whiteSpace: "nowrap" }}>
                               <span
                                  style={{

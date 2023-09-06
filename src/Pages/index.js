@@ -1,6 +1,6 @@
 import Login from "./Login";
 import Home from "./Home";
-import SchoolCalender from "./SchoolCalender";
-import SubjectsCalender from "./SubjectsCalender";
+import SchoolCalendar from "./SchoolCalendar";
+import SubjectsCalendar from "./SubjectsCalendar";
 
-export { Login, Home, SchoolCalender, SubjectsCalender };
+export { Login, Home, SchoolCalendar, SubjectsCalendar };
