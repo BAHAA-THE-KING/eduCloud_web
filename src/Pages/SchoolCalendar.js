@@ -29,7 +29,7 @@ function SchoolCalendar() {
                setAllSubjects(data.map(e => e.subjects).flat());
             },
             error => {
-               Swal.fire(error)
+               Swal.fire(error);
             }
          );
       },
@@ -47,7 +47,7 @@ function SchoolCalendar() {
             newController,
             setAllPlans,
             error => {
-               Swal.fire(error)
+               Swal.fire(error);
             }
          );
       },
