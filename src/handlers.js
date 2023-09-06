@@ -53,8 +53,8 @@ const DISTRIBUTESTUDENTS = "/student/distribute";
 const host = "http://localhost:8000/V1.0";
 //const host = "https://bdh.point-dev.nl/V1.0";
 
-function proccess(url, method, headers, signal, onSuccess, onError) {
-   fetch(url, { method, headers, signal })
+function proccess(url, method, headers, body, signal, onSuccess, onError) {
+   fetch(url, { method, headers, body, signal })
       .then(
          e => {
             if (e.status >= 500)
@@ -260,7 +260,7 @@ function getClassData(id, func) {
       );
 }
 
-function getSubjects(controller, onSuccess, onError) {
+function getClassesAndSubjects(controller, onSuccess, onError) {
    const path = "/general/getAllGradesWithClassesAndSubjects";
 
    const url = host + path;
@@ -275,7 +275,7 @@ function getSubjects(controller, onSuccess, onError) {
 
    const signal = controller.signal;
 
-   proccess(url, method, headers, signal, onSuccess, onError);
+   proccess(url, method, headers, null, signal, onSuccess, onError);
 }
 
 function getSubjectData(id, func) {
@@ -718,7 +718,7 @@ function getProgressCalendar(grades, subjects, classes, controller, onSuccess, o
 
    const signal = controller.signal;
 
-   proccess(url, method, headers, signal, onSuccess, onError);
+   proccess(url, method, headers, null, signal, onSuccess, onError);
 }
 
 function getCandidateToOfficial(grade, minNum, func) {
@@ -923,7 +923,7 @@ function getStudentData(id, func) {
       );
 }
 
-function logIn(name, password) {
+function logIn(name, password, controller, onSuccess, onError) {
    const path = "/auth/login";
 
    const url = host + path;
@@ -937,34 +937,9 @@ function logIn(name, password) {
 
    const body = JSON.stringify({ "user_name": name, "password": password });
 
-   fetch(url, { method, headers, body })
-      .then(
-         e => {
-            if (e.status >= 500) {
-               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
-               return;
-            }
-            return e.json();
-         }
-      )
-      .then(
-         e => {
-            if (e.message === "logged in successfully") {
-               localStorage.setItem("auth", JSON.stringify(e.data));
-               goTo(HOME);
-            } else if (e.message.indexOf("(") >= 0) {
-               alert(e.errors.user_name[0] + "\n" + e.errors.password[0]);
-            } else {
-               alert(e.message);
-            }
-         }
-      )
-      .catch(
-         err => {
-            alert("An Error Occured.");
-            console.log(err);
-         }
-      );
+   const signal = controller.signal;
+
+   proccess(url, method, headers, body, signal, onSuccess, onError);
 }
 
 function addEmployee(name, surname, roles, func) {
@@ -2306,7 +2281,7 @@ function removeEmployeeRole(id, roles, func) {
 }
 
 export { goTo, HOME, LOGIN, ADDEMPLOYEE, ADDTEACHER, ADDSUPERVISOR, VIEWEMPLOYEES, ADDSTUDENT, VIEWEMPLOYEEDATA, ADDTESTFORM, VIEWTESTFORMS, VIEWTESTFORMDATA, VIEWSTUDENTS, VIEWSTUDENTDATA, ADDTEST, VIEWTESTS, VIEWTESTDATA, ADDGRADE, VIEWGRADES, VIEWGRADEDATA, ADDCLASS, VIEWCLASSES, VIEWCLASSDATA, ADDSUBJECT, VIEWSUBJECTS, VIEWSUBJECTDATA, ADDABILITYTESTFORM, CALENDAR, ACCEPTSTUDENTS, VIEWMARKS, SELECTSTUDENTS, DISTRIBUTESTUDENTS, VIEWABILITYTESTFORMS, VIEWABILITYTESTFORMDATA, ANALYZETESTS };
-export { logIn, logOut, getRoles, getSubjects };
+export { logIn, logOut, getRoles, getClassesAndSubjects };
 export { addEmployee, addTeacher, addSupervisor, addEmployeeRole, getEmployees, getEmployeeData, regeneratePassword, editEmployee, removeEmployeeRole };
 export { addTestForm, getTestForms, getTestFormData, editTestForm };
 export { addTest, getTests, getTestData, editTest };

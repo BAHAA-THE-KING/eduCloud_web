@@ -4,13 +4,14 @@ import * as handlers from "../handlers.js";
 //font awesome icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload, faClose } from "@fortawesome/free-solid-svg-icons";
+
 import Swal from "sweetalert2";
 
 function ShowGrades() {
   const [grade, setGrade] = useState([]);
 
   useEffect(() => {
-    handlers.getSubjects(
+    handlers.getClassesAndSubjects(
       new AbortController(),
       setGrade,
       error => {

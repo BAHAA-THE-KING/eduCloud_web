@@ -6,8 +6,11 @@ import { faDoorOpen } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 import * as handlers from '../handlers';
+import { useNavigate } from 'react-router';
+import Swal from 'sweetalert2';
 
 function Login() {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   return (
@@ -22,7 +25,22 @@ function Login() {
           </div>
           <TextInput defaultValue={name} inputHook={setName} enterHook={() => { }} type="text" hint="اسم المستخدم" />
           <TextInput defaultValue={password} inputHook={setPassword} enterHook={() => { }} type="password" hint="كلمة المرور" />
-          <button onClick={e => { e.preventDefault(); handlers.logIn(name, password); }}>
+          <button onClick={
+            e => {
+              e.preventDefault();
+              handlers.logIn(
+                name,
+                password,
+                new AbortController(),
+                data => {
+                  localStorage.setItem("auth", JSON.stringify(data));
+                  navigate(handlers.HOME);
+                },
+                error => {
+                  Swal.fire(error)
+                }
+              );
+            }}>
             <div className='sbmt'>دخول</div>
             <FontAwesomeIcon icon={faUser} className="fs-5 icon" />
           </button>

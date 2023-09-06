@@ -21,7 +21,7 @@ function SchoolCalendar() {
 
    useEffect(
       () => {
-         handlers.getSubjects(
+         handlers.getClassesAndSubjects(
             new AbortController(),
             data => {
                setAllGrades(data);
