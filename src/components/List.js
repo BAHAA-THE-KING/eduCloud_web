@@ -3,7 +3,19 @@ import { Dropdown, Form } from "react-bootstrap";
 function List({ title, opitons, value, setValue }) {
    return (
       <Dropdown style={{ width: "unset" }}>
-         <Dropdown.Toggle variant="secondary">{title}</Dropdown.Toggle>
+         <Dropdown.Toggle
+            className="text-black"
+            style={{
+               width: "200px",
+               backgroundColor: "white",
+               borderRadius: "10px"
+            }}
+            variant="secondary"
+         >
+            <span className="text-gray">
+               {title}
+            </span>
+         </Dropdown.Toggle>
          <Dropdown.Menu>
             {
                opitons.map(
@@ -17,7 +29,9 @@ function List({ title, opitons, value, setValue }) {
                            alignItems: "center"
                         }}
                         onClick={
-                           () => {
+                           e => {
+                              e.preventDefault();
+                              e.stopPropagation();
                               let newValue;
                               if (checked) {
                                  newValue = value.filter(e => e !== option.id);

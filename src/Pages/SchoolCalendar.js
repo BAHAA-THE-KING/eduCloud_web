@@ -82,7 +82,7 @@ function SchoolCalendar() {
       <>
          <Container className="h-100" fluid style={{ marginTop: "10px" }}>
             <Row className="w-100" style={{ flexFlow: "nowrap row", justifyContent: "space-between" }}>
-               <div style={{ width: "500px", display: "flex" }}>
+               <div style={{ width: "unset", display: "flex" }}>
                   <Button
                      onClick={() => setCurrentDate(new Date())}
                      variant="secondary"
