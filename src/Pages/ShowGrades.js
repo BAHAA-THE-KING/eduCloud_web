@@ -15,11 +15,6 @@ function ShowGrades() {
   const [grade, setGrade] = useState([]);
   const [activeEditGrade, setActiveEditGrade] = useState({});
 
-  // passit from component as prop
-  const setActive = (idd) => {
-    setActiveEditGrade({ acitve: true, id: idd });
-  };
-
   useEffect(() => {
     handlers.getClassesAndSubjects(
       new AbortController(),
@@ -117,7 +112,7 @@ function ShowGrades() {
                 <div className={(activeEditGrade.id == data.id && activeEditGrade.active) ? "layer" : "class-info d-none"}></div>
                 <div className={(activeEditGrade.id == data.id && activeEditGrade.active) ? "class-info" : "class-info d-none"}>
                   <div className="d-flex justify-content-end">
-
+                    
                     <FontAwesomeIcon
                       icon={faDownload}
                       className="fs-3 text-purple pointer"
@@ -126,7 +121,7 @@ function ShowGrades() {
                       icon={faClose}
                       className=" ms-5 fs-3 fw-bold text-purple pointer"
                       onClick={() => {
-                        setActiveEditGrade({ active: false, id: data.id })
+                        setActiveEditGrade({active: false, id : data.id})
                       }}
                     />
                   </div>

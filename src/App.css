@@ -291,7 +291,7 @@ button {
    line-height: 4;
    margin-left: 14px;
    transition: .3s;
-   font-size: 15px;
+   font-size: 14px;
    font-weight: bold;
 
 }
@@ -355,15 +355,44 @@ button {
 
 
 /* start class info*/
+.layer {
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background-color: var(--mainGray);
+   opacity: 0.4;
+}
 .class-info {
    position: fixed;
    top: 50%;
    left: 50%;
    transform: translate(-50%, -50%);
-   background-color: var(--mainGray);
+   background-color: white;
+   box-shadow: rgb(128, 128, 128) 1px 1px 5px;
    border-radius: 20px;
    padding: 20px;
    z-index: 10;
+   width: 800px;
+   z-index: 10;
+}
+.class-info input[type="number"],
+.class-info input[type="text"] {
+   text-align: center;
+   outline: none;
+   border: none;
+   box-shadow: rgb(128, 128, 128) 1px 1px 5px;
+}
+.class-info input[type="number"] {
+   width: 45px;
+}
+.class-info input[type="text"] {
+   width: 200px;
+
+}
+.class-info input[type="number"]::-webkit-inner-spin-button {
+   display: none;
 }
 
 /* end class info*/
