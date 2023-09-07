@@ -350,31 +350,9 @@ button {
    margin-left: 100px;
 }
 
-.dropdown-menu {
-   position: absolute;
-   inset: 0px auto auto 0px;
-   margin: 0px;
-   transform: translate3d(0, 60px, 0px) !important;
-   width: 100%;
-   text-align: center !important;
-   background-color: #EDEDED !important;
-   padding-top: 25px !important;
-   height: 193px;
-   overflow: auto;
-   scrollbar-gutter: stable;
-}
 
-.dropdown-menu .class {
-   background-color: white;
-   width: -moz-fit-content;
-   width: fit-content;
-   margin: auto;
-   padding: 5px 55px;
-   border-radius: 10px;
-   margin-bottom: 20px;
-   color: var(--mainPurple) !important;
-   font-size: 17px !important;
-}
+
+
 
 /* start class info*/
 .class-info {
