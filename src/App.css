@@ -7,10 +7,6 @@
 }
 
 /* classes for colors */
-.text-black {
-   color: "black" !important;
-}
-
 .text-red {
    color: var(--mainRed) !important;
 }
@@ -67,16 +63,6 @@ a {
    text-decoration: unset !important;
 }
 
-div.text>input {
-   border: 1.5px gray solid;
-   padding: 5px;
-   border-radius: 50px;
-   font-size: 20px;
-   color: #2A1F60;
-   outline: none;
-   padding-right: 20px;
-}
-
 .login {
    width: 100%;
    height: 100%;
@@ -129,11 +115,13 @@ div.text>input {
    overflow: hidden;
 }
 
-.login div.text {
+.login .text,
+.login .pass {
    margin: 20px;
 }
 
-.login div.text>input {
+.login .inptext,
+.login .inppass {
    width: 300px !important;
 }
 
@@ -324,15 +312,18 @@ button {
 .grade {
    max-width: 1219px !important;
 }
+
 .item {
    height: fit-content;
    padding: 15px;
 }
+
 .item.active {
    background-color: var(--mainPurple);
    color: white !important;
    border-radius: 20px;
 }
+
 .add-grade-btn {
    box-shadow: rgb(128, 128, 128) 1px 1px 5px;
    width: 200px;
@@ -341,13 +332,16 @@ button {
    padding: 5px 0 5px 16px;
    margin-top: 42px;
 }
+
 .grade-menu {
    margin-top: 60px !important;
 }
+
 .grade-number {
    border-bottom: 3px solid var(--mainGray);
    margin-left: 100px;
 }
+
 .dropdown-menu {
    position: absolute;
    inset: 0px auto auto 0px;
@@ -361,6 +355,7 @@ button {
    overflow: auto;
    scrollbar-gutter: stable;
 }
+
 .dropdown-menu .class {
    background-color: white;
    width: -moz-fit-content;
@@ -413,6 +408,7 @@ button {
 .class-info input[type="number"]::-webkit-inner-spin-button {
    display: none;
 }
+
 /* end class info*/
 
 
