@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import * as handlers from "../handlers.js";
-import GradeDropDownMenu from "../components/GradeDropDownMenu.js";
+import { GradeDropDownMenu, Loading } from "../components";
 
 //font awesome icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,20 +12,42 @@ function ShowGrades() {
   const [grade, setGrade] = useState([]);
   const [activeEditGrade, setActiveEditGrade] = useState({});
 
+  const [controller, setControllers] = useReducer(
+    (state, { type, value }) =>
+      type === "stop" ?
+        state.abort()
+        : value,
+    new AbortController()
+  );
+  const [isLoaded, setIsLoaded] = useReducer(
+    (state, { value }) => value,
+    [false]
+  );
+
   // passit from component as prop
   const setActive = (idd) => {
     setActiveEditGrade({ active: true, id: idd });
   };
 
-  useEffect(() => {
-    handlers.getClassesAndSubjects(
-      new AbortController(),
-      setGrade,
-      error => {
-        Swal.fire(error);
-      }
-    );
-  }, []);
+  useEffect(
+    () => {
+      setIsLoaded({ value: false });
+
+      const cont = new AbortController();
+      setControllers({ value: cont });
+
+      handlers.getClassesAndSubjects(
+        controller,
+        setGrade,
+        error => {
+          Swal.fire(error);
+        },
+        () => setIsLoaded({ value: true })
+      );
+      return () => setControllers({ type: "stop" })
+    },
+    []
+  );
 
   const [menu, setMenu] = useState([
     {
@@ -47,6 +69,7 @@ function ShowGrades() {
 
   return (
     <>
+      {isLoaded || <Loading />}
       <div className="container w-100 pt-5 grade student">
         {/* main buttons */}
         <div className="d-flex justify-content-around w-50 fw-bold ms-auto school">
