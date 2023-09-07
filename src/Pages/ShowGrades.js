@@ -19,10 +19,7 @@ function ShowGrades() {
         : value,
     new AbortController()
   );
-  const [isLoaded, setIsLoaded] = useReducer(
-    (state, { value }) => value,
-    [false]
-  );
+  const [isLoaded, setIsLoaded] = useState(false);
 
   // passit from component as prop
   const setActive = (idd) => {
@@ -31,7 +28,7 @@ function ShowGrades() {
 
   useEffect(
     () => {
-      setIsLoaded({ value: false });
+      setIsLoaded(false);
 
       const cont = new AbortController();
       setControllers({ value: cont });
@@ -42,7 +39,7 @@ function ShowGrades() {
         error => {
           Swal.fire(error);
         },
-        () => setIsLoaded({ value: true })
+        () => setIsLoaded(true)
       );
       return () => setControllers({ type: "stop" })
     },
