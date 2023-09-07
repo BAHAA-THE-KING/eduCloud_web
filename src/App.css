@@ -350,9 +350,31 @@ button {
    margin-left: 100px;
 }
 
+.dropdown-menu {
+   position: absolute;
+   inset: 0px auto auto 0px;
+   margin: 0px;
+   transform: translate3d(0, 60px, 0px) !important;
+   width: 100%;
+   text-align: center !important;
+   background-color: #EDEDED !important;
+   padding-top: 25px !important;
+   height: 193px;
+   overflow: auto;
+   scrollbar-gutter: stable;
+}
 
-
-
+.dropdown-menu .class {
+   background-color: white;
+   width: -moz-fit-content;
+   width: fit-content;
+   margin: auto;
+   padding: 5px 55px;
+   border-radius: 10px;
+   margin-bottom: 20px;
+   color: var(--mainPurple) !important;
+   font-size: 17px !important;
+}
 
 /* start class info*/
 .layer {
@@ -364,6 +386,7 @@ button {
    background-color: var(--mainGray);
    opacity: 0.4;
 }
+
 .class-info {
    position: fixed;
    top: 50%;
@@ -377,6 +400,7 @@ button {
    width: 800px;
    z-index: 10;
 }
+
 .class-info input[type="number"],
 .class-info input[type="text"] {
    text-align: center;
@@ -384,13 +408,16 @@ button {
    border: none;
    box-shadow: rgb(128, 128, 128) 1px 1px 5px;
 }
+
 .class-info input[type="number"] {
    width: 45px;
 }
+
 .class-info input[type="text"] {
    width: 200px;
 
 }
+
 .class-info input[type="number"]::-webkit-inner-spin-button {
    display: none;
 }
