@@ -64,26 +64,26 @@ function proccess(url, method, headers, body, signal, onSuccess, onError) {
             return e.json();
          }
       )
-      .then(({ data }) => onSuccess(data))
+      .then(onSuccess)
       .catch(
          err => {
             if (err === "Server Error") {
                onError("خطأ في السيرفر، تواصل مع المطور لحل المشكلة")
+            } else if (err?.name === "AbortError") {
+               return;
             } else if (err instanceof Promise) {
                err.then(
                   error => {
                      if (error === "Unauthenticated.") {
                         goTo(LOGIN);
                      } else {
-                        console.log(error);
-                        onError(error);
+                        onError(error?.message || error?.title || error);
                      }
                   }
                )
             } else {
                onError(err);
             }
-            console.log(err);
          }
       );
 }
@@ -667,10 +667,14 @@ function getStudents(search, page, grade, theClass, hasClass, func) {
       );
 }
 
-function getBaseCalendar(subjectId) {
-   const path = "/supervisor/getCalendarOfSubject/" + subjectId;
+function getBaseCalendar(grades, subjects, controller, onSuccess, onError) {
+   const path = "/supervisor/getCalendarOfSubject?";
 
-   const url = host + path;
+   const params = [];
+   if (!!grades.length) grades.map((e, i) => params.push("grade_ids[" + i + "]=" + e));
+   if (!!subjects.length) subjects.map((e, i) => params.push("subject_ids[" + i + "]=" + e));
+
+   const url = host + path + params.join("&");
 
    const method = "GET";
 
@@ -680,31 +684,18 @@ function getBaseCalendar(subjectId) {
       "Authorization": "Bearer " + getToken()
    };
 
-   return fetch(url, { method, headers })
-      .then(
-         e => {
-            if (e.status >= 500) {
-               throw "Server Error";
-            }
-            return e.json();
-         }
-      )
-      .catch(
-         err => {
-            if (err === "Server Error") {
-               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة")
-            }
-         }
-      );
+   const signal = controller.signal;
+
+   proccess(url, method, headers, null, signal, onSuccess, onError);
 }
 
-function getProgressCalendar(grades, subjects, classes, controller, onSuccess, onError) {
+function getProgressCalendar(grade, subjects, theClass, controller, onSuccess, onError) {
    const path = "/supervisor/getProgressOfClass?";
 
    const params = [];
-   if (!!grades.length) grades.map((e, i) => params.push("grade_ids[" + i + "]=" + e));
+   params.push("grade_id=" + grade);
+   params.push("g_class_id=" + theClass);
    if (!!subjects.length) subjects.map((e, i) => params.push("subject_ids[" + i + "]=" + e));
-   if (!!classes.length) classes.map((e, i) => params.push("g_class_ids[" + i + "]=" + e));
 
    const url = host + path + params.join("&");
 
