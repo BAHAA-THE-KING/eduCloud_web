@@ -5,15 +5,17 @@ import GradeDropDownMenu from "../components/GradeDropDownMenu.js";
 //font awesome icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload, faClose } from "@fortawesome/free-solid-svg-icons";
+
 import Swal from "sweetalert2";
 
 function ShowGrades() {
-  function getToken() {
-    return JSON.parse(localStorage.getItem("auth")).token;
-  }
-
   const [grade, setGrade] = useState([]);
   const [activeEditGrade, setActiveEditGrade] = useState({});
+
+  // passit from component as prop
+  const setActive = (idd) => {
+    setActiveEditGrade({ acitve: true, id: idd });
+  };
 
   useEffect(() => {
     handlers.getClassesAndSubjects(
@@ -48,33 +50,29 @@ function ShowGrades() {
       <div className="container w-100 pt-5 grade">
         {/* main buttons */}
         <div className="d-flex justify-content-around w-50 fw-bold ms-auto school">
-          {menu.map((item) => (
-            <div
-              key={item.id}
-              onClick={() => {
-                const updateMenu = menu.map((menuItem) => {
-                  if (menuItem.id == item.id) {
-                    return { ...menuItem, active: true };
-                  } else {
-                    return { ...menuItem, active: false };
-                  }
-                });
-                setMenu(updateMenu);
-              }}
-              className={
-                !item.active
-                  ? "text-gray ms-5 item pointer"
-                  : "text-gray ms-5 item pointer active"
-              }
-            >
-              {item.text}
-            </div>
-          ))}
+          {
+            menu.map((item) => (
+              <div
+                key={item.id}
+                onClick={() => {
+                  const updateMenu = menu.map((menuItem) => {
+                    if (menuItem.id == item.id) {
+                      return { ...menuItem, active: true };
+                    } else {
+                      return { ...menuItem, active: false };
+                    }
+                  });
+                  setMenu(updateMenu);
+                }}
+                className={!item.active ? "text-gray ms-5 item pointer" : "text-gray ms-5 item pointer active"}
+              >
+                {item.text}
+              </div>
+            ))
+          }
         </div>
         {/* add Grade button */}
-        <div className="text-purple ms-auto add-grade-btn rounded fw-bold pointer">
-          + Add new Grade
-        </div>
+        <div className="text-purple ms-auto add-grade-btn rounded fw-bold pointer">+ Add new Grade</div>
         {/* drop down classes from grade */}
         <div>
           <div className="ms-auto mt-5 row grade-menu gx-5 gy-5">
@@ -112,7 +110,7 @@ function ShowGrades() {
                 <div className={(activeEditGrade.id == data.id && activeEditGrade.active) ? "layer" : "class-info d-none"}></div>
                 <div className={(activeEditGrade.id == data.id && activeEditGrade.active) ? "class-info" : "class-info d-none"}>
                   <div className="d-flex justify-content-end">
-                    
+
                     <FontAwesomeIcon
                       icon={faDownload}
                       className="fs-3 text-purple pointer"
@@ -121,7 +119,7 @@ function ShowGrades() {
                       icon={faClose}
                       className=" ms-5 fs-3 fw-bold text-purple pointer"
                       onClick={() => {
-                        setActiveEditGrade({active: false, id : data.id})
+                        setActiveEditGrade({ active: false, id: data.id })
                       }}
                     />
                   </div>
@@ -147,6 +145,7 @@ function ShowGrades() {
         </div>
       </div>
     </>
+
   );
 }
 
