@@ -6,7 +6,7 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 import { ADDEMPLOYEE, ADDSTUDENT, ADDSUPERVISOR, ADDTEACHER, ADDTEST, ADDTESTFORM, HOME, LOGIN, VIEWEMPLOYEES, VIEWEMPLOYEEDATA, VIEWSTUDENTS, VIEWTESTDATA, VIEWTESTFORMDATA, VIEWTESTFORMS, VIEWTESTS, ADDGRADE, VIEWGRADES, VIEWGRADEDATA, ADDCLASS, VIEWCLASSES, VIEWCLASSDATA, ADDSUBJECT, VIEWSUBJECTS, VIEWSUBJECTDATA, ADDABILITYTESTFORM, CALENDAR, ACCEPTSTUDENTS, VIEWMARKS, SELECTSTUDENTS, DISTRIBUTESTUDENTS, VIEWSTUDENTDATA, VIEWABILITYTESTFORMS, VIEWABILITYTESTFORMDATA, ANALYZETESTS, addStudent } from "./handlers"
 import { BrowserRouter, Route, Routes, redirect } from 'react-router-dom';
 import { CalendarHeader, SideNavbar } from './components';
-import { SchoolCalendar, Home, Login, SubjectsCalendar } from './Pages';
+import { SchoolCalendar, Home, Login, SubjectsCalendar, ClassCalendar } from './Pages';
 import ShowGrades from './Pages/ShowGrades';
 
 function App() {
@@ -17,7 +17,16 @@ function App() {
         <Route
           path="*"
           element={
-            <div style={{ display: "flex", flexFlow: "nowrap row", justifyContent: "space-between" }} className='App'>
+            <div
+              style={{
+                display: "flex",
+                flexFlow: "nowrap row",
+                justifyContent: "space-between",
+                backgroundImage: "url('Images/background2.png')",
+                backgroundSize: "cover"
+              }}
+              className='App'
+            >
               <SideNavbar />
               <Routes>
                 <Route path={HOME} element={<Home />} />
@@ -28,11 +37,9 @@ function App() {
                   >
                     <CalendarHeader />
                     <Routes>
-                      <Route
-                        path={CALENDAR.school}
-                        element={<SchoolCalendar />}
-                      />
+                      <Route path={CALENDAR.school} element={<SchoolCalendar />} />
                       <Route path={CALENDAR.subjects} element={<SubjectsCalendar />} />
+                      <Route path={CALENDAR.class} element={<ClassCalendar />} />
                     </Routes>
                   </div>
                 } />

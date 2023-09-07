@@ -53,7 +53,7 @@ const DISTRIBUTESTUDENTS = "/student/distribute";
 const host = "http://localhost:8000/V1.0";
 //const host = "https://bdh.point-dev.nl/V1.0";
 
-function proccess(url, method, headers, body, signal, onSuccess, onError) {
+function proccess(url, method, headers, body, signal, onSuccess, onError, onEnd) {
    fetch(url, { method, headers, body, signal })
       .then(
          e => {
@@ -64,25 +64,34 @@ function proccess(url, method, headers, body, signal, onSuccess, onError) {
             return e.json();
          }
       )
-      .then(onSuccess)
+      .then(
+         data => {
+            onSuccess(data);
+            onEnd();
+         }
+      )
       .catch(
          err => {
             if (err === "Server Error") {
-               onError("خطأ في السيرفر، تواصل مع المطور لحل المشكلة")
+               onError("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
+               onEnd();
             } else if (err?.name === "AbortError") {
-               return;
+               onEnd();
             } else if (err instanceof Promise) {
                err.then(
                   error => {
                      if (error === "Unauthenticated.") {
                         goTo(LOGIN);
+                        onEnd();
                      } else {
                         onError(error?.message || error?.title || error);
+                        onEnd();
                      }
                   }
                )
             } else {
                onError(err);
+               onEnd();
             }
          }
       );
@@ -260,7 +269,7 @@ function getClassData(id, func) {
       );
 }
 
-function getClassesAndSubjects(controller, onSuccess, onError) {
+function getClassesAndSubjects(controller, onSuccess, onError, onEnd) {
    const path = "/general/getAllGradesWithClassesAndSubjects";
 
    const url = host + path;
@@ -275,7 +284,7 @@ function getClassesAndSubjects(controller, onSuccess, onError) {
 
    const signal = controller.signal;
 
-   proccess(url, method, headers, null, signal, onSuccess, onError);
+   proccess(url, method, headers, null, signal, onSuccess, onError, onEnd);
 }
 
 function getSubjectData(id, func) {
@@ -667,7 +676,7 @@ function getStudents(search, page, grade, theClass, hasClass, func) {
       );
 }
 
-function getBaseCalendar(grades, subjects, controller, onSuccess, onError) {
+function getBaseCalendar(grades, subjects, controller, onSuccess, onError, onEnd) {
    const path = "/supervisor/getCalendarOfSubject?";
 
    const params = [];
@@ -686,10 +695,10 @@ function getBaseCalendar(grades, subjects, controller, onSuccess, onError) {
 
    const signal = controller.signal;
 
-   proccess(url, method, headers, null, signal, onSuccess, onError);
+   proccess(url, method, headers, null, signal, onSuccess, onError, onEnd);
 }
 
-function getProgressCalendar(grade, subjects, theClass, controller, onSuccess, onError) {
+function getProgressCalendar(grade, subjects, theClass, controller, onSuccess, onError, onEnd) {
    const path = "/supervisor/getProgressOfClass?";
 
    const params = [];
@@ -709,7 +718,7 @@ function getProgressCalendar(grade, subjects, theClass, controller, onSuccess, o
 
    const signal = controller.signal;
 
-   proccess(url, method, headers, null, signal, onSuccess, onError);
+   proccess(url, method, headers, null, signal, onSuccess, onError, onEnd);
 }
 
 function getCandidateToOfficial(grade, minNum, func) {

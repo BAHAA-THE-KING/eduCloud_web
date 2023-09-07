@@ -342,7 +342,7 @@ button {
    border-bottom: 3px solid var(--mainGray);
    margin-left: 100px;
 }
-.dropdown-menu {
+.student .dropdown-menu {
    position: absolute;
    inset: 0px auto auto 0px;
    margin: 0px;
@@ -355,7 +355,7 @@ button {
    overflow: auto;
    scrollbar-gutter: stable;
 }
-.dropdown-menu .class {
+.student .dropdown-menu .class {
    background-color: white;
    width: -moz-fit-content;
    width: fit-content;

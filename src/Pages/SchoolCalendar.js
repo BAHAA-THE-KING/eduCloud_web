@@ -13,8 +13,6 @@ function SchoolCalendar() {
    const [grades, setGrades] = useState([]);
    const [allSubjects, setAllSubjects] = useState([]);
    const [subjects, setSubjects] = useState([]);
-   const [allClasses, setAllClasses] = useState([]);
-   const [classes, setClasses] = useState([]);
    const [controller, setController] = useState(new AbortController());
    const [allPlans, setAllPlans] = useState([]);
    const [plans, setPlans] = useState([]);
@@ -22,36 +20,35 @@ function SchoolCalendar() {
    useEffect(
       () => {
          handlers.getClassesAndSubjects(
-            new AbortController(),
+            controller,
             data => {
                setAllGrades(data);
-               setAllClasses(data.map(e => e.g_classes).flat());
                setAllSubjects(data.map(e => e.subjects).flat());
             },
             error => {
                Swal.fire(error);
             }
          );
+         return () => { controller.abort(); }
       },
       []
    );
    useEffect(
       () => {
-         controller.abort();
          const newController = new AbortController();
          setController(newController);
-         handlers.getProgressCalendar(
+         handlers.getBaseCalendar(
             grades,
             subjects,
-            classes,
             newController,
             setAllPlans,
             error => {
                Swal.fire(error);
             }
          );
+         return () => { controller.abort(); }
       },
-      [grades, subjects, classes]
+      [grades, subjects]
    );
    useEffect(
       () => {
@@ -80,9 +77,9 @@ function SchoolCalendar() {
 
    return (
       <>
-         <Container className="h-100" fluid style={{ marginTop: "10px" }}>
-            <Row className="w-100" style={{ flexFlow: "nowrap row", justifyContent: "space-between" }}>
-               <div style={{ width: "unset", display: "flex" }}>
+         <Container fluid style={{ marginTop: "10px" }}>
+            <Row className="w-100" style={{ flexFlow: "nowrap row", justifyContent: "flex-end" }}>
+               <div style={{ width: "unset", display: "flex", flex: "1" }}>
                   <Button
                      onClick={() => setCurrentDate(new Date())}
                      variant="secondary"
@@ -103,24 +100,21 @@ function SchoolCalendar() {
                      }}
                   />
                </div>
-               <List
-                  title="Grades"
-                  opitons={allGrades}
-                  value={grades}
-                  setValue={setGrades}
-               />
-               <List
-                  title="Classes"
-                  opitons={allClasses.filter(e => grades.find(ee => ee === e.grade_id)).map(e => ({ ...e, name: allGrades.find(ee => ee.id === e.grade_id).name + " " + e.name }))}
-                  value={classes}
-                  setValue={setClasses}
-               />
-               <List
-                  title="Subjects"
-                  opitons={allSubjects.filter(e => grades.find(ee => ee === e.grade_id)).map(e => ({ ...e, name: allGrades.find(ee => ee.id === e.grade_id).name + " " + e.name }))}
-                  value={subjects}
-                  setValue={setSubjects}
-               />
+               <div style={{ display: "flex", width: "min-content" }}>
+                  <List
+                     title="Subjects"
+                     opitons={allSubjects.filter(e => grades.find(ee => ee === e.grade_id)).map(e => ({ ...e, name: allGrades.find(ee => ee.id === e.grade_id).name + " " + e.name }))}
+                     value={subjects}
+                     setValue={setSubjects}
+                  />
+                  <span>&nbsp;</span>
+                  <List
+                     title="Grades"
+                     opitons={allGrades}
+                     value={grades}
+                     setValue={setGrades}
+                  />
+               </div>
                <button style={{ width: "100px" }}>
                   <FontAwesomeIcon icon={faGear} className="fs-3 text-light text-black" />
                </button>
@@ -129,7 +123,7 @@ function SchoolCalendar() {
                {
                   plans.map(
                      (plan, i) =>
-                        <Col xs='2' className="p-0">
+                        <Col xs='2' className="p-0" key={plan.date}>
                            <Cell
                               key={plan.date}
                               plan={plan}

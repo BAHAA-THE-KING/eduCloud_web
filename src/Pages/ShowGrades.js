@@ -14,7 +14,7 @@ function ShowGrades() {
 
   // passit from component as prop
   const setActive = (idd) => {
-    setActiveEditGrade({ acitve: true, id: idd });
+    setActiveEditGrade({ active: true, id: idd });
   };
 
   useEffect(() => {
@@ -47,7 +47,7 @@ function ShowGrades() {
 
   return (
     <>
-      <div className="container w-100 pt-5 grade">
+      <div className="container w-100 pt-5 grade student">
         {/* main buttons */}
         <div className="d-flex justify-content-around w-50 fw-bold ms-auto school">
           {

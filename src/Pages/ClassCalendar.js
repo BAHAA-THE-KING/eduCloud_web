@@ -1,56 +1,91 @@
 import { Accordion, Container, Row } from "react-bootstrap";
 import * as handlers from '../handlers';
-import { List, ViewTable } from "../components";
-import { useEffect, useState } from "react";
+import { List, Loading, ViewTable } from "../components";
+import { useCallback, useEffect, useReducer, useState } from "react";
+import { faGear } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Swal from "sweetalert2";
 
-function SubjectsCalendar() {
+function ClassCalendar() {
    const [allGrades, setAllGrades] = useState([]);
    const [grades, setGrades] = useState([]);
    const [allSubjects, setAllSubjects] = useState([]);
    const [subjects, setSubjects] = useState([]);
-   const [controller, setController] = useState(new AbortController());
+   const [allClasses, setAllClasses] = useState([]);
+   const [theClass, setTheClass] = useState([]);
    const [allPlans, setAllPlans] = useState([]);
+   const [controllers, setControllers] = useReducer(
+      (state, { type, index, value }) =>
+         type === "stop" ?
+            state.map(e => { e.abort(); return e; })
+            : state.map((e, i) => i === index ? value : e),
+      [...new Array(2)].fill(new AbortController(), 0, 1)
+   );
+   const [isLoaded, setIsLoaded] = useReducer(
+      (state, { index, value }) => state.map((e, i) => i === index ? value : e),
+      [...new Array(2)].fill(false, 0, 1)
+   );
 
    useEffect(
       () => {
+         setIsLoaded({ index: 0, value: false });
+
+         const cont = new AbortController();
+         setControllers({ index: 0, value: cont });
+
          handlers.getClassesAndSubjects(
-            controller,
+            controllers[0],
             data => {
                setAllGrades(data);
                setAllSubjects(data.map(e => e.subjects).flat());
+               setAllClasses(data.map(e => e.g_classes).flat());
             },
             error => {
                Swal.fire(error);
-            }
+            },
+            () => setIsLoaded({ index: 0, value: true })
          );
-         return () => { controller.abort(); }
+         return () => setControllers({ type: "stop" })
       },
       []
    );
    useEffect(
       () => {
-         const newController = new AbortController();
-         setController(newController);
+         setIsLoaded({ index: 1, value: false })
+
+         const cont = new AbortController();
+         setControllers({ index: 1, value: cont });
+
          handlers.getBaseCalendar(
             grades,
             subjects,
-            newController,
-            setAllPlans,
+            cont,
+            data => {
+               setAllPlans(data);
+            },
             error => {
                Swal.fire(error);
-            }
+            },
+            () => setIsLoaded({ index: 1, value: true })
          );
-         return () => { controller.abort(); }
+         return () => { cont.abort(); }
       },
       [grades, subjects]
    );
 
    return (
       <>
-         <Container fluid style={{ marginTop: "10px", overflow: "auto" }}>
+         {isLoaded.reduce((p, e) => p && e) || <Loading />}
+         <Container fluid style={{ minHeight: "50vh", marginTop: "10px", overflow: "auto" }}>
             <Row className="w-100" style={{ flexFlow: "nowrap row", justifyContent: "flex-end" }}>
                <div style={{ display: "flex", width: "min-content" }}>
+                  <List
+                     title="Classes"
+                     opitons={allClasses}
+                     value={theClass}
+                     setValue={setTheClass}
+                  />
+                  <span>&nbsp;</span>
                   <List
                      title="Subjects"
                      opitons={allSubjects.filter(e => grades.find(ee => ee === e.grade_id)).map(e => ({ ...e, name: allGrades.find(ee => ee.id === e.grade_id).name + " " + e.name }))}
@@ -67,7 +102,7 @@ function SubjectsCalendar() {
                </div>
                <div style={{ width: "100px" }}></div>
             </Row>
-            <Row style={{ width: "95%" }}>
+            <Row style={{ width: "95%", marginTop: "10px" }}>
                <Accordion defaultActiveKey={[]} alwaysOpen>
                   {
                      subjects.map(
@@ -93,4 +128,4 @@ function SubjectsCalendar() {
    );
 }
 
-export default SubjectsCalendar;
+export default ClassCalendar;
