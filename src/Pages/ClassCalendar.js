@@ -1,9 +1,7 @@
 import { Accordion, Container, Row } from "react-bootstrap";
 import * as handlers from '../handlers';
 import { List, Loading, ViewTable } from "../components";
-import { useCallback, useEffect, useReducer, useState } from "react";
-import { faGear } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useReducer, useState } from "react";
 import Swal from "sweetalert2";
 
 function ClassCalendar() {
@@ -70,7 +68,7 @@ function ClassCalendar() {
          );
          return () => { cont.abort(); }
       },
-      [grades, subjects]
+      [theClass, subjects]
    );
 
    return (
@@ -111,7 +109,10 @@ function ClassCalendar() {
                            const subject = allSubjects.find(e => e.id === subjectId);
                            const plans = allPlans.filter(e => e.subject.id === subjectId);
                            return (
-                              <Accordion.Item eventKey={"" + subjectId}>
+                              <Accordion.Item
+                                 key={subjectId}
+                                 eventKey={"" + subjectId}
+                              >
                                  <Accordion.Header dir="rtl">{grade.name + " " + subject.name}</Accordion.Header>
                                  <Accordion.Body>
                                     <ViewTable rows={plans} />

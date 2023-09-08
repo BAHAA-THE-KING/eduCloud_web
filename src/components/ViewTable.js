@@ -18,7 +18,10 @@ function ViewTable({ rows }) {
          {
             rows.map(
                row =>
-                  <Row className="text-purple p-1">
+                  <Row
+                     key={row.date}
+                     className="text-purple p-1"
+                  >
                      <Col xs='3'><b>{row.date}</b></Col>
                      <Col xs='3'><b>{row.name}</b></Col>
                      <Col xs='3'><b>{row.subject.name}</b></Col>

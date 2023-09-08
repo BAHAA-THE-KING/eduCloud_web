@@ -58,7 +58,7 @@ function proccess(url, method, headers, body, signal, onSuccess, onError, onEnd)
       .then(
          e => {
             if (e.status >= 500)
-               throw "Server Error";
+               throw new Error("Server Error");
             else if (e.status !== 200)
                throw e.json();
             return e.json();
@@ -72,10 +72,10 @@ function proccess(url, method, headers, body, signal, onSuccess, onError, onEnd)
       )
       .catch(
          err => {
-            if (err === "Server Error") {
+            if (err.message === "Server Error") {
                onError("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
                onEnd();
-            } else if (err?.name === "AbortError") {
+            } else if (err.name === "AbortError") {
                onEnd();
             } else if (err instanceof Promise) {
                err.then(
@@ -84,7 +84,7 @@ function proccess(url, method, headers, body, signal, onSuccess, onError, onEnd)
                         goTo(LOGIN);
                         onEnd();
                      } else {
-                        onError(error?.message || error?.title || error);
+                        onError(error.message || error.title || error);
                         onEnd();
                      }
                   }
@@ -677,7 +677,7 @@ function getStudents(search, page, grade, theClass, hasClass, func) {
 }
 
 function getBaseCalendar(grades, subjects, controller, onSuccess, onError, onEnd) {
-   const path = "/supervisor/getCalendarOfSubject?";
+   const path = "/supervisor/getCalendar?";
 
    const params = [];
    if (!!grades.length) grades.map((e, i) => params.push("grade_ids[" + i + "]=" + e));
@@ -698,11 +698,10 @@ function getBaseCalendar(grades, subjects, controller, onSuccess, onError, onEnd
    proccess(url, method, headers, null, signal, onSuccess, onError, onEnd);
 }
 
-function getProgressCalendar(grade, subjects, theClass, controller, onSuccess, onError, onEnd) {
+function getProgressCalendar(subjects, theClass, controller, onSuccess, onError, onEnd) {
    const path = "/supervisor/getProgressOfClass?";
 
    const params = [];
-   params.push("grade_id=" + grade);
    params.push("g_class_id=" + theClass);
    if (!!subjects.length) subjects.map((e, i) => params.push("subject_ids[" + i + "]=" + e));
 

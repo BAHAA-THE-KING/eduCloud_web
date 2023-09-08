@@ -67,7 +67,7 @@ function ShowGrades() {
   return (
     <>
       {isLoaded || <Loading />}
-      <div className="container w-100 pt-5 grade student">
+      <div className="container w-100 pt-5 student">
         {/* main buttons */}
         <div className="d-flex justify-content-around w-50 fw-bold ms-auto school">
           {

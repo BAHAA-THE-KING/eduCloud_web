@@ -22,6 +22,7 @@ function List({ title, opitons, value, setValue }) {
                   option => {
                      const checked = !!value.find(e => e === option.id);
                      return <Dropdown.Item
+                        key={option.id}
                         style={{
                            display: "flex",
                            flexFlow: "nowrap row",

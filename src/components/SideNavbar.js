@@ -1,10 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { NavLink } from "react-router-dom";
-
-//import routes from handler.js
-import { HOME, CALENDAR, ADDSTUDENT, logOut } from "../handlers.js";
-
 
 // fonts from fontawsome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,48 +10,67 @@ import * as handlers from "../handlers";
 import Swal from "sweetalert2";
 
 function SideNavbar() {
+  const url = useLocation().pathname;
   const [isExpand, setExpand] = useState(false);
 
   const menuItems = [
     {
       text: "Home screen",
       icon: faHome,
-      link: HOME,
+      link: handlers.HOME,
+      check: "/asd"
     },
     {
       text: "Study plan & calendar",
       icon: faCalendar,
-      link: CALENDAR.main,
+      link: handlers.CALENDAR.main + handlers.CALENDAR.school,
+      check: handlers.CALENDAR.main,
     },
     {
       text: "Add student screen",
       icon: faUser,
-      link: ADDSTUDENT,
+      link: handlers.VIEWGRADES,
+      check: handlers.VIEWGRADES,
     },
   ];
 
   return (
-    <div className={isExpand ? "side-navbar" : "side-navbar side-navbar-nx "}>
+    <div
+      className={
+        "overflow-hidden side-navbar" +
+        (isExpand ? "" : " side-navbar-nx")
+      }
+      style={{ zIndex: "1000000" }}
+    >
       <div className="nav-upper">
         <button
-          className={!isExpand ? "burger burger-in" : "burger burger-out"}
+          className={
+            "burger" +
+            (!isExpand ? " burger-in" : " burger-out")
+          }
           onClick={() => setExpand(!isExpand)}
         >
           <span></span>
           <span></span>
           <span></span>
         </button>
-        <div className="nav-menu ">
+        <div className="nav-menu">
           {menuItems.map((item) => (
             <NavLink
               key={item.text}
               to={item.link}
-              className={isExpand ? "menu-item " : "menu-item menu-item-NX"}
+              onClick={() => setExpand(false)}
+              className={
+                "menu-item" +
+                (isExpand ? "" : " menu-item-NX") +
+                (url.indexOf(item.check) === 0 ? " active" : "")
+              }
+              style={{ width: "max-content" }}
             >
               <div className="icon">
                 <FontAwesomeIcon icon={item.icon} className="fs-3 text-light" />
               </div>
-              {isExpand && <p className="text-light ps-3">{item.text}</p>}
+              <p className="text-light ps-3">{item.text}</p>
             </NavLink>
           ))}
         </div>
@@ -75,7 +90,7 @@ function SideNavbar() {
                   confirmButtonText: 'Log out'
                 }
               ).then(
-                result => result.isConfirmed && logOut()
+                result => result.isConfirmed && handlers.logOut()
               );
             }
           }
@@ -83,7 +98,6 @@ function SideNavbar() {
           <div className="logout-icon"><FontAwesomeIcon icon={faArrowRightFromBracket} className="fs-3 text-light" /></div>
           {isExpand && <p className="text-light ps-3">logout</p>}
         </Link>
-
       </div>
     </div>
   );
