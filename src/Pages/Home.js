@@ -60,6 +60,7 @@ const cards = [
 
 function Home() {
    const [active, setActive] = useState(null);
+   
    return (
       <>
          <Container className="h-100 w-75">
@@ -100,6 +101,7 @@ function Home() {
                   cards.map(
                      (card, index) =>
                         <Card
+                           key={card.to}
                            header={card.header}
                            image={card.image}
                            details={card.details}
@@ -107,7 +109,6 @@ function Home() {
                            index={index}
                            isActive={active === index}
                            setActive={setActive}
-                           key={card.to}
                         />
                   )
                }

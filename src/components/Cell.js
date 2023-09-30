@@ -1,4 +1,4 @@
-function Cell({ plan, odd, active, setActive }) {
+function Cell({ plan, even, active, setActive }) {
    return (
       <div
          style={{
@@ -6,7 +6,7 @@ function Cell({ plan, odd, active, setActive }) {
             paddingTop: "5px",
             paddingLeft: "20px",
             marginTop: "5px",
-            backgroundColor: active.toLocaleDateString("en-Gb") === plan.date.toLocaleDateString("en-Gb") ? "#71B4E8" : (odd ? "#D9D2FE" : "#2A1F61"),
+            backgroundColor: active.toLocaleDateString("en-Gb") === plan.date.toLocaleDateString("en-Gb") ? "#71B4E8" : (even ? "#D9D2FE" : "#2A1F61"),
             color: "white",
             opacity: plan.date.getMonth() === active.getMonth() ? 1 : 0.5,
             display: "flex",

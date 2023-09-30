@@ -1,7 +1,7 @@
 import { Button, Col, Container, Row } from "react-bootstrap";
 import * as handlers from '../handlers';
-import { Cell, List, TextInput } from "../components";
-import { useEffect, useState } from "react";
+import { Cell, List, Loading, TextInput } from "../components";
+import { useEffect, useReducer, useState } from "react";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Swal from "sweetalert2";
@@ -13,45 +13,65 @@ function SchoolCalendar() {
    const [grades, setGrades] = useState([]);
    const [allSubjects, setAllSubjects] = useState([]);
    const [subjects, setSubjects] = useState([]);
-   const [allClasses, setAllClasses] = useState([]);
-   const [classes, setClasses] = useState([]);
-   const [controller, setController] = useState(new AbortController());
    const [allPlans, setAllPlans] = useState([]);
    const [plans, setPlans] = useState([]);
+   const [controllers, setControllers] = useReducer(
+      (state, { type, index, value }) =>
+         type === "stop" ?
+            state.map(e => { e.abort(); return e; })
+            : state.map((e, i) => i === index ? value : e),
+      [...new Array(2)].fill(new AbortController(), 0, 1)
+   );
+   const [isLoaded, setIsLoaded] = useReducer(
+      (state, { index, value }) => state.map((e, i) => i === index ? value : e),
+      [...new Array(2)].fill(false, 0, 1)
+   );
 
    useEffect(
       () => {
+         setIsLoaded({ index: 0, value: false });
+
+         const cont = new AbortController();
+         setControllers({ index: 0, value: cont });
+
          handlers.getClassesAndSubjects(
-            new AbortController(),
+            controllers[0],
             data => {
                setAllGrades(data);
-               setAllClasses(data.map(e => e.g_classes).flat());
                setAllSubjects(data.map(e => e.subjects).flat());
             },
             error => {
                Swal.fire(error);
-            }
+            },
+            () => setIsLoaded({ index: 0, value: true })
          );
+         return () => setControllers({ type: "stop" })
       },
       []
    );
    useEffect(
       () => {
-         controller.abort();
-         const newController = new AbortController();
-         setController(newController);
-         handlers.getProgressCalendar(
+         setIsLoaded({ index: 1, value: false })
+
+         const cont = new AbortController();
+         setControllers({ index: 1, value: cont });
+
+         handlers.getBaseCalendar(
             grades,
             subjects,
-            classes,
-            newController,
-            setAllPlans,
+            cont,
+            data => {
+               setAllPlans(data);
+               console.log(allPlans);
+            },
             error => {
                Swal.fire(error);
-            }
+            },
+            () => setIsLoaded({ index: 1, value: true })
          );
+         return () => { cont.abort(); }
       },
-      [grades, subjects, classes]
+      [grades, subjects]
    );
    useEffect(
       () => {
@@ -80,9 +100,10 @@ function SchoolCalendar() {
 
    return (
       <>
-         <Container className="h-100" fluid style={{ marginTop: "10px" }}>
-            <Row className="w-100" style={{ flexFlow: "nowrap row", justifyContent: "space-between" }}>
-               <div style={{ width: "unset", display: "flex" }}>
+         {isLoaded.reduce((p, e) => p && e) || <Loading />}
+         <Container fluid style={{ marginTop: "10px" }}>
+            <Row className="w-100" style={{ flexFlow: "nowrap row", justifyContent: "flex-end" }}>
+               <div style={{ width: "unset", display: "flex", flex: "1" }}>
                   <Button
                      onClick={() => setCurrentDate(new Date())}
                      variant="secondary"
@@ -103,24 +124,21 @@ function SchoolCalendar() {
                      }}
                   />
                </div>
-               <List
-                  title="Grades"
-                  opitons={allGrades}
-                  value={grades}
-                  setValue={setGrades}
-               />
-               <List
-                  title="Classes"
-                  opitons={allClasses.filter(e => grades.find(ee => ee === e.grade_id)).map(e => ({ ...e, name: allGrades.find(ee => ee.id === e.grade_id).name + " " + e.name }))}
-                  value={classes}
-                  setValue={setClasses}
-               />
-               <List
-                  title="Subjects"
-                  opitons={allSubjects.filter(e => grades.find(ee => ee === e.grade_id)).map(e => ({ ...e, name: allGrades.find(ee => ee.id === e.grade_id).name + " " + e.name }))}
-                  value={subjects}
-                  setValue={setSubjects}
-               />
+               <div style={{ display: "flex", width: "min-content" }}>
+                  <List
+                     title="Subjects"
+                     opitons={allSubjects.filter(e => grades.find(ee => ee === e.grade_id)).map(e => ({ ...e, name: allGrades.find(ee => ee.id === e.grade_id).name + " " + e.name }))}
+                     value={subjects}
+                     setValue={setSubjects}
+                  />
+                  <span>&nbsp;</span>
+                  <List
+                     title="Grades"
+                     opitons={allGrades}
+                     value={grades}
+                     setValue={setGrades}
+                  />
+               </div>
                <button style={{ width: "100px" }}>
                   <FontAwesomeIcon icon={faGear} className="fs-3 text-light text-black" />
                </button>
@@ -129,11 +147,11 @@ function SchoolCalendar() {
                {
                   plans.map(
                      (plan, i) =>
-                        <Col xs='2' className="p-0">
+                        <Col key={plan.date} xs='2' className="p-0">
                            <Cell
                               key={plan.date}
                               plan={plan}
-                              odd={i % 2}
+                              even={(i + 1) % 2}
                               active={currentDate}
                               setActive={setCurrentDate}
                            />

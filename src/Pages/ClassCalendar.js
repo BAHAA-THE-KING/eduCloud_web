@@ -4,11 +4,13 @@ import { List, Loading, ViewTable } from "../components";
 import { useEffect, useReducer, useState } from "react";
 import Swal from "sweetalert2";
 
-function SubjectsCalendar() {
+function ClassCalendar() {
    const [allGrades, setAllGrades] = useState([]);
    const [grades, setGrades] = useState([]);
    const [allSubjects, setAllSubjects] = useState([]);
    const [subjects, setSubjects] = useState([]);
+   const [allClasses, setAllClasses] = useState([]);
+   const [theClass, setTheClass] = useState([]);
    const [allPlans, setAllPlans] = useState([]);
    const [controllers, setControllers] = useReducer(
       (state, { type, index, value }) =>
@@ -34,6 +36,7 @@ function SubjectsCalendar() {
             data => {
                setAllGrades(data);
                setAllSubjects(data.map(e => e.subjects).flat());
+               setAllClasses(data.map(e => e.g_classes).flat());
             },
             error => {
                Swal.fire(error);
@@ -65,15 +68,22 @@ function SubjectsCalendar() {
          );
          return () => { cont.abort(); }
       },
-      [grades, subjects]
+      [theClass, subjects]
    );
 
    return (
       <>
          {isLoaded.reduce((p, e) => p && e) || <Loading />}
-         <Container fluid style={{ marginTop: "10px", overflow: "auto" }}>
+         <Container fluid style={{ minHeight: "50vh", marginTop: "10px", overflow: "auto" }}>
             <Row className="w-100" style={{ flexFlow: "nowrap row", justifyContent: "flex-end" }}>
                <div style={{ display: "flex", width: "min-content" }}>
+                  <List
+                     title="Classes"
+                     opitons={allClasses}
+                     value={theClass}
+                     setValue={setTheClass}
+                  />
+                  <span>&nbsp;</span>
                   <List
                      title="Subjects"
                      opitons={allSubjects.filter(e => grades.find(ee => ee === e.grade_id)).map(e => ({ ...e, name: allGrades.find(ee => ee.id === e.grade_id).name + " " + e.name }))}
@@ -90,7 +100,7 @@ function SubjectsCalendar() {
                </div>
                <div style={{ width: "100px" }}></div>
             </Row>
-            <Row style={{ width: "95%" }}>
+            <Row style={{ width: "95%", marginTop: "10px" }}>
                <Accordion defaultActiveKey={[]} alwaysOpen>
                   {
                      subjects.map(
@@ -99,7 +109,10 @@ function SubjectsCalendar() {
                            const subject = allSubjects.find(e => e.id === subjectId);
                            const plans = allPlans.filter(e => e.subject.id === subjectId);
                            return (
-                              <Accordion.Item eventKey={"" + subjectId}>
+                              <Accordion.Item
+                                 key={subjectId}
+                                 eventKey={"" + subjectId}
+                              >
                                  <Accordion.Header dir="rtl">{grade.name + " " + subject.name}</Accordion.Header>
                                  <Accordion.Body>
                                     <ViewTable rows={plans} />
@@ -116,4 +129,4 @@ function SubjectsCalendar() {
    );
 }
 
-export default SubjectsCalendar;
+export default ClassCalendar;

@@ -3,11 +3,11 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 
-import { ADDEMPLOYEE, ADDSTUDENT, ADDSUPERVISOR, ADDTEACHER, ADDTEST, ADDTESTFORM, HOME, LOGIN, VIEWEMPLOYEES, VIEWEMPLOYEEDATA, VIEWSTUDENTS, VIEWTESTDATA, VIEWTESTFORMDATA, VIEWTESTFORMS, VIEWTESTS, ADDGRADE, VIEWGRADES, VIEWGRADEDATA, ADDCLASS, VIEWCLASSES, VIEWCLASSDATA, ADDSUBJECT, VIEWSUBJECTS, VIEWSUBJECTDATA, ADDABILITYTESTFORM, CALENDAR, ACCEPTSTUDENTS, VIEWMARKS, SELECTSTUDENTS, DISTRIBUTESTUDENTS, VIEWSTUDENTDATA, VIEWABILITYTESTFORMS, VIEWABILITYTESTFORMDATA, ANALYZETESTS, addStudent } from "./handlers"
-import { BrowserRouter, Route, Routes, redirect } from 'react-router-dom';
+import { HOME, LOGIN, VIEWGRADES, CALENDAR } from "./handlers"
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { CalendarHeader, SideNavbar } from './components';
-import { SchoolCalendar, Home, Login, SubjectsCalendar } from './Pages';
-import ShowGrades from './Pages/ShowGrades';
+import { SchoolCalendar, Home, Login, SubjectsCalendar, ClassCalendar, ShowGrades } from './Pages';
+import { Container, Row } from 'react-bootstrap';
 
 function App() {
   return (
@@ -17,26 +17,31 @@ function App() {
         <Route
           path="*"
           element={
-            <div style={{ display: "flex", flexFlow: "nowrap row", justifyContent: "space-between" }} className='App'>
+            <div
+              style={{
+                display: "flex",
+                flexFlow: "nowrap row",
+                justifyContent: "space-between",
+                backgroundImage: "url('Images/background2.png')",
+                backgroundSize: "cover",
+                paddingLeft: "10rem"
+              }}
+              className='App'
+            >
               <SideNavbar />
               <Routes>
                 <Route path={HOME} element={<Home />} />
                 <Route path={CALENDAR.main + "/*"} element={
-                  <div
-                    className='w-100 grade'
-                    style={{ display: "flex", flexFlow: "nowrap column" }}
-                  >
+                  <Container fluid>
                     <CalendarHeader />
                     <Routes>
-                      <Route
-                        path={CALENDAR.school}
-                        element={<SchoolCalendar />}
-                      />
+                      <Route path={CALENDAR.school} element={<SchoolCalendar />} />
                       <Route path={CALENDAR.subjects} element={<SubjectsCalendar />} />
+                      <Route path={CALENDAR.class} element={<ClassCalendar />} />
                     </Routes>
-                  </div>
+                  </Container>
                 } />
-                <Route path={ADDSTUDENT} element={<ShowGrades />} />
+                <Route path={VIEWGRADES} element={<ShowGrades />} />
               </Routes>
             </div>
           }
