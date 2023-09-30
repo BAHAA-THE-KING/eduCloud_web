@@ -14,7 +14,7 @@ function ShowGrades() {
 
   // passit from component as prop
   const setActive = (idd) => {
-    setActiveEditGrade({ acitve: true, id: idd });
+    setActiveEditGrade({ active: true, id: idd });
   };
 
   useEffect(() => {
@@ -45,6 +45,18 @@ function ShowGrades() {
     },
   ]);
 
+  const titelsHandler = (item) => {
+    const updateMenu = menu.map((menuItem) => {
+      if (menuItem.id == item.id) {
+        return { ...menuItem, active: true };
+      } else {
+        return { ...menuItem, active: false };
+      }
+    });
+    setMenu(updateMenu);
+  }
+
+
   return (
     <>
       <div className="container w-100 pt-5 grade">
@@ -54,16 +66,7 @@ function ShowGrades() {
             menu.map((item) => (
               <div
                 key={item.id}
-                onClick={() => {
-                  const updateMenu = menu.map((menuItem) => {
-                    if (menuItem.id == item.id) {
-                      return { ...menuItem, active: true };
-                    } else {
-                      return { ...menuItem, active: false };
-                    }
-                  });
-                  setMenu(updateMenu);
-                }}
+                onClick={() =>titelsHandler(item)}
                 className={!item.active ? "text-gray ms-5 item pointer" : "text-gray ms-5 item pointer active"}
               >
                 {item.text}

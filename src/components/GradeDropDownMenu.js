@@ -16,8 +16,7 @@ function GradeDropDownMenu(props) {
       <ul
         className="dropdown-menu pointer"
         aria-labelledby={`class-dropdown${props.id}`}
-        onClick={() => { props.fun(props.id); }
-        }
+        onClick={() => props.fun(props.id) }
       >
         {props.classObject.map((clas) => (
           <li className="text-purple class" key={clas.id}>
