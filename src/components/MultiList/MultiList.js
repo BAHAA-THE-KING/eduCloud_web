@@ -1,45 +1,34 @@
+import styles from "./MultiList.module.css";
 import { Dropdown, Form } from "react-bootstrap";
 
-function List({ title, opitons, value, setValue }) {
+function MultiList({ title, opitons, value, setValue }) {
    return (
-      <Dropdown style={{ width: "unset" }}>
+      <Dropdown style={{ width: "unset" }} autoClose="outside">
          <Dropdown.Toggle
-            className="text-black"
-            style={{
-               width: "200px",
-               backgroundColor: "white",
-               borderRadius: "10px"
-            }}
+            className={`text-black ${styles.toggle}`}
             variant="secondary"
          >
             <span className="text-gray">
                {title}
             </span>
          </Dropdown.Toggle>
-         <Dropdown.Menu>
+         <Dropdown.Menu className={styles.menu}>
             {
                opitons.map(
                   option => {
                      const checked = !!value.find(e => e === option.id);
                      return <Dropdown.Item
                         key={option.id}
-                        style={{
-                           display: "flex",
-                           flexFlow: "nowrap row",
-                           justifyContent: "flex-start",
-                           alignItems: "center"
-                        }}
+                        className={styles.item}
                         onClick={
                            e => {
                               e.preventDefault();
-                              e.stopPropagation();
                               let newValue;
                               if (checked) {
                                  newValue = value.filter(e => e !== option.id);
                               } else {
                                  newValue = [...value, option.id];
                               }
-                              console.log(newValue)
                               setValue(newValue)
                            }
                         }
@@ -47,6 +36,7 @@ function List({ title, opitons, value, setValue }) {
                         <Form.Check
                            type="checkbox"
                            checked={checked}
+                           onChange={() => { }}
                         />
                         <span style={{ marginLeft: "10px" }}>
                            {option.title ?? option.name}
@@ -60,4 +50,4 @@ function List({ title, opitons, value, setValue }) {
    );
 }
 
-export default List;
+export default MultiList;

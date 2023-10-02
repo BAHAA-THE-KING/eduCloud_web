@@ -1,6 +1,6 @@
 import { Accordion, Container, Row } from "react-bootstrap";
 import * as handlers from '../handlers';
-import { List, Loading, ViewTable } from "../components";
+import { MultiList, Loading, ViewTable } from "../components";
 import { useEffect, useReducer, useState } from "react";
 import Swal from "sweetalert2";
 
@@ -77,21 +77,21 @@ function ClassCalendar() {
          <Container fluid style={{ minHeight: "50vh", marginTop: "10px", overflow: "auto" }}>
             <Row className="w-100" style={{ flexFlow: "nowrap row", justifyContent: "flex-end" }}>
                <div style={{ display: "flex", width: "min-content" }}>
-                  <List
+                  <MultiList
                      title="Classes"
                      opitons={allClasses}
                      value={theClass}
                      setValue={setTheClass}
                   />
                   <span>&nbsp;</span>
-                  <List
+                  <MultiList
                      title="Subjects"
                      opitons={allSubjects.filter(e => grades.find(ee => ee === e.grade_id)).map(e => ({ ...e, name: allGrades.find(ee => ee.id === e.grade_id).name + " " + e.name }))}
                      value={subjects}
                      setValue={setSubjects}
                   />
                   <span>&nbsp;</span>
-                  <List
+                  <MultiList
                      title="Grades"
                      opitons={allGrades}
                      value={grades}

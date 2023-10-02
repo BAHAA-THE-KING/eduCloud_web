@@ -70,7 +70,7 @@ function Home() {
                   insetBlockStart: "10%"
                }}
                >
-                  <span style={{ color: "#281d61" }}>
+                  <span style={{ color: "#281d60" }}>
                      <h1>
                         <b>
                            Home Screen

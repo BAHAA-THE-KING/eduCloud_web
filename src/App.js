@@ -7,7 +7,7 @@ import { HOME, LOGIN, VIEWGRADES, CALENDAR } from "./handlers"
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { CalendarHeader, SideNavbar } from './components';
 import { SchoolCalendar, Home, Login, SubjectsCalendar, ClassCalendar, ShowGrades } from './Pages';
-import { Container, Row } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 
 function App() {
   return (
@@ -32,7 +32,7 @@ function App() {
               <Routes>
                 <Route path={HOME} element={<Home />} />
                 <Route path={CALENDAR.main + "/*"} element={
-                  <Container fluid>
+                  <Container fluid style={{ overflowY: "auto" }}>
                     <CalendarHeader />
                     <Routes>
                       <Route path={CALENDAR.school} element={<SchoolCalendar />} />

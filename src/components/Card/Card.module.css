@@ -1,0 +1,29 @@
+.card {
+   width: 100%;
+   max-width: 505px;
+   height: 100%;
+   background-color: white;
+   box-shadow: 1px 1px 5px #808080;
+   transition-duration: 0.2s;
+}
+
+.active {
+   box-shadow: 10px 10px 5px #80808080;
+}
+
+.cardImage {
+   width: 60px;
+   height: 60px;
+}
+
+.cardText {
+   color: gray;
+   font-size: 0.95rem;
+}
+
+.cardTitle {
+   display: flex;
+   flex-flow: nowrap row;
+   justify-content: space-between;
+   align-items: center;
+}
