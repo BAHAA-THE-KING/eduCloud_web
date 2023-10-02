@@ -1,0 +1,10 @@
+.container {
+   min-height: 50vh;
+   margin-top: 10px;
+   overflow: auto;
+}
+
+.choose {
+   display: flex;
+   width: min-content;
+}

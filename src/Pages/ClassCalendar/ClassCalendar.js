@@ -1,6 +1,8 @@
+import styles from "./ClassCalendar.module.css";
+
 import { Accordion, Container, Row } from "react-bootstrap";
-import * as handlers from '../handlers';
-import { MultiList, Loading, ViewTable } from "../components";
+import * as handlers from '../../handlers';
+import { MultiList, Loading, ViewTable } from "../../components";
 import { useEffect, useReducer, useState } from "react";
 import Swal from "sweetalert2";
 
@@ -74,9 +76,9 @@ function ClassCalendar() {
    return (
       <>
          {isLoaded.reduce((p, e) => p && e) || <Loading />}
-         <Container fluid style={{ minHeight: "50vh", marginTop: "10px", overflow: "auto" }}>
-            <Row className="w-100" style={{ flexFlow: "nowrap row", justifyContent: "flex-end" }}>
-               <div style={{ display: "flex", width: "min-content" }}>
+         <Container fluid className={styles.container}>
+            <Row className={`w-100 justify-content-end flex-sm-nowrap flex-sm-row`}>
+               <div className={styles.choose}>
                   <MultiList
                      title="Classes"
                      opitons={allClasses}

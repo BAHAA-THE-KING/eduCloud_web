@@ -143,7 +143,7 @@ function SchoolCalendar() {
          {contextData && <ContextMenu data={contextData} />}
          {popupData && <Popup allGrades={allGrades} allSubjects={allSubjects} data={popupData} closePopup={() => setPopupData(null)} />}
          <Container fluid style={{ marginTop: "10px" }}>
-            <Row className={`w-100 ${styles.row}`}>
+            <Row className={`w-100 justify-content-end flex-sm-nowrap flex-sm-row`}>
                <div className={styles.viewDate}>
                   <Button
                      onClick={() => setCurrentDate(new Date())}

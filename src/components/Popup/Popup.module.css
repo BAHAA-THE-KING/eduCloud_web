@@ -60,6 +60,11 @@
    align-items: center;
 }
 
+.listHeight {
+   max-height: 405px;
+   overflow-y: auto;
+}
+
 .btn {
    background-color: #2A1F60;
    border-color: #2A1F60;

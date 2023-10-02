@@ -1,12 +1,8 @@
-.row {
-   flex-flow: nowrap row;
-   justify-content: flex-end;
-}
-
 .viewDate {
    width: unset;
    display: flex;
    flex: 1;
+   padding-left: 0;
 }
 
 .choose {
