@@ -1,0 +1,22 @@
+.row {
+   flex-flow: nowrap row;
+   justify-content: flex-end;
+}
+
+.viewDate {
+   width: unset;
+   display: flex;
+   flex: 1;
+}
+
+.choose {
+   display: flex;
+   width: min-content;
+}
+
+.date {
+   width: 150px;
+   text-align: center;
+   padding-right: 0;
+   padding-left: 0;
+}

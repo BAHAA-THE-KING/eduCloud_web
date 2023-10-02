@@ -34,7 +34,7 @@ function App() {
               <Routes>
                 <Route path={HOME} element={<Home />} />
                 <Route path={CALENDAR.main + "/*"} element={
-                  <Container fluid> 
+                  <Container fluid style={{ overflowY: "auto" }}>
                     <CalendarHeader />
                     <Routes>
                       <Route path={CALENDAR.school} element={<SchoolCalendar />} />

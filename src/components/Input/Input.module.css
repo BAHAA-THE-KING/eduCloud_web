@@ -1,0 +1,9 @@
+.text {
+   border: 1.5px gray solid;
+   padding: 5px;
+   border-radius: 50px;
+   font-size: 20px;
+   color: #2A1F60;
+   outline: none;
+   padding-right: 20px;
+}

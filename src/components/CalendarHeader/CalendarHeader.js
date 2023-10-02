@@ -1,5 +1,7 @@
+import styles from "./CalendarHeader.module.css";
+
 import { Container } from "react-bootstrap";
-import * as handlers from "../handlers";
+import * as handlers from "../../handlers";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
@@ -26,12 +28,7 @@ function CalendarHeader() {
    const [path, setPath] = useState(window.location.pathname);
    return (
       <Container fluid>
-         <div
-            style={{
-               display: "flex",
-               justifyContent: "flex-end",
-               alignItems: "center"
-            }}>
+         <div className={styles.header}>
             {
                sections.map(
                   section =>
@@ -39,13 +36,7 @@ function CalendarHeader() {
                         key={section.to}
                         to={section.to}
                         onClick={() => setPath(section.to)}
-                        style={{
-                           marginRight: "100px",
-                           marginTop: "10px",
-                           backgroundColor: path === section.to ? "#2A1F61" : "transparent",
-                           padding: "15px 35px",
-                           borderRadius: "20px"
-                        }}
+                        className={styles.link + " " + (path === section.to ? styles.active : "")}
                      >
                         <span
                            style={{

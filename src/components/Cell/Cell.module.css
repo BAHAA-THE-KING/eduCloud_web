@@ -1,0 +1,59 @@
+.cell {
+   height: 90px;
+   padding-top: 5px;
+   padding-left: 20px;
+   margin-top: 5px;
+   color: white;
+   opacity: 1;
+   display: flex;
+   flex-flow: nowrap row;
+}
+
+.disabled {
+   opacity: 0.5;
+}
+
+.even {
+   background-color: #D9D2FE;
+}
+
+.odd {
+   background-color: #2A1F60;
+}
+
+.active {
+   background-color: #71B4E8;
+}
+
+.listContainer {
+   font-size: 0.75rem;
+   flex: 3;
+   text-align: start;
+   overflow: hidden;
+}
+
+.list {
+   list-style: none;
+   padding-left: 1rem;
+   margin-top: 15px;
+}
+
+.status {
+   display: inline-block;
+   width: 10px;
+   height: 10px;
+   background-color: gray;
+   border-radius: 50%;
+}
+
+.completed {
+   background-color: #43E867;
+}
+
+.skipped {
+   background-color: #FD000E;
+}
+
+.pending {
+   background-color: #FFAA64;
+}

@@ -1,6 +1,6 @@
 import { Accordion, Container, Row } from "react-bootstrap";
 import * as handlers from '../handlers';
-import { List, Loading, ViewTable } from "../components";
+import { MultiList, Loading, ViewTable } from "../components";
 import { useEffect, useReducer, useState } from "react";
 import Swal from "sweetalert2";
 
@@ -56,7 +56,16 @@ function SubjectsCalendar() {
             subjects,
             cont,
             data => {
-               setAllPlans(data);
+               setAllPlans(
+                  data.map(
+                     e => {
+                        const yer = Number(e.date.substring(0, 4));
+                        const mon = Number(e.date.substring(5, 7)) - 1;
+                        const day = Number(e.date.substring(8, 10));
+                        return { ...e, date: new Date(yer, mon, day) };
+                     }
+                  )
+               );
             },
             error => {
                Swal.fire(error);
@@ -71,17 +80,17 @@ function SubjectsCalendar() {
    return (
       <>
          {isLoaded.reduce((p, e) => p && e) || <Loading />}
-         <Container fluid style={{ marginTop: "10px", overflow: "auto" }}>
+         <Container fluid style={{ marginTop: "10px", overflow: "auto", minHeight: "75%" }}>
             <Row className="w-100" style={{ flexFlow: "nowrap row", justifyContent: "flex-end" }}>
                <div style={{ display: "flex", width: "min-content" }}>
-                  <List
+                  <MultiList
                      title="Subjects"
                      opitons={allSubjects.filter(e => grades.find(ee => ee === e.grade_id)).map(e => ({ ...e, name: allGrades.find(ee => ee.id === e.grade_id).name + " " + e.name }))}
                      value={subjects}
                      setValue={setSubjects}
                   />
                   <span>&nbsp;</span>
-                  <List
+                  <MultiList
                      title="Grades"
                      opitons={allGrades}
                      value={grades}
@@ -97,9 +106,16 @@ function SubjectsCalendar() {
                         subjectId => {
                            const grade = allGrades.find(e => e.subjects.find(e => e.id === subjectId));
                            const subject = allSubjects.find(e => e.id === subjectId);
-                           const plans = allPlans.filter(e => e.subject.id === subjectId);
+                           const plans = allPlans
+                              .filter(e => e.subject_id === subjectId)
+                              .map(
+                                 e => ({
+                                    ...e,
+                                    grade: allGrades.find(ee => ee.id === e.grade_id),
+                                    subject: allSubjects.find(ee => ee.id === e.subject_id)
+                                 }));
                            return (
-                              <Accordion.Item eventKey={"" + subjectId}>
+                              <Accordion.Item eventKey={"" + subjectId} style={{ marginTop: "10px" }}>
                                  <Accordion.Header dir="rtl">{grade.name + " " + subject.name}</Accordion.Header>
                                  <Accordion.Body>
                                     <ViewTable rows={plans} />
