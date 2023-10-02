@@ -46,6 +46,13 @@ const CALENDAR = {
    study: "/study",
 };
 
+export const SCHOOL = {
+   main:"/school",
+   classes: "/classes",
+   student: "/student",
+   school: "/grades"
+}
+
 const ACCEPTSTUDENTS = "/student/accept";
 const SELECTSTUDENTS = "/student/select";
 const DISTRIBUTESTUDENTS = "/student/distribute";

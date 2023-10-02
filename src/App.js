@@ -3,11 +3,13 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 
-import { HOME, LOGIN, VIEWGRADES, CALENDAR } from "./handlers"
+import { HOME, LOGIN, VIEWGRADES, CALENDAR, SCHOOL } from "./handlers"
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { CalendarHeader, SideNavbar } from './components';
 import { SchoolCalendar, Home, Login, SubjectsCalendar, ClassCalendar, ShowGrades } from './Pages';
 import { Container, Row } from 'react-bootstrap';
+import { GradesStudentClassesHeader } from './components/GradesStudentClassesHeader';
+import { AddNewStudent } from './Pages/AddNewStudent';
 
 function App() {
   return (
@@ -32,7 +34,7 @@ function App() {
               <Routes>
                 <Route path={HOME} element={<Home />} />
                 <Route path={CALENDAR.main + "/*"} element={
-                  <Container fluid>
+                  <Container fluid> 
                     <CalendarHeader />
                     <Routes>
                       <Route path={CALENDAR.school} element={<SchoolCalendar />} />
@@ -41,7 +43,15 @@ function App() {
                     </Routes>
                   </Container>
                 } />
-                <Route path={VIEWGRADES} element={<ShowGrades />} />
+                <Route path={SCHOOL.main + "/*"} element={
+                  <Container fluid>
+                    <GradesStudentClassesHeader />
+                    <Routes>
+                      <Route path={SCHOOL.classes} element={<ShowGrades />} />
+                      <Route path={SCHOOL.student} element={<AddNewStudent />} />
+                    </Routes>
+                  </Container>
+                } />
               </Routes>
             </div>
           }

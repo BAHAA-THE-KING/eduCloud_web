@@ -1,12 +1,14 @@
 import { useEffect, useReducer, useState } from "react";
 import * as handlers from "../handlers.js";
 import { GradeDropDownMenu, Loading } from "../components";
+import { AddButton } from "../components/AddButton.js";
 
 //font awesome icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload, faClose } from "@fortawesome/free-solid-svg-icons";
 
 import Swal from "sweetalert2";
+import { Outlet } from "react-router-dom";
 
 function ShowGrades() {
   const [grade, setGrade] = useState([]);
@@ -21,7 +23,7 @@ function ShowGrades() {
   );
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // passit from component as prop
+  // passit to component as prop
   const setActive = (idd) => {
     setActiveEditGrade({ active: true, id: idd });
   };
@@ -46,56 +48,12 @@ function ShowGrades() {
     []
   );
 
-  const [menu, setMenu] = useState([
-    {
-      id: 1,
-      text: "School Classes",
-      active: true,
-    },
-    {
-      id: 2,
-      text: "Add new student",
-      active: false,
-    },
-    {
-      id: 3,
-      text: "Grade Classes",
-      active: false,
-    },
-  ]);
-
-  const titelsHandler = (item) => {
-    const updateMenu = menu.map((menuItem) => {
-      if (menuItem.id == item.id) {
-        return { ...menuItem, active: true };
-      } else {
-        return { ...menuItem, active: false };
-      }
-    });
-    setMenu(updateMenu);
-  }
-
-
   return (
     <>
       {isLoaded || <Loading />}
-      <div className="container w-100 pt-5 student">
-        {/* main buttons */}
-        <div className="d-flex justify-content-around w-50 fw-bold ms-auto school">
-          {
-            menu.map((item) => (
-              <div
-                key={item.id}
-                onClick={() =>titelsHandler(item)}
-                className={!item.active ? "text-gray ms-5 item pointer" : "text-gray ms-5 item pointer active"}
-              >
-                {item.text}
-              </div>
-            ))
-          }
-        </div>
+      <div className="container w-100 pt-5 classes">
         {/* add Grade button */}
-        <div className="text-purple ms-auto add-grade-btn rounded fw-bold pointer">+ Add new Grade</div>
+        <AddButton text="Add New Grade" />
         {/* drop down classes from grade */}
         <div>
           <div className="ms-auto mt-5 row grade-menu gx-5 gy-5">
@@ -105,31 +63,6 @@ function ShowGrades() {
                 key={data.id}
               >
                 <GradeDropDownMenu id={data.id} classObject={data.g_classes} fun={setActive} />
-
-                {/*       
-                <button
-                  className="btn dropdown-toggle text-gray fw-bold border-0"
-                  type="button"
-                  id={`class-dropdown${data.id}`}
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Grade {data.id}
-                </button>
-                <ul
-                  className="dropdown-menu pointer"
-                  aria-labelledby={`class-dropdown${data.id}`}
-                  onClick={() => {
-                    const active = { active: true, id: data.id };
-                    setActiveEditGrade(active);
-                  }}
-                >
-                  {data.g_classes.map((classes) => (
-                    <li className="text-purple class" key={classes.id}>
-                      Class {classes.name}
-                    </li>
-                  ))}
-                </ul> */}
                 <div className={(activeEditGrade.id == data.id && activeEditGrade.active) ? "layer" : "class-info d-none"}></div>
                 <div className={(activeEditGrade.id == data.id && activeEditGrade.active) ? "class-info" : "class-info d-none"}>
                   <div className="d-flex justify-content-end">

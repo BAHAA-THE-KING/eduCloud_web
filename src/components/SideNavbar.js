@@ -29,8 +29,8 @@ function SideNavbar() {
     {
       text: "Add student screen",
       icon: faUser,
-      link: handlers.VIEWGRADES,
-      check: handlers.VIEWGRADES,
+      link: handlers.SCHOOL.main +  handlers.SCHOOL.classes,
+      check: handlers.SCHOOL.main,
     },
   ];
 
@@ -62,7 +62,7 @@ function SideNavbar() {
               onClick={() => setExpand(false)}
               className={
                 "menu-item" +
-                (isExpand ? "" : " menu-item-NX") +
+                (isExpand ? "" : " menu-item-NX") + 
                 (url.indexOf(item.check) === 0 ? " active" : "")
               }
               style={{ width: "max-content" }}

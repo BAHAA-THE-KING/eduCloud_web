@@ -27,24 +27,27 @@
    color: var(--mainPurple) !important;
 }
 
+.bg-white {
+   background-color: white;
+}
 .bg-red {
-   color: var(--mainRed) !important;
+   background-color: var(--mainRed) !important;
 }
 
 .bg-blue {
-   color: var(--mainBlue) !important;
+   background-color: var(--mainBlue) !important;
 }
 
 .bg-light-purple {
-   color: var(--mainLightPurple) !important;
+   background-color: var(--mainLightPurple) !important;
 }
 
 .bg-gray {
-   color: var(--mainGray) !important;
+   background-color: var(--mainGray) !important;
 }
 
 .bg-purple {
-   color: var(--mainPurple) !important;
+   background-color: var(--mainPurple) !important;
 }
 
 .pointer {
@@ -351,7 +354,7 @@ button {
    margin-left: 100px;
 }
 
-.student .dropdown-menu {
+.classes .dropdown-menu {
    position: absolute;
    inset: 0px auto auto 0px;
    margin: 0px;
@@ -365,9 +368,8 @@ button {
    scrollbar-gutter: stable;
 }
 
-.student .dropdown-menu .class {
+.classes .dropdown-menu .class {
    background-color: white;
-   width: -moz-fit-content;
    width: fit-content;
    margin: auto;
    padding: 5px 55px;
@@ -425,6 +427,29 @@ button {
 
 /* end class info*/
 
-
-
 /* end grades and classes */
+
+
+/* start add student */
+
+.student input[type="text"] {
+   box-shadow: rgb(128, 128, 128) 1px 1px 5px;
+   width: 200px;
+   height: fit-content;
+   text-align: left;
+   /* padding: 5px 16px 5px 0px;
+   text-align: right; */
+   padding: 5px 0px 5px 16px;
+   outline: none;
+   border: none;
+}
+
+.students {
+   background-color: #EDEDED;
+}
+.students .line .user {
+   width: fit-content;
+   padding: 8px;
+   border-radius: 50%;
+}
+/* end add student */
