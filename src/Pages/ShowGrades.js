@@ -8,7 +8,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload, faClose } from "@fortawesome/free-solid-svg-icons";
 
 import Swal from "sweetalert2";
-import { Outlet } from "react-router-dom";
 
 function ShowGrades() {
   const [grade, setGrade] = useState([]);
@@ -66,7 +65,6 @@ function ShowGrades() {
                 <div className={(activeEditGrade.id == data.id && activeEditGrade.active) ? "layer" : "class-info d-none"}></div>
                 <div className={(activeEditGrade.id == data.id && activeEditGrade.active) ? "class-info" : "class-info d-none"}>
                   <div className="d-flex justify-content-end">
-
                     <FontAwesomeIcon
                       icon={faDownload}
                       className="fs-3 text-purple pointer"

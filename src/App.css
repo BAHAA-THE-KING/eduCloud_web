@@ -121,11 +121,12 @@ a {
 .login input {
    margin: 20px;
    width: 300px !important;
+   padding-left: 15px;
 }
 
-/* .login .sbmt-holder {
+.login .sbmt-holder {
    background-color: white;
-} */
+}
 
 .login button {
    margin-top: 15px;
@@ -433,6 +434,11 @@ button {
 
 .students {
    background-color: #EDEDED;
+   padding: 10px;
+   border-radius: 15px;
+}
+.students .line:not(:last-child) {
+   margin-bottom: 10px;
 }
 .students .line .user {
    width: fit-content;

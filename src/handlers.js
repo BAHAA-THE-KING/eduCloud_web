@@ -637,7 +637,7 @@ function getTestData(id, func) {
 }
 
 function getStudents(search, page, grade, theClass, hasClass, func) {
-   const path = "/supervisor/studentSearch?";
+   const path = "/supervisor/studentSearch";
 
    const params = [];
    if (!!search) params.push("search=" + search);

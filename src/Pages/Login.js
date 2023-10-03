@@ -26,14 +26,16 @@ function Login() {
           </div>
           <Input defaultValue={name} inputHook={setName} enterHook={() => { }} type="text" hint="اسم المستخدم" />
           <Input defaultValue={password} inputHook={setPassword} enterHook={() => { }} type="password" hint="كلمة المرور" />
-          <button onClick={
+          <button
+            className="sbmt-holder"
+            onClick={
             e => {
               e.preventDefault();
               handlers.logIn(
                 name,
                 password,
                 new AbortController(),
-                data => {
+                data => { 
                   localStorage.setItem("auth", JSON.stringify(data));
                   navigate(handlers.HOME);
                 },

@@ -1,0 +1,23 @@
+.pop-up {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  box-shadow: rgb(128, 128, 128) 1px 1px 5px;
+  border-radius: 20px;
+  padding: 20px;
+  z-index: 10;
+  width: 800px;
+  z-index: 10;
+}
+.layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--mainGray);
+  opacity: 0.4;
+}
+
