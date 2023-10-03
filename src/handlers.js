@@ -637,14 +637,14 @@ function getTestData(id, func) {
 }
 
 function getStudents(search, page, grade, theClass, hasClass, func) {
-   const path = "/supervisor/studentSearch";
+   const path = "/supervisor/studentSearch?";
 
    const params = [];
    if (!!search) params.push("search=" + search);
    if (!!page) params.push("page=" + page);
    if (!!grade) params.push("grade_id=" + grade);
    if (!!theClass) params.push("class_id=" + theClass);
-   params.push("hasClass=" + (+hasClass));
+   if (theClass ?? false) params.push("hasClass=" + (+hasClass));
 
    const url = host + path + params.join("&");
 
@@ -670,9 +670,9 @@ function getStudents(search, page, grade, theClass, hasClass, func) {
          e => {
             if (e["message"] === "Unauthenticated.") {
                goTo(LOGIN);
-            } else if (e.message === "results found successfully") {
-               func(e.data);
             }
+            if (e.data) func(e.data);
+            else func(e);
          }
       )
       .catch(
