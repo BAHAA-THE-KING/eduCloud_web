@@ -7,6 +7,7 @@ import { useEffect, useReducer, useState } from "react";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Swal from "sweetalert2";
+import dateFormat from "dateformat";
 
 function SchoolCalendar() {
    const [currentDate, setCurrentDate] = useState(new Date());
@@ -19,6 +20,7 @@ function SchoolCalendar() {
    const [plans, setPlans] = useState([]);
    const [contextData, setContextData] = useState(null);
    const [popupData, setPopupData] = useState(null);
+   const [refresh, setRefresh] = useState(0);
    const [controllers, setControllers] = useReducer(
       (state, { type, index, value }) =>
          type === "stop" ?
@@ -80,8 +82,8 @@ function SchoolCalendar() {
                      const mon = Number(e.date.substring(5, 7)) - 1;
                      const day = Number(e.date.substring(8, 10));
                      const dat = new Date(yer, mon, day);
-                     if (temp[dat.toLocaleDateString("en-Gb")]) temp[dat.toLocaleDateString("en-Gb")].push({ ...e, date: dat });
-                     else temp[dat.toLocaleDateString("en-Gb")] = [{ ...e, date: dat }];
+                     if (temp[dateFormat(dat, "yyyy/mm/dd")]) temp[dateFormat(dat, "yyyy/mm/dd")].push({ ...e, date: dat });
+                     else temp[dateFormat(dat, "yyyy/mm/dd")] = [{ ...e, date: dat }];
                   }
                );
                setAllPlans(temp);
@@ -93,7 +95,7 @@ function SchoolCalendar() {
          );
          return () => { cont.abort(); }
       },
-      [grades, subjects]
+      [grades, subjects, refresh]
    );
    useEffect(
       () => {
@@ -113,7 +115,7 @@ function SchoolCalendar() {
                      return {
                         date,
                         real,
-                        plans: (allPlans[date.toLocaleDateString("en-Gb")] ?? []).map(
+                        plans: (allPlans[dateFormat(date, "yyyy/mm/dd")] ?? []).map(
                            e => {
                               let status;
                               if (e.finished) {
@@ -141,7 +143,20 @@ function SchoolCalendar() {
       <>
          {isLoaded.reduce((p, e) => p && e) || <Loading />}
          {contextData && <ContextMenu data={contextData} />}
-         {popupData && <Popup allGrades={allGrades} allSubjects={allSubjects} data={popupData} closePopup={() => setPopupData(null)} />}
+         {
+            popupData &&
+            <Popup
+               allGrades={allGrades}
+               allSubjects={allSubjects}
+               data={popupData}
+               closePopup={() => setPopupData(null)}
+               refreshData={
+                  () => {
+                     setRefresh(refresh + 1);
+                  }
+               }
+            />
+         }
          <Container fluid style={{ marginTop: "10px" }}>
             <Row className={`w-100 justify-content-end flex-sm-nowrap flex-sm-row`}>
                <div className={styles.viewDate}>
@@ -153,7 +168,7 @@ function SchoolCalendar() {
                      Return to today
                   </Button>
                   <Input
-                     defaultValue={currentDate.toLocaleDateString("en-Gb")}
+                     defaultValue={dateFormat(currentDate, "yyyy/mm/dd")}
                      inputHook={() => { }}
                      enterHook={() => { }}
                      editable={false}

@@ -1,18 +1,19 @@
 import styles from "./ClassCalendar.module.css";
 
-import { Accordion, Container, Row } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 import * as handlers from '../../handlers';
-import { MultiList, Loading, ViewTable } from "../../components";
+import { MultiList, Loading, DisplayList } from "../../components";
 import { useEffect, useReducer, useState } from "react";
 import Swal from "sweetalert2";
+import dateFormat from "dateformat";
 
-function ClassCalendar() {
+function SubjectsCalendar() {
    const [allGrades, setAllGrades] = useState([]);
    const [grades, setGrades] = useState([]);
    const [allSubjects, setAllSubjects] = useState([]);
    const [subjects, setSubjects] = useState([]);
    const [allClasses, setAllClasses] = useState([]);
-   const [theClass, setTheClass] = useState([]);
+   const [classes, setClasses] = useState([]);
    const [allPlans, setAllPlans] = useState([]);
    const [controllers, setControllers] = useReducer(
       (state, { type, index, value }) =>
@@ -61,7 +62,16 @@ function ClassCalendar() {
             subjects,
             cont,
             data => {
-               setAllPlans(data);
+               setAllPlans(
+                  data.map(
+                     e => {
+                        const yer = Number(e.date.substring(0, 4));
+                        const mon = Number(e.date.substring(5, 7)) - 1;
+                        const day = Number(e.date.substring(8, 10));
+                        return { ...e, date: new Date(yer, mon, day) };
+                     }
+                  )
+               );
             },
             error => {
                Swal.fire(error);
@@ -70,7 +80,7 @@ function ClassCalendar() {
          );
          return () => { cont.abort(); }
       },
-      [theClass, subjects]
+      [grades, subjects]
    );
 
    return (
@@ -81,9 +91,9 @@ function ClassCalendar() {
                <div className={styles.choose}>
                   <MultiList
                      title="Classes"
-                     opitons={allClasses}
-                     value={theClass}
-                     setValue={setTheClass}
+                     opitons={allClasses.filter(e => grades.find(ee => ee === e.grade_id)).map(e => ({ ...e, name: allGrades.find(ee => ee.id === e.grade_id).name + " " + e.name }))}
+                     value={classes}
+                     setValue={setClasses}
                   />
                   <span>&nbsp;</span>
                   <MultiList
@@ -102,33 +112,51 @@ function ClassCalendar() {
                </div>
                <div style={{ width: "100px" }}></div>
             </Row>
-            <Row style={{ width: "95%", marginTop: "10px" }}>
-               <Accordion defaultActiveKey={[]} alwaysOpen>
-                  {
-                     subjects.map(
-                        subjectId => {
-                           const grade = allGrades.find(e => e.subjects.find(e => e.id === subjectId));
-                           const subject = allSubjects.find(e => e.id === subjectId);
-                           const plans = allPlans.filter(e => e.subject.id === subjectId);
-                           return (
-                              <Accordion.Item
-                                 key={subjectId}
-                                 eventKey={"" + subjectId}
-                              >
-                                 <Accordion.Header dir="rtl">{grade.name + " " + subject.name}</Accordion.Header>
-                                 <Accordion.Body>
-                                    <ViewTable rows={plans} />
-                                 </Accordion.Body>
-                              </Accordion.Item>
-                           );
+            <Row style={{ width: "95%" }}>
+               <DisplayList
+                  list={
+                     classes.map(
+                        classId => {
+                           const theClass = allClasses.find(e => e.id === classId);
+                           const grade = allGrades.find(e => e.g_classes.find(e => e.id === classId));
+                           const theSubjects = allSubjects.filter(e => e.grade_id === grade.id && subjects.find(elm => elm === e.id));
+                           return theSubjects.map(
+                              subject => {
+                                 const plans = allPlans
+                                    .filter(e => e.subject_id === subject.id)
+                                    .map(
+                                       e => ({
+                                          ...e,
+                                          grade: grade.name,
+                                          subject: subject.name,
+                                          theClass: theClass.name,
+                                          date: dateFormat(e.date, "yyyy/mm/dd")
+                                       }));
+                                 return {
+                                    id: classId + "-" + subject.id + "-" + grade.id,
+                                    header: grade.name + " " + subject.name + " " + theClass.name,
+                                    list: {
+                                       headers: [
+                                          { title: "Finished", name: "finished" },
+                                          { title: "Date", name: "date" },
+                                          { title: "Name", name: "title" },
+                                          { title: "Subject name", name: "subject" },
+                                          { title: "Class name", name: "theClass" },
+                                          { title: "Grade name", name: "grade" }
+                                       ],
+                                       items: plans
+                                    }
+                                 };
+                              }
+                           )
                         }
-                     )
+                     ).flat()
                   }
-               </Accordion>
+               />
             </Row>
          </Container>
       </>
    );
 }
 
-export default ClassCalendar;
+export default SubjectsCalendar;

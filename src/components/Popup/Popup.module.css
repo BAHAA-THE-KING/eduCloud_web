@@ -10,7 +10,7 @@
 
 .content {
    width: CALC(32% - 60px);
-   height: CALC(65% - 60px);
+   min-height: CALC(65% - 60px);
    border-radius: 50px;
    background-color: white;
    position: relative;
@@ -41,7 +41,6 @@
 
 .title {
    width: 100%;
-   text-indent: 10px;
    font-size: medium;
 }
 

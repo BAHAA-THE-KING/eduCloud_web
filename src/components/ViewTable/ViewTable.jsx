@@ -1,35 +1,39 @@
-import { Col, Container, Row } from "react-bootstrap";
+import styles from "./ViewTable.module.css";
 
-function ViewTable({ rows }) {
+import { Table } from "react-bootstrap";
+
+function ViewTable({ headers, rows }) {
    return (
-      <Container
-         fluid
-         style={{
-            backgroundColor: "#80808060",
-            borderRadius: "15px",
-         }}
-      >
-         <Row className="text-white p-1">
-            <Col xs='3'><b>Date</b></Col>
-            <Col xs='3'><b>Name</b></Col>
-            <Col xs='3'><b>Subject name</b></Col>
-            <Col xs='3'><b>Grade name</b></Col>
-         </Row>
-         {
-            rows.map(
-               row =>
-                  <Row
-                     key={row.date}
-                     className="text-purple p-1"
-                  >
-                     <Col xs='3'><b>{row.date.toLocaleDateString("en-Gb")}</b></Col>
-                     <Col xs='3'><b>{row.title}</b></Col>
-                     <Col xs='3'><b>{row.subject.name}</b></Col>
-                     <Col xs='3'><b>{row.grade.name}</b></Col>
-                  </Row>
-            )
-         }
-      </Container>
+      <Table className={`${styles.table}`}>
+         <thead className="text-white p-1">
+            <tr>
+               {
+                  headers.map(
+                     e =>
+                        <th key={e.title + e.name}>{e.title}</th>
+                  )
+               }
+            </tr>
+         </thead>
+         <tbody>
+            {
+               rows.map(
+                  row =>
+                     <tr
+                        key={row.id}
+                        className="text-purple p-1"
+                     >
+                        {
+                           headers.map(
+                              e =>
+                                 <td key={row.id}>{row[e.name]}</td>
+                           )
+                        }
+                     </tr>
+               )
+            }
+         </tbody>
+      </Table >
    );
 }
 

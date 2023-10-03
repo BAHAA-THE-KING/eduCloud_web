@@ -10,10 +10,10 @@ function DisplayList({ list }) {
       {
         list.map(
           item => (
-            <Accordion.Item eventKey={"" + item.id} className={styles.displayList}>
+            <Accordion.Item key={item.id} eventKey={"" + item.id} className={`border-0 ${styles.displayList} ${styles.item}`}>
               <Accordion.Header dir="rtl">{item.header}</Accordion.Header>
-              <Accordion.Body>
-                <ViewTable rows={item.list} />
+              <Accordion.Body style={{ backgroundColor: "transparent" }}>
+                <ViewTable headers={item.list.headers} rows={item.list.items} />
               </Accordion.Body>
             </Accordion.Item>
           )
