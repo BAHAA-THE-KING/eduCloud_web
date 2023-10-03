@@ -47,7 +47,7 @@ function Login() {
                 }
               );
             }}>
-            <div className='sbmt'>دخول</div>
+            <div className='sbmt'>login</div>
             <FontAwesomeIcon icon={faUser} className="fs-5 icon" />
           </button>
         </form>
