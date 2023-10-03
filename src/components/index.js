@@ -10,5 +10,6 @@ import Loading from "./Loading/Loading";
 import GradeDropDownMenu from "./GradeDropDownMenu";
 import ContextMenu from "./ContextMenu/ContextMenu";
 import Popup from "./Popup/Popup";
+import DisplayList from "./DisplayList/DisplayList";
 
-export { Input, myCard as Card, SideNavbar, Cell, CalendarHeader, MultiList, List, ViewTable, Loading, GradeDropDownMenu, ContextMenu, Popup };
+export { Input, myCard as Card, SideNavbar, Cell, CalendarHeader, MultiList, List, ViewTable, Loading, GradeDropDownMenu, ContextMenu, Popup, DisplayList };

@@ -1,6 +1,6 @@
 import styles from "./Popup.module.css";
 
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { Button, Col, Form, Row } from "react-bootstrap";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
@@ -79,64 +79,62 @@ function Popup({ allGrades, allSubjects, data, closePopup }) {
             <Row className={styles.subHeader}>
                <b>Add task</b>
             </Row>
-            <Form className={styles.frm}>
-               <Row className="pt-2 m-0">
-                  <Form.Label className={styles.lbl}>
-                     <span>
-                        Title:&nbsp;
-                     </span>
-                  </Form.Label>
-                  <Col>
-                     <Input
-                        type="text"
-                        className={`${styles.title}`}
-                        hint={"title"}
-                        defaultValue={title}
-                        inputHook={setTitle}
-                     />
-                  </Col>
-               </Row>
-               <Row className="pt-2 m-0">
-                  <Form.Label className={styles.lbl}>
-                     <span>
-                        Grade:&nbsp;
-                     </span>
-                  </Form.Label>
-                  <List
-                     title={allGrades.find(e => e.id === grade) ? allGrades.find(e => e.id === grade).name : "grade"}
-                     opitons={allGrades}
-                     value={grade}
-                     setValue={setGrade}
-
+            <Row className="pt-2 m-0">
+               <Form.Label className={styles.lbl}>
+                  <span>
+                     Title:&nbsp;
+                  </span>
+               </Form.Label>
+               <Col>
+                  <Input
+                     type="text"
+                     className={`${styles.title}`}
+                     hint={"title"}
+                     defaultValue={title}
+                     inputHook={setTitle}
                   />
-               </Row>
-               <Row className="pt-2 m-0">
-                  <Form.Label className={styles.lbl}>
-                     <span>
-                        Subject:&nbsp;
-                     </span>
-                  </Form.Label>
-                  <List
-                     title={allSubjects.find(e => e.id === subject) ? allSubjects.find(e => e.id === subject).name : "subject"}
-                     opitons={allSubjects.filter(e => e.grade_id === grade)}
-                     value={subject}
-                     setValue={setSubject}
+               </Col>
+            </Row>
+            <Row className="pt-2 m-0">
+               <Form.Label className={styles.lbl}>
+                  <span>
+                     Grade:&nbsp;
+                  </span>
+               </Form.Label>
+               <List
+                  title={allGrades.find(e => e.id === grade) ? allGrades.find(e => e.id === grade).name : "grade"}
+                  opitons={allGrades}
+                  value={grade}
+                  setValue={setGrade}
+                  className={styles.listHeight}
+               />
+            </Row>
+            <Row className="pt-2 m-0">
+               <Form.Label className={styles.lbl}>
+                  <span>
+                     Subject:&nbsp;
+                  </span>
+               </Form.Label>
+               <List
+                  title={allSubjects.find(e => e.id === subject) ? allSubjects.find(e => e.id === subject).name : "subject"}
+                  opitons={allSubjects.filter(e => e.grade_id === grade)}
+                  value={subject}
+                  setValue={setSubject}
+                  className={styles.listHeight}
+               />
+            </Row>
+            <Row className="pt-2 m-0">
+               <Col>
+                  <Button
+                     onClick={() => {
 
-                  />
-               </Row>
-               <Row className="pt-2 m-0">
-                  <Col>
-                     <Button
-                        onClick={() => {
-
-                        }}
-                        className={`px-5 rounded-4 ${styles.btn}`}
-                     >
-                        {"Submit"}
-                     </Button>
-                  </Col>
-               </Row>
-            </Form>
+                     }}
+                     className={`px-5 rounded-4 ${styles.btn}`}
+                  >
+                     {"Submit"}
+                  </Button>
+               </Col>
+            </Row>
          </div>
       </div>
    );

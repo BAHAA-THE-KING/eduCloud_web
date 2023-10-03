@@ -13,7 +13,7 @@ function Login() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  
+
   return (
     <div className="login">
       <img src='Images/login.jpg' alt='' className='bg' />
@@ -41,6 +41,9 @@ function Login() {
                 },
                 error => {
                   Swal.fire(error)
+                },
+                () => {
+
                 }
               );
             }}>

@@ -1,6 +1,8 @@
+import styles from "./SubjectsCalendar.module.css";
+
 import { Accordion, Container, Row } from "react-bootstrap";
-import * as handlers from '../handlers';
-import { MultiList, Loading, ViewTable } from "../components";
+import * as handlers from '../../handlers';
+import { MultiList, Loading, ViewTable, DisplayList } from "../../components";
 import { useEffect, useReducer, useState } from "react";
 import Swal from "sweetalert2";
 
@@ -80,9 +82,9 @@ function SubjectsCalendar() {
    return (
       <>
          {isLoaded.reduce((p, e) => p && e) || <Loading />}
-         <Container fluid style={{ marginTop: "10px", overflow: "auto", minHeight: "75%" }}>
-            <Row className="w-100" style={{ flexFlow: "nowrap row", justifyContent: "flex-end" }}>
-               <div style={{ display: "flex", width: "min-content" }}>
+         <Container fluid className={styles.container}>
+            <Row className={`w-100 justify-content-end flex-sm-nowrap flex-sm-row`}>
+               <div className={styles.choose}>
                   <MultiList
                      title="Subjects"
                      opitons={allSubjects.filter(e => grades.find(ee => ee === e.grade_id)).map(e => ({ ...e, name: allGrades.find(ee => ee.id === e.grade_id).name + " " + e.name }))}
@@ -100,8 +102,8 @@ function SubjectsCalendar() {
                <div style={{ width: "100px" }}></div>
             </Row>
             <Row style={{ width: "95%" }}>
-               <Accordion defaultActiveKey={[]} alwaysOpen>
-                  {
+               <DisplayList
+                  list={
                      subjects.map(
                         subjectId => {
                            const grade = allGrades.find(e => e.subjects.find(e => e.id === subjectId));
@@ -114,18 +116,16 @@ function SubjectsCalendar() {
                                     grade: allGrades.find(ee => ee.id === e.grade_id),
                                     subject: allSubjects.find(ee => ee.id === e.subject_id)
                                  }));
-                           return (
-                              <Accordion.Item eventKey={"" + subjectId} style={{ marginTop: "10px" }}>
-                                 <Accordion.Header dir="rtl">{grade.name + " " + subject.name}</Accordion.Header>
-                                 <Accordion.Body>
-                                    <ViewTable rows={plans} />
-                                 </Accordion.Body>
-                              </Accordion.Item>
-                           );
+                           return {
+                              id: subjectId,
+                              header: grade.name + " " + subject.name,
+                              list: plans
+                           };
                         }
                      )
                   }
-               </Accordion>
+
+               />
             </Row>
          </Container>
       </>

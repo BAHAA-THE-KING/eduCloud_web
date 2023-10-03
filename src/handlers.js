@@ -47,7 +47,7 @@ const CALENDAR = {
 };
 
 export const SCHOOL = {
-   main:"/school",
+   main: "/school",
    classes: "/classes",
    student: "/student",
    school: "/grades"
@@ -929,7 +929,7 @@ function getStudentData(id, func) {
       );
 }
 
-function logIn(name, password, controller, onSuccess, onError) {
+function logIn(name, password, controller, onSuccess, onError, onEnd) {
    const path = "/auth/login";
 
    const url = host + path;
@@ -945,7 +945,7 @@ function logIn(name, password, controller, onSuccess, onError) {
 
    const signal = controller.signal;
 
-   proccess(url, method, headers, body, signal, onSuccess, onError);
+   proccess(url, method, headers, body, signal, onSuccess, onError, onEnd);
 }
 
 function addEmployee(name, surname, roles, func) {
