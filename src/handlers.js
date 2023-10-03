@@ -74,32 +74,30 @@ function proccess(url, method, headers, body, signal, onSuccess, onError, onEnd)
       .then(
          data => {
             onSuccess(data);
-            onEnd();
          }
       )
       .catch(
          err => {
             if (err.message === "Server Error") {
                onError("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
-               onEnd();
             } else if (err.name === "AbortError") {
-               onEnd();
             } else if (err instanceof Promise) {
                err.then(
                   error => {
                      if (error === "Unauthenticated.") {
                         goTo(LOGIN);
-                        onEnd();
                      } else {
                         onError(error.message || error.title || error);
-                        onEnd();
                      }
                   }
                )
             } else {
                onError(err);
-               onEnd();
             }
+         }
+      ).finally(
+         () => {
+            onEnd();
          }
       );
 }
@@ -636,7 +634,7 @@ function getTestData(id, func) {
       );
 }
 
-function getStudents(search, page, grade, theClass, hasClass, func) {
+function getStudents(search, page, grade, theClass, hasClass, controller, onSuccess, onError, onEnd) {
    const path = "/supervisor/studentSearch?";
 
    const params = [];
@@ -656,31 +654,9 @@ function getStudents(search, page, grade, theClass, hasClass, func) {
       "Authorization": "Bearer " + getToken()
    };
 
-   fetch(url, { method, headers })
-      .then(
-         e => {
-            if (e.status >= 500) {
-               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
-               return;
-            }
-            return e.json();
-         }
-      )
-      .then(
-         e => {
-            if (e["message"] === "Unauthenticated.") {
-               goTo(LOGIN);
-            }
-            if (e.data) func(e.data);
-            else func(e);
-         }
-      )
-      .catch(
-         err => {
-            alert("An Error Occured.");
-            console.log(err);
-         }
-      );
+   const signal = controller.signal;
+
+   proccess(url, method, headers, undefined, signal, onSuccess, onError, onEnd)
 }
 
 function getBaseCalendar(grades, subjects, controller, onSuccess, onError, onEnd) {
