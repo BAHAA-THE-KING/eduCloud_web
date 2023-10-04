@@ -43,9 +43,6 @@
 input[type="file"] {
   display: none;
 }
-label {
-  
-}
 .phone {
   width: 300px !important;
 }
