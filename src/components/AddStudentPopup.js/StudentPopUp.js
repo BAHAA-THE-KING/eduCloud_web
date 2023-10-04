@@ -4,10 +4,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload, faClose } from "@fortawesome/free-solid-svg-icons";
 import "./StudentPopUp.css"
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useStepContext } from "@mui/material";
 export function StudentPopUp({ active, handlPop }) {
 
   const [activeButton, setActiveButton] = useState(true);
   const [activeButtonTop, setActiveButtonTop] = useState(false);
+  const [image, setImage] = useState("");
+  const [imageSource, setImageSource] = useState(null);
 
   function handleActiveButton() {
     setActiveButton((active) => !active);
@@ -17,6 +20,16 @@ export function StudentPopUp({ active, handlPop }) {
     setActiveButtonTop((state) => !state);
   }
 
+  function handleImage(e) {
+    const file = e.target.files[0];
+    if (file && file.type.substring(0, 5) === "image") {
+      setImage(file);
+      setImageSource(URL.createObjectURL(file));
+      console.log(URL.createObjectURL(file));
+    }
+    else
+      setImage(null)
+  }
   return (
     <>
       <div className={(active) ? "layer" : "d-none"}></div>
@@ -32,7 +45,12 @@ export function StudentPopUp({ active, handlPop }) {
             onClick={() => handlPop()}
           />
         </div>
+        {/* form */}
         <div className={activeButton ? "mt-3 d-block" : "d-none"}>
+          <div className="d-flex justify-content-center align-items-center">
+            <div className={"image-holder"}><img className="img-fluid image-holders" src={imageSource} /></div>
+            <div><label className="text-purple pointer fw-bold fs-4" htmlFor="file">Upload image</label><input type="file" id="file" accept="image/*" placeholder="Upload Image" onChange={handleImage} /></div>
+          </div>
           <div>
             <div className="text-end text-gray border-bottom border-3">Main data</div>
             <div className="mt-3 ">
@@ -46,7 +64,7 @@ export function StudentPopUp({ active, handlPop }) {
               </div>
             </div>
             <div className="text-end text-gray border-bottom border-3">Phone numbers</div>
-            <div className="mt-3 d-flex justify-content-between align-items-center">
+            <div className="mt-3 mb-3 d-flex justify-content-between align-items-center">
               <div><label className="text-purple ms-3 me-3">kinship</label><input className="text-purple phone" type="text" /></div>
               <div><label className="text-purple me-3">phone</label><input className="text-purple phone" type="text" /></div>
             </div>
@@ -88,18 +106,16 @@ export function StudentPopUp({ active, handlPop }) {
             <div className="col-4 row"><label className="d-flex justify-content-center align-items-center text-purple col-5">Bus stop</label>  <input className="text-purple col-6" type="text" /></div>
             <div className="col-4 row"><label className="d-flex justify-content-center align-items-center text-purple col-5">Bus name</label>  <input className="text-purple col-6" type="text" /></div>
           </div>
-
-          <div className="text-end text-gray mb-3 mt-3 border-bottom border-3 w-100">installments</div>
-          <div className="row mb-4">
-            <div className="col-4 row mb-3"><label className="d-flex justify-content-center align-items-center text-purple col-5">number of installments</label> <input className="text-purple col-6" type="text" /></div>
-            <div className="col-4 row mb-3"><label className="d-flex justify-content-center align-items-center text-purple col-5">Each installment</label>  <input className="text-purple col-6" type="text" /></div>
+          <div className="text-end text-gray mb-3 mt-3 border-bottom border-3 w-100">Extra Info</div>
+          <div className="row mb-2">
+            <div className="col-4 row mb-3"><label className="d-flex justify-content-center align-items-center text-purple col-5">Total Price</label> <input className="text-purple col-6" type="text" /></div>
+            <div className="col-4 row mb-3"><label className="d-flex justify-content-center align-items-center text-purple col-5">Phone</label>  <input className="text-purple col-6" type="text" /></div>
             <div className="col-4 row mb-3"><label className="d-flex justify-content-center align-items-center text-purple col-5">Extra Phone</label>  <input className="text-purple col-6" type="text" /></div>
-            <div className="d-flex justify-content-center align-items -center">
-              <div className="col-4 row mb-3"><label className="d-flex justify-content-center align-items-center text-purple col-5">total paid</label> <input className="text-purple col-6" type="text" /></div>
-              <div className="col-4 row mb-3 ms-5"><label className="d-flex justify-content-center align-items-center text-purple col-5">still have to pay</label>  <input className="text-purple col-6" type="text" /></div>
+            <div className="d-flex justify-content-center align-items-center mt-2">
+              <div className="col-4 row mb-3"><label className="d-flex justify-content-center align-items-center text-purple col-5">Phone</label>  <input className="text-purple col-6" type="text" /></div>
+              <div className="col-4 row mb-3 ms-4"><label className="d-flex justify-content-center align-items-center text-purple col-5">Extra Phone</label>  <input className="text-purple col-6" type="text" /></div>
             </div>
           </div>
-
           <div className="text-end text-gray mb-3 mt-3 border-bottom border-3 w-100">Extra Info</div>
           <div className="row mb-4">
             <div className="col-4 row mb-3"><label className="d-flex justify-content-center align-items-center text-purple col-5">installments</label> <input className="text-purple col-6" type="text" /></div>

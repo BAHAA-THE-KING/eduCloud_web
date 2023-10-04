@@ -49,7 +49,7 @@ export function AddNewStudent() {
       },
       err => { console.log(err); },
       () => { setIsLoaded(true); }
-    );
+      );
     return () => {
       setControllers({ type: "stop" });
       setIsLoaded(false);
