@@ -10,8 +10,9 @@ import Swal from "sweetalert2";
 import dateFormat from "dateformat";
 
 function SchoolCalendar() {
+   const [date, setDate] = useState(dateFormat(new Date(), "yyyy/mm/dd"));
    const [currentDate, setCurrentDate] = useState(new Date());
-   const [currentMonthIndex, setCurrentMonthIndex] = useState(currentDate.getMonth());
+   const [currentDateId, setCurrentDateId] = useState(currentDate.getFullYear() + "...." + (currentDate.getMonth() + 1));
    const [allGrades, setAllGrades] = useState([]);
    const [grades, setGrades] = useState([]);
    const [allSubjects, setAllSubjects] = useState([]);
@@ -99,44 +100,55 @@ function SchoolCalendar() {
    );
    useEffect(
       () => {
-         setCurrentMonthIndex(currentDate.getMonth());
+         setDate(dateFormat(currentDate, "yyyy/mm/dd"));
+         setCurrentDateId(currentDate.getFullYear() + "...." + (currentDate.getMonth() + 1));
       },
       [currentDate]
    );
    useEffect(
       () => {
          setPlans(
-            [...new Array(36)]
-               .map((e, i) => i - 2)
+            [
+               [...new Array(7)],
+               [...new Array(7)],
+               [...new Array(7)],
+               [...new Array(7)],
+               [...new Array(7)],
+               [...new Array(7)]
+            ]
+               .map((arr, indx) => arr.map((e, i) => indx * 7 + i - ((currentDate.getDay() - currentDate.getDate() + 70) % 7)))
                .map(
-                  e => {
-                     const date = new Date(currentDate.getFullYear(), currentMonthIndex, e);
-                     const real = currentMonthIndex === date.getMonth();
-                     return {
-                        date,
-                        real,
-                        plans: (allPlans[dateFormat(date, "yyyy/mm/dd")] ?? []).map(
-                           e => {
-                              let status;
-                              if (e.finished) {
-                                 status = "completed";
-                              } else {
-                                 if (e.date < new Date()) {
-                                    status = "skipped";
-                                 } else {
-                                    status = "pending";
+                  arr =>
+                     arr.map(
+                        e => {
+                           const date = new Date(currentDateId.split("....")[0], currentDateId.split("....")[1] - 1, e);
+                           const real = currentDateId === (date.getFullYear() + "...." + (date.getMonth() + 1));
+                           return {
+                              date,
+                              real,
+                              plans: (allPlans[dateFormat(date, "yyyy/mm/dd")] ?? []).map(
+                                 e => {
+                                    let status;
+                                    if (e.finished) {
+                                       status = "completed";
+                                    } else {
+                                       if (e.date < new Date()) {
+                                          status = "skipped";
+                                       } else {
+                                          status = "pending";
+                                       }
+                                    }
+                                    return { ...e, status };
                                  }
-                              }
-                              return { ...e, status };
-                           }
-                        )
-                     };
-                  }
+                              )
+                           };
+                        }
+                     )
                )
          );
       },
       // eslint-disable-next-line
-      [currentMonthIndex, allPlans]
+      [currentDateId, allPlans]
    );
 
    return (
@@ -168,10 +180,18 @@ function SchoolCalendar() {
                      Return to today
                   </Button>
                   <Input
-                     defaultValue={dateFormat(currentDate, "yyyy/mm/dd")}
-                     inputHook={() => { }}
-                     enterHook={() => { }}
-                     editable={false}
+                     defaultValue={date}
+                     inputHook={val => setDate(val)}
+                     enterHook={
+                        val => {
+                           const date = new Date(val);
+                           if (date.toString() === "Invalid Date") {
+                              setDate(dateFormat(currentDate, "yyyy/mm/dd"));
+                           } else {
+                              setCurrentDate(date);
+                           }
+                        }
+                     }
                      className={styles.date}
                   />
                </div>
@@ -194,45 +214,72 @@ function SchoolCalendar() {
                   <FontAwesomeIcon icon={faGear} className="fs-3 text-light text-black" />
                </button>
             </Row>
-            <Row style={{ width: "95%" }}>
+            <Row
+               style={{
+                  backgroundColor: "white",
+                  height: "30px",
+                  border: "1px black solid",
+                  borderStartStartRadius: '10px',
+                  borderStartEndRadius: '10px',
+               }}
+               className="mt-1"
+            >
+               <Col>Sunday</Col>
+               <Col>Monday</Col>
+               <Col>Tueday</Col>
+               <Col>Wednsday</Col>
+               <Col>Thirsday</Col>
+               <Col>Friday</Col>
+               <Col>Saturday</Col>
+            </Row>
+            <Row className="justify-content-center">
                {
                   plans.map(
-                     (plan, i) =>
-                        <Col
-                           key={plan.date}
-                           xs='2'
+                     (plans, indx) =>
+                        <Row
+                           key={indx}
                            className="p-0"
-                           onContextMenu={
-                              e => {
-                                 e.preventDefault();
-                                 if (!plan.real) return setContextData(null);
-                                 setCurrentDate(plan.date);
-                                 setContextData(
-                                    {
-                                       x: e.clientX,
-                                       y: e.clientY,
-                                       items: [
-                                          {
-                                             text: "Add event",
-                                             func: () => {
-                                                setContextData(null);
-                                                setPopupData({ ...plan });
-                                             }
-                                          }
-                                       ]
-                                    }
-                                 );
-                              }
-                           }
                         >
-                           <Cell
-                              key={plan.date}
-                              plan={plan}
-                              even={(i + 1) % 2}
-                              active={currentDate}
-                              setActive={setCurrentDate}
-                           />
-                        </Col>
+                           {
+                              plans.map(
+                                 (plan, i) =>
+                                    <Col
+                                       key={plan.date}
+                                       className={`p-0 ${styles.cellCols}`}
+                                       onContextMenu={
+                                          e => {
+                                             e.preventDefault();
+                                             if (!plan.real) return setContextData(null);
+                                             setCurrentDate(plan.date);
+                                             setContextData(
+                                                {
+                                                   x: e.clientX,
+                                                   y: e.clientY,
+                                                   items: [
+                                                      {
+                                                         text: "Add event",
+                                                         func: () => {
+                                                            setContextData(null);
+                                                            setPopupData({ ...plan });
+                                                         }
+                                                      }
+                                                   ]
+                                                }
+                                             );
+                                          }
+                                       }
+                                    >
+                                       <Cell
+                                          key={plan.date}
+                                          plan={plan}
+                                          even={i % 2}
+                                          active={currentDate}
+                                          setActive={setCurrentDate}
+                                       />
+                                    </Col>
+                              )
+                           }
+                        </Row>
                   )
                }
             </Row>
