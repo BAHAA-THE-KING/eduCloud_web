@@ -1,10 +1,11 @@
 import styles from "./SubjectsCalendar.module.css";
 
-import { Accordion, Container, Row } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 import * as handlers from '../../handlers';
-import { MultiList, Loading, ViewTable, DisplayList } from "../../components";
+import { MultiList, Loading, DisplayList } from "../../components";
 import { useEffect, useReducer, useState } from "react";
 import Swal from "sweetalert2";
+import dateFormat from "dateformat";
 
 function SubjectsCalendar() {
    const [allGrades, setAllGrades] = useState([]);
@@ -113,13 +114,22 @@ function SubjectsCalendar() {
                               .map(
                                  e => ({
                                     ...e,
-                                    grade: allGrades.find(ee => ee.id === e.grade_id),
-                                    subject: allSubjects.find(ee => ee.id === e.subject_id)
+                                    grade: allGrades.find(ee => ee.id === e.grade_id).name,
+                                    subject: allSubjects.find(ee => ee.id === e.subject_id).name,
+                                    date: dateFormat(e.date, "yyyy/mm/dd")
                                  }));
                            return {
                               id: subjectId,
                               header: grade.name + " " + subject.name,
-                              list: plans
+                              list: {
+                                 headers: [
+                                    { title: "Date", name: "date" },
+                                    { title: "Name", name: "title" },
+                                    { title: "Subject name", name: "subject" },
+                                    { title: "Grade name", name: "grade" }
+                                 ],
+                                 items: plans
+                              }
                            };
                         }
                      )

@@ -1565,7 +1565,7 @@ function addAbilityTestForm(subject, name, isEntry, sections, func) {
       );
 }
 
-function addCalendar(subject, title, date, is_test, func) {
+function addCalendar(grade, subject, title, date, is_test, onSuccess, onError, onEnd) {
    const path = "/principal/addBaseCalendar/";
 
    const url = host + path;
@@ -1584,40 +1584,13 @@ function addCalendar(subject, title, date, is_test, func) {
             "title": title,
             "is_test": +is_test,
             "subject_id": subject,
-            "grade_id": 1,
+            "grade_id": grade,
             "date": date
          }
       ]
    );
 
-   fetch(url, { method, headers, body })
-      .then(
-         e => {
-            if (e.status >= 500) {
-               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
-               return;
-            }
-            return e.json();
-         }
-      )
-      .then(
-         e => {
-            if (e.message === "plan created successfully") {
-               alert("Success!");
-               func(e.data);
-            } else if (e.message === "this title already exists with this subject and class") {
-               alert(e.errors.subject_id);
-            } else {
-               alert(e.message);
-            }
-         }
-      )
-      .catch(
-         err => {
-            alert("An Error Occured.");
-            console.log(err);
-         }
-      );
+   proccess(url, method, headers, body, undefined, onSuccess, onError, onEnd);
 }
 
 function addCandidateToOfficial(grade, selectedStudents, func) {
@@ -2108,7 +2081,7 @@ function editSubject(id, name, maxMark, passMark, notes, func) {
       );
 }
 
-function editCalendar(id, title, date, is_test, func) {
+function editCalendar(id, grade, subject, title, date, is_test, onSuccess, onError, onEnd) {
    const path = "/principal/editBaseCalendar/" + id;
 
    const url = host + path;
@@ -2120,46 +2093,20 @@ function editCalendar(id, title, date, is_test, func) {
       "Accept": "application/json",
       "Authorization": "Bearer " + getToken()
    };
+
    const body = JSON.stringify(
       [
          {
             "title": title,
             "date": date,
             "is_test": is_test,
-            "subject_id": 1,
-            "grade_id": 1
+            "subject_id": subject,
+            "grade_id": grade
          }
       ]
    );
 
-   fetch(url, { method, headers, body })
-      .then(
-         e => {
-            if (e.status >= 500) {
-               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
-               return;
-            }
-            return e.json();
-         }
-      )
-      .then(
-         e => {
-            if (e.message === "plan updated successfully") {
-               alert("Success!");
-               func();
-            } else if (e.message === "Failed. The grade you entered is already in the system!") {
-               alert("The name has already been taken.");
-            } else {
-               alert(e.message);
-            }
-         }
-      )
-      .catch(
-         err => {
-            alert("An Error Occured.");
-            console.log(err);
-         }
-      );
+   proccess(url, method, headers, body, undefined, onSuccess, onError, onEnd);
 }
 
 function editMark(id, mark, func) {

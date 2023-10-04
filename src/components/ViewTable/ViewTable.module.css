@@ -1,0 +1,12 @@
+.table {
+   background-color: #80808060;
+   border-radius: 15px;
+}
+
+.table tr,
+.table th,
+.table td,
+.table thead,
+.table tbody {
+   background-color: transparent !important;
+}

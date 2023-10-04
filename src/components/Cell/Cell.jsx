@@ -1,16 +1,17 @@
 import styles from "./Cell.module.css";
+import dateFormat from "dateformat";
 
 function Cell({ plan, even, active, setActive }) {
    return (
       <div
-         className={`${styles.cell} ${plan.date.getMonth() !== active.getMonth() ? styles.disabled : ""} ${active.toLocaleDateString("en-Gb") === plan.date.toLocaleDateString("en-Gb") ? styles.active : (even ? styles.even : styles.odd)}`}
+         className={`${styles.cell} ${plan.date.getMonth() !== active.getMonth() ? styles.disabled : ""} ${dateFormat(active, "yyyy/mm/dd") === dateFormat(plan.date, "yyyy/mm/dd") ? styles.active : (even ? styles.even : styles.odd)}`}
          onClick={() => setActive(plan.date)}
       >
          <span style={{ flex: "1" }}>
             <h4>
                <b>
                   {
-                     plan.date.toLocaleDateString("en-Gb").substring(0, 2)
+                     dateFormat(plan.date, "dd")
                   }
                </b>
             </h4>
