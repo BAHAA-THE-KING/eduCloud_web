@@ -15,7 +15,7 @@ const sections = [
       to: handlers.CALENDAR.main + handlers.CALENDAR.school
    },
    {
-      title: "Class plan",
+      title: "Follow up to plan",
       to: handlers.CALENDAR.main + handlers.CALENDAR.class
    },
    {
