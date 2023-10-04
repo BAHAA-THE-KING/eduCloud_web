@@ -11,6 +11,7 @@ export function StudentPopUp({ active, handlPop }) {
   const [activeButtonTop, setActiveButtonTop] = useState(false);
   const [image, setImage] = useState("");
   const [imageSource, setImageSource] = useState(null);
+  const [morePhoneNumbers, setMorePhoneNumbers] = useState(false);
 
   function handleActiveButton() {
     setActiveButton((active) => !active);
@@ -30,6 +31,12 @@ export function StudentPopUp({ active, handlPop }) {
     else
       setImage(null)
   }
+
+  function showMorePhoneNumbers() {
+    setMorePhoneNumbers((opened) => !opened);
+  }
+
+
   return (
     <>
       <div className={(active) ? "layer" : "d-none"}></div>
@@ -41,7 +48,7 @@ export function StudentPopUp({ active, handlPop }) {
           />
           <FontAwesomeIcon
             icon={faClose}
-            className=" ms-5 fs-3 fw-bold text-purple pointer"
+            className="ms-5 fs-3 fw-bold text-purple pointer"
             onClick={() => handlPop()}
           />
         </div>
@@ -63,10 +70,16 @@ export function StudentPopUp({ active, handlPop }) {
                 <div className="col-4 row"><label className="d-flex justify-content-center align-items-center text-purple col-5">Age</label>  <input className="text-purple col-6" type="text" /></div>
               </div>
             </div>
-            <div className="text-end text-gray border-bottom border-3">Phone numbers</div>
-            <div className="mt-3 mb-3 d-flex justify-content-between align-items-center">
-              <div><label className="text-purple ms-3 me-3">kinship</label><input className="text-purple phone" type="text" /></div>
-              <div><label className="text-purple me-3">phone</label><input className="text-purple phone" type="text" /></div>
+            <div className="text-end text-gray border-bottom border-3 pointer" onClick={() => showMorePhoneNumbers()}><span className="text-purple fw-bold fs-5">+</span> Phone numbers</div>
+            <div >
+              <div className="mt-3 mb-3 d-flex justify-content-between align-items-center">
+                <div><label className="text-purple ms-3 me-3">kinship</label><input className="text-purple phone" type="text" /></div>
+                <div><label className="text-purple me-3">phone</label><input className="text-purple phone" type="text" /></div>
+              </div>
+              <div className={morePhoneNumbers ? "d-flex justify-content-between align-items-center mb-3" : "d-none"}>
+                <div><label className="text-purple ms-3 me-3">kinship</label><input className="text-purple phone" type="text" /></div>
+                <div><label className="text-purple me-3">phone</label><input className="text-purple phone" type="text" /></div>
+              </div>
             </div>
             <div className="text-end text-gray border-bottom border-3 mb-3">Parents data</div>
             <div className="row">
@@ -95,7 +108,11 @@ export function StudentPopUp({ active, handlPop }) {
           </div>
         </div>
         <div className={activeButton ? "d-none" : "mt-3 d-block"}>
-          <button onClick={() => handleActiveButtonTop()} className={activeButtonTop ? " donation text-white bg-purple me-2 " : " donation main text-gray bg-white me-2"}>Donations</button>
+          <div className="d-flex justify-content-center align-items-center mb-4">
+            <div className={"image-holder"}><img className="img-fluid image-holders" src={imageSource} /></div>
+            <div><label className="text-purple pointer fw-bold fs-4" htmlFor="file">Upload image</label><input type="file" id="file" accept="image/*" placeholder="Upload Image" onChange={handleImage} /></div>
+          </div>
+          <button onClick={() => handleActiveButtonTop()} className={activeButtonTop ? " donation text-white bg-purple" : " donation main text-gray bg-white"}>Donations</button>
           <button onClick={() => handleActiveButtonTop()} className={!activeButtonTop ? "bus active text-white bg-purple" : "bus money text-gray bg-white"}>Bus</button>
           <div className="text-end text-gray mb-3 mt-3 border-bottom border-3 w-100">Main data</div>
           <div className="row mb-4">
@@ -123,7 +140,7 @@ export function StudentPopUp({ active, handlPop }) {
             <div className="col-4 row mb-3"><label className="d-flex justify-content-center align-items-center text-purple col-5">accumulated</label>  <input className="text-purple col-6" type="text" /></div>
           </div>
         </div>
-        <button onClick={() => handleActiveButton()} className={activeButton ? "main text-white bg-purple me-2 " : "main text-gray bg-white me-2"}>Main</button>
+        <button onClick={() => handleActiveButton()} className={activeButton ? "main text-white bg-purple" : "main text-gray bg-white"}>Main</button>
         <button onClick={() => handleActiveButton()} className={!activeButton ? "money text-white bg-purple" : "money text-gray bg-white"}>Money</button>
       </div>
     </>
