@@ -1,0 +1,31 @@
+.student input[type="text"] {
+  box-shadow: rgb(128, 128, 128) 1px 1px 5px;
+  width: 200px;
+  height: fit-content;
+  text-align: left;
+  /* padding: 5px 16px 5px 0px;
+  text-align: right; */
+  padding: 5px 0px 5px 16px;
+  outline: none;
+  border: none;
+}
+
+.students {
+  background-color: #EDEDED;
+  padding: 10px;
+  border-radius: 15px;
+  max-height: 510px;
+  overflow-y: auto;
+}
+.students .line:not(:last-child) {
+  margin-bottom: 10px;
+}
+.students .line .user {
+  width: fit-content;
+  padding: 8px;
+  border-radius: 50%;
+}
+.students .row {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}

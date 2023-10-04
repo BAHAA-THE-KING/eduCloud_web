@@ -7,9 +7,9 @@
   box-shadow: rgb(128, 128, 128) 1px 1px 5px;
   border-radius: 20px;
   padding: 20px;
+  width: 900px;
   z-index: 10;
-  width: 800px;
-  z-index: 10;
+  transition: .3s;
 }
 .layer {
   position: fixed;
@@ -20,4 +20,23 @@
   background-color: var(--mainGray);
   opacity: 0.4;
 }
+.phone {
+  width: 300px !important;
+}
 
+.pop-up button {
+  box-shadow: rgb(128, 128, 128) 1px 1px 5px;
+  transition: .3s;
+}
+.pop-up .main {
+  padding: 5px 30px;
+}
+.pop-up .money {
+  padding: 5px 25px;
+}
+.pop-up .donation {
+  padding: 5px 25px;
+}
+.pop-up .bus{
+  padding: 5px 50px;
+}
