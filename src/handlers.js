@@ -863,7 +863,7 @@ function getAbilityTests(subject, func) {
       );
 }
 
-function getStudentData(id, func) {
+function getStudentData(id, controller, onSuccess, onError, onEnd) {
    const path = "/general/viewStudent/";
 
    const params = "?all=1";
@@ -878,31 +878,9 @@ function getStudentData(id, func) {
       "Authorization": "Bearer " + getToken()
    };
 
-   fetch(url, { method, headers })
-      .then(
-         e => {
-            if (e.status >= 500) {
-               alert("خطأ في السيرفر، تواصل مع المطور لحل المشكلة");
-               return;
-            }
-            return e.json();
-         }
-      )
-      .then(
-         e => {
-            if (e["message"] === "Unauthenticated.") {
-               goTo(LOGIN);
-            } else if (e.message === "Success!") {
-               func(e.data);
-            }
-         }
-      )
-      .catch(
-         err => {
-            alert("An Error Occured.");
-            console.log(err);
-         }
-      );
+   const signal = controller.signal;
+
+   proccess(url, method, headers, undefined, signal, onSuccess, onError, onEnd);
 }
 
 function logIn(name, password, controller, onSuccess, onError, onEnd) {
