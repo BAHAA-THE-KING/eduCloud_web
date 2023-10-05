@@ -13,6 +13,11 @@
 .date {
    width: 150px;
    text-align: center;
+   text-indent: 0;
    padding-right: 0;
    padding-left: 0;
+}
+
+.cellCols {
+   width: CALC(100% / 7);
 }

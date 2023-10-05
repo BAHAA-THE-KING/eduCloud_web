@@ -45,7 +45,7 @@ function App() {
                   </Container>
                 } />
                 <Route path={SCHOOL.main + "/*"} element={
-                  <Container fluid>
+                  <Container fluid style={{ overflowY: "auto" }}>
                     <GradesStudentClassesHeader />
                     <Routes>
                       <Route path={SCHOOL.classes} element={<ShowGrades />} />

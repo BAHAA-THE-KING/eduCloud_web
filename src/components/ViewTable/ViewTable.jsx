@@ -26,14 +26,14 @@ function ViewTable({ headers, rows }) {
                         {
                            headers.map(
                               e =>
-                                 <td key={row.id}>{row[e.name]}</td>
+                                 <td key={row.id + "-" + e.name}>{row[e.name]}</td>
                            )
                         }
                      </tr>
                )
             }
          </tbody>
-      </Table >
+      </Table>
    );
 }
 

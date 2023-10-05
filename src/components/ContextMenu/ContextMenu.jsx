@@ -10,7 +10,8 @@ function ContextMenu({ data }) {
             right: (reversed) ? window.innerWidth - data.x + "px" : "",
             borderTopLeftRadius: (!reversed) ? "0px" : "",
             borderTopRightRadius: (reversed) ? "0px" : "",
-            top: data.y + "px"
+            top: data.y + "px",
+            //transformOrigin: !reversed ? "0 0" : "100% 0"
          }}>
          {
             data.items.map(
