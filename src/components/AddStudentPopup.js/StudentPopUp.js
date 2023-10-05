@@ -70,7 +70,8 @@ export function StudentPopUp({ active, handlPop }) {
                 <div className="col-4 row"><label className="d-flex justify-content-center align-items-center text-purple col-5">Age</label>  <input className="text-purple col-6" type="text" /></div>
               </div>
             </div>
-            <div className="text-end text-gray border-bottom border-3 pointer" onClick={() => showMorePhoneNumbers()}><span className="text-purple fw-bold fs-5">+</span> Phone numbers</div>
+            <div className="text-end text-gray border-bottom border-3 pointer" onClick={() => showMorePhoneNumbers()}>
+              <span className={!morePhoneNumbers ? "text-purple fw-bold fs-5" : "d-none"}>+</span><span className={morePhoneNumbers ? "text-purple fw-bold fs-5" : "d-none"}>-</span> Phone numbers</div>
             <div >
               <div className="mt-3 mb-3 d-flex justify-content-between align-items-center">
                 <div><label className="text-purple ms-3 me-3">kinship</label><input className="text-purple phone" type="text" /></div>

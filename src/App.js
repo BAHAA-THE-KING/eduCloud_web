@@ -10,6 +10,7 @@ import { SchoolCalendar, Home, Login, SubjectsCalendar, ClassCalendar, ShowGrade
 import { Container, Row } from 'react-bootstrap';
 import { GradesStudentClassesHeader } from './components/GradesStudentClassesHeader';
 import { AddNewStudent } from './Pages/AddNewStudent';
+import { GradeClasses } from './Pages//GradeClasses/GradeClasses';
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
                     <Routes>
                       <Route path={SCHOOL.classes} element={<ShowGrades />} />
                       <Route path={SCHOOL.student} element={<AddNewStudent />} />
+                      <Route path={SCHOOL.school} element={<GradeClasses />} />
                     </Routes>
                   </Container>
                 } />

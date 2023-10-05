@@ -1,0 +1,35 @@
+form input[type="text"] {
+  box-shadow: rgb(128, 128, 128) 1px 1px 5px;
+  width: 200px;
+  height: fit-content;
+  text-align: left;
+  padding: 5px 0px 5px 16px;
+  outline: none;
+  border: none;
+}
+.select-container {
+  position: relative;
+}
+.select-container::before {
+  content: '^';
+  transform: rotate(180deg);
+  color: #2A1F60;
+  position: absolute; 
+  right: 19px;
+  bottom: -1px;
+  z-index: 10;
+  font-weight: bold;
+  font-size: 15px;
+}
+.select-box {
+  width: 250px;
+  text-align: center;
+  border: none;
+  outline: none;
+  box-shadow: rgb(128, 128, 128) 1px 1px 5px;
+  color: #BBBBBB;
+  font-size: 18px;
+  appearance: none;
+  position: relative;
+  padding: 5px;
+}
